@@ -16,18 +16,14 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@font-face {
+  font-family: 'SUIT-Variable';
+  src: url('/fonts/SUIT-Variable/SUIT-Variable.woff2') format('woff2'),
+    url('/fonts/SUIT-Variable/SUIT-Variable.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+body {
+  font-family: 'SUIT-Variable', sans-serif;
 }
