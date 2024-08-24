@@ -18,7 +18,8 @@
 
 @font-face {
   font-family: 'SUIT-Variable';
-  src: url('/fonts/SUIT-Variable/SUIT-Variable.woff2') format('woff2'),
+  src:
+    url('/fonts/SUIT-Variable/SUIT-Variable.woff2') format('woff2'),
     url('/fonts/SUIT-Variable/SUIT-Variable.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -26,4 +27,9 @@
 
 body {
   font-family: 'SUIT-Variable', sans-serif;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
 }

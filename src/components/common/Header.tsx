@@ -1,31 +1,40 @@
-import Link from "next/link"
-import { FiSearch } from "react-icons/fi"
+import Link from 'next/link';
+import { FiSearch } from 'react-icons/fi';
+import TopBanner from './TopBanner';
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center">
-      <Link href="/">
-        <a className="text-2xl font-bold">jngmnj</a>
-      </Link>
-      <div>
-        <Link href="/about">
-          <a className="mr-4">About</a>
+    <>
+      <TopBanner />
+      <div className="inner flex items-center justify-between">
+        <Link href="/">
+          <h1 className="text-2xl font-bold">jngmnj</h1>
         </Link>
-        <Link href="/contact">
-          <a>Contact</a>
-        </Link>
+        <div className="flex items-center justify-center">
+          <Link href="/about">
+            <div className="p-4">About</div>
+          </Link>
+          <Link href="/about">
+            <div className="p-4">Projects</div>
+          </Link>
+          <Link href="/blog">
+            <div className="p-4">Blog</div>
+          </Link>
+          <Link href="/contact">
+            <div className="p-4">Contact</div>
+          </Link>
+        </div>
+        <div className="flex items-center justify-center">
+          <button type="button" className="p-4">
+            <FiSearch />
+          </button>
+          <Link href="/login">
+            <div className="p-4">Login</div>
+          </Link>
+        </div>
       </div>
-      <div>
-        <button type="button" className="mr-4">
-          <FiSearch />
-        </button>
-        <Link href="/login">
-          <a className="mr-4">Login</a>
-        </Link>
-      </div>
+    </>
+  );
+};
 
-    </div>
-  )
-}
-
-export default Header
+export default Header;
