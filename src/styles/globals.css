@@ -33,3 +33,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.container {
+  min-height: calc(100vh - 10rem);
+}
