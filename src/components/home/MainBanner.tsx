@@ -1,26 +1,30 @@
 import 'swiper/css';
-import { Navigation, Pagination } from 'swiper/modules';
-import { SwiperSlide } from 'swiper/react';
-import { StyledSwiper } from './MainBannerStyle';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+import { A11y, Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { StyledSlide, StyledSwiper } from './MainBannerStyle';
 
 const MainBanner = () => {
   return (
     <>
       <StyledSwiper
-        modules={[Navigation, Pagination]}
+        modules={[Navigation, Pagination, A11y, Autoplay]}
         spaceBetween={32}
-        slidesPerView={3}
+        slidesPerView={'auto'}
         navigation
         pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
-        autoplay={{ delay: 3000 }}
+        // scrollbar={{ draggable: true }}
+        autoplay={{ delay: 5000 }}
         loop={true}
+        centeredSlides={true}
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
+        <StyledSlide>Slide 1</StyledSlide>
+        <StyledSlide>Slide 2</StyledSlide>
+        <StyledSlide>Slide 3</StyledSlide>
+        <StyledSlide>Slide 4</StyledSlide>
+        <StyledSlide>Slide 5</StyledSlide>
       </StyledSwiper>
     </>
   );
