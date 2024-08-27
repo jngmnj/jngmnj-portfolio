@@ -30,6 +30,13 @@ body {
 }
 
 .inner {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.container {
+  min-height: calc(100vh - 10rem);
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }

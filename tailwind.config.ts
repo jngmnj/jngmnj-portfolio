@@ -23,6 +23,13 @@ const config: Config = {
         xl: '5rem',
         '2xl': '6rem',
       },
+      screens: {
+        sm: '100%', // sm(640px) 이하
+        md: '768px', // md(768px) 이하
+        lg: '1024px', // lg(1024px) 이하
+        xl: '1200px', // xl(1280px) 이하
+        '2xl': '1200px', // 2xl(1536px) 이하
+      },
     },
   },
   plugins: [],

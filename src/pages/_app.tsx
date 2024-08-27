@@ -12,10 +12,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Header />
       <Sidebar />
-      <div className="container mx-auto px-4">
+      <div className="mx-auto">
         <Component {...pageProps} />
       </div>
       <Footer />
     </QueryClientProvider>
-  )
+  );
 }
