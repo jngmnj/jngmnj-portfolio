@@ -1,8 +1,19 @@
+import Button from '@/components/common/Button';
+import { useAuth } from '@/utils/hooks';
+import storage from '@/utils/storage';
+import { User } from 'firebase/auth';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import TopBanner from './TopBanner';
 
+const initialUserData = storage.get<User>('userData');
+
 const Header = () => {
+  const [userData, setUserData] = useState<User | null>(initialUserData);
+
+  const { signOut } = useAuth();
   return (
     <>
       <TopBanner />
@@ -28,9 +39,20 @@ const Header = () => {
           <button type="button" className="p-4">
             <FiSearch />
           </button>
-          <Link href="/login">
-            <div className="p-4">Login</div>
-          </Link>
+          {initialUserData ? (
+            <div className="flex items-center justify-center">
+              <Link href="/mypage">
+                <Image src={userData?.photoURL ?? ''} className="p-4" alt="" />
+              </Link>
+              <Button type="button" onClick={signOut}>
+                <div className="p-4">로그아웃</div>
+              </Button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <div className="p-4">로그인</div>
+            </Link>
+          )}
         </div>
       </div>
     </>

@@ -1,30 +1,44 @@
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/CheckBox';
 import Input from '@/components/common/Input';
-import { GoogleAuthProvider } from 'firebase/auth';
+import { useAuth } from '@/utils/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { auth } from '../../../firebase';
+import React from 'react';
+import { FcGoogle } from 'react-icons/fc';
 
 const Resigster = () => {
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  // const idRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const passwordCheckRef = React.useRef<HTMLInputElement>(null);
+
+  const { signInWithGoogle, signUp } = useAuth();
   const router = useRouter();
-  // 구글 로그인
-  const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    // const auth = getAuth(app);
-    try {
-      const result = await auth.signInWithPopup(provider);
-      // 사용자의 정보는 result.user에 있습니다.
-      console.log('User Info:', result.user);
-    } catch (error) {
-      console.error('Error during sign-in:', error);
-    }
-  };
   // 로그인
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await router.push('/');
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    const passwordCheck = passwordCheckRef.current?.value;
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+    if (password !== passwordCheck) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    console.log('회원가입할께');
+    const response = await signUp(email, password);
+    console.log(response);
+    if (response.user !== null) {
+      console.log('회원가입 성공');
+      router.push('/');
+    } else {
+      console.log('왜안되징');
+    }
   };
   return (
     <div className="bg-bg-login">
@@ -45,30 +59,53 @@ const Resigster = () => {
               className="mb-4 mt-6 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
-              <Input type="text" placeholder="아이디 또는 이메일" />
-              <Input type="password" placeholder="비밀번호" />
-              <div className="flex justify-between">
-                <Checkbox id="remember">아이디 저장</Checkbox>
-                <button type="button" className="link-text">
-                  비밀번호 찾기
-                </button>
+              <Input type="text" ref={emailRef} placeholder="이메일" />
+              {/* <Input type="text" ref={idRef} placeholder="아이디" /> */}
+              <Input type="password" ref={passwordRef} placeholder="비밀번호" />
+              <Input
+                type="password"
+                ref={passwordCheckRef}
+                placeholder="비밀번호확인"
+              />
+              <div className="">
+                <Checkbox id="remember">
+                  <p>
+                    <Link
+                      href={'/policy'}
+                      target="_blank"
+                      className="link-text"
+                    >
+                      이용약관
+                    </Link>
+                    <span> 및 </span>
+                    <Link
+                      href={'/policy'}
+                      target="_blank"
+                      className="link-text"
+                    >
+                      개인정보처리방침
+                    </Link>
+                    <span>에 동의합니다.</span>
+                  </p>
+                </Checkbox>
               </div>
-              <Button type="submit">로그인</Button>
+              <Button type="submit">회원가입</Button>
             </form>
-            {/* 간편로그인 */}
+            {/* 간편 회원가입 */}
             <div>
               <Button
                 type="submit"
-                className="border-seagull-500 text-seagull-500 hover:bg-seagull-50 mb-4 border bg-white"
+                className="border-seagull-500 text-seagull-500 hover:bg-seagull-50 mb-4 flex items-center justify-center gap-2 border bg-white"
                 onClick={signInWithGoogle}
               >
+                <FcGoogle />
                 Sign up with Google
               </Button>
             </div>
             <div className="flex items-center justify-center gap-4">
-              <span>아직 회원이 아니신가요?</span>
-              <Link href="/register" className="link-text">
-                회원가입
+              <span>이미 회원이신가요?</span>
+              <Link href="/login" className="link-text">
+                로그인
               </Link>
             </div>
           </div>

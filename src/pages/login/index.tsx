@@ -1,30 +1,29 @@
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/CheckBox';
 import Input from '@/components/common/Input';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useAuth } from '@/utils/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { app } from '../../../firebase';
+import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
   const router = useRouter();
-  // 구글 로그인
-  const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth(app);
-    try {
-      const result = await signInWithPopup(auth, provider);
-      // 사용자의 정보는 result.user에 있습니다.
-      console.log('User Info:', result.user);
-    } catch (error) {
-      console.error('Error during sign-in:', error);
-    }
-  };
+  const { signInWithGoogle, signIn } = useAuth();
   // 로그인
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await router.push('/');
+    const email = e.currentTarget.email.value;
+    const password = e.currentTarget.password.value;
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+    console.log('로그인할께');
+    const response = await signIn(email, password);
+    if (response.user !== null) {
+      router.push('/');
+    }
   };
   return (
     <div className="bg-bg-login">
@@ -45,10 +44,10 @@ const Login = () => {
               className="mb-4 mt-6 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
-              <Input type="text" placeholder="아이디 또는 이메일" />
+              <Input type="text" placeholder="이메일" />
               <Input type="password" placeholder="비밀번호" />
               <div className="flex justify-between">
-                <Checkbox id="remember">아이디 저장</Checkbox>
+                <Checkbox id="remember">이메일 저장</Checkbox>
                 <button type="button" className="link-text">
                   비밀번호 찾기
                 </button>
@@ -59,9 +58,10 @@ const Login = () => {
             <div>
               <Button
                 type="submit"
-                className="border-seagull-500 text-seagull-500 hover:bg-seagull-50 mb-4 border bg-white"
+                className="border-seagull-500 text-seagull-500 hover:bg-seagull-50 mb-4 flex items-center justify-center gap-2 border bg-white"
                 onClick={signInWithGoogle}
               >
+                <FcGoogle />
                 Sign in with Google
               </Button>
             </div>

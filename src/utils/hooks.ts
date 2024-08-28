@@ -1,72 +1,92 @@
+import storage from '@/utils/storage';
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signOut,
+  signInWithPopup,
+  User,
 } from 'firebase/auth';
 import { useState } from 'react';
 import { auth } from '../../firebase';
 
-type useAuthProps = {
-  email: string;
-  password: string;
-};
-
 // Firebase 초기화
 export const useAuth = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 로그인 함수
-  const signIn = async (email: string, password: string) => {
+  //  구글 간편 로그인 함수
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    console.log('hey', auth);
+    console.log('provider', provider);
     try {
-      setLoading(true);
+      const result = await signInWithPopup(auth, provider);
+      console.log('User Info:', result.user);
+      storage.set('userData', result.user);
+      setUser(result.user);
+      return result.user;
+    } catch (error) {
+      console.error('Error during sign-in:', error);
+    }
+  };
+
+  // 로그인 함수
+  const signIn = async (
+    email: string,
+    password: string
+  ): Promise<{ user: User | null; error: Error | null }> => {
+    setLoading(true);
+    try {
+      //   signInWithEmailAndPassword
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
       setUser(userCredential?.user);
-    } catch (error) {
-      setError(error.message);
-    } finally {
       setLoading(false);
+      return { user: userCredential.user, error: null };
+    } catch (error) {
+      //   setError(error?.message);
+      setLoading(false);
+      console.error(error);
+      return { user: null, error: error as Error };
     }
   };
 
   // 회원가입 함수
-  const signUp = async (email, password) => {
+  const signUp = async (
+    email: string,
+    password: string
+  ): Promise<{ user: User | null; error: Error | null }> => {
+    setLoading(true);
     try {
-      setLoading(true);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       setUser(userCredential.user);
-    } catch (error) {
-      setError(error.message);
-    } finally {
       setLoading(false);
+      return { user: userCredential.user, error: null };
+    } catch (error) {
+      //   setError(error.message);
+      setLoading(false);
+      return { user: null, error: error as Error };
     }
   };
 
   // 로그아웃 함수
-  const logOut = async () => {
+  const signOut = async () => {
     try {
       await signOut(auth);
       setUser(null);
     } catch (error) {
-      setError(error.message);
+      //   setError(error.message);
+      console.error(error);
     }
   };
-
-  // 현재 사용자 인증 상태를 감시
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-    setLoading(false);
-  });
 
   return {
     user,
@@ -74,6 +94,7 @@ export const useAuth = () => {
     error,
     signIn,
     signUp,
-    logOut,
+    signOut,
+    signInWithGoogle,
   };
 };
