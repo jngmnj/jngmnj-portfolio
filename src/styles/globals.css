@@ -40,3 +40,12 @@ body {
   padding-top: 5rem;
   padding-bottom: 5rem;
 }
+
+.link-text {
+  @apply text-seagull-600;
+  transition: .3s ease-in-out;
+}
+
+.link-text:hover {
+  @apply text-seagull-700;
+}

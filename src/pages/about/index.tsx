@@ -32,7 +32,7 @@ const index = () => {
                 type="button"
                 className="btn group flex items-center gap-2 rounded-xl border border-gray-600 px-6 py-3"
               >
-                <MdFileDownload className="transform transition-transform group-hover:translate-y-1" />
+                <MdFileDownload className="transition-transform group-hover:translate-y-1" />
                 이력서 다운로드
               </button>
               <div className="flex items-center gap-4">
@@ -180,7 +180,7 @@ const index = () => {
                   <div className="mb-2 text-2xl">2024 - 현재</div>
                   <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
                   <div className="text-md flex items-center gap-3">
-                    <div className="h-[12px] w-[12px] rounded-full bg-green-400"></div>
+                    <div className="size-[12px] rounded-full bg-green-400"></div>
                     Core Soft Inc.
                   </div>
                 </div>
@@ -190,7 +190,7 @@ const index = () => {
                   <div className="mb-2 text-2xl">2024 - 현재</div>
                   <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
                   <div className="text-md flex items-center gap-3">
-                    <div className="h-[12px] w-[12px] rounded-full bg-green-400"></div>
+                    <div className="size-[12px] rounded-full bg-green-400"></div>
                     Core Soft Inc.
                   </div>
                 </div>
@@ -200,7 +200,7 @@ const index = () => {
                   <div className="mb-2 text-2xl">2024 - 현재</div>
                   <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
                   <div className="text-md flex items-center gap-3">
-                    <div className="h-[12px] w-[12px] rounded-full bg-green-400"></div>
+                    <div className="size-[12px] rounded-full bg-green-400"></div>
                     Core Soft Inc.
                   </div>
                 </div>
@@ -210,7 +210,7 @@ const index = () => {
                   <div className="mb-2 text-2xl">2024 - 현재</div>
                   <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
                   <div className="text-md flex items-center gap-3">
-                    <div className="h-[12px] w-[12px] rounded-full bg-green-400"></div>
+                    <div className="size-[12px] rounded-full bg-green-400"></div>
                     Core Soft Inc.
                   </div>
                 </div>
@@ -220,7 +220,7 @@ const index = () => {
                   <div className="mb-2 text-2xl">2024 - 현재</div>
                   <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
                   <div className="text-md flex items-center gap-3">
-                    <div className="h-[12px] w-[12px] rounded-full bg-green-400"></div>
+                    <div className="size-[12px] rounded-full bg-green-400"></div>
                     Core Soft Inc.
                   </div>
                 </div>
@@ -230,7 +230,7 @@ const index = () => {
                   <div className="mb-2 text-2xl">2024 - 현재</div>
                   <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
                   <div className="text-md flex items-center gap-3">
-                    <div className="h-[12px] w-[12px] rounded-full bg-green-400"></div>
+                    <div className="size-[12px] rounded-full bg-green-400"></div>
                     Core Soft Inc.
                   </div>
                 </div>
