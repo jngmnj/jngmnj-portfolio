@@ -8,13 +8,14 @@ const index = () => {
   return (
     <div className="container">
       {/* introduction */}
+      {/* 추후 페이지단위 스크롤로 수정 */}
       <section className="mb-16 h-full">
-        <div className="mb-8 flex gap-6">
+        <div className="mb-16 flex gap-6">
           <div className="w-3/5">
             <div className="mb-6">
               <p className="mb-3 text-2xl">Frontend Developer</p>
               <h1 className="mb-3 text-7xl font-semibold">안녕하세요,</h1>
-              <h1 className="mb-8 text-7xl font-semibold">지정민입니다. </h1>
+              <h1 className="mb-16 text-7xl font-semibold">지정민입니다. </h1>
               <p className="leading-7">
                 저는 UI/UX 디자인 전문 지식을 활용하여 사용자 경험을 최적화하는
                 웹사이트를 제작합니다. <br />
@@ -138,7 +139,9 @@ const index = () => {
               <br />
               뽑아야 하는 이유
             </div>
-            <div className="text-md mb-8">👇🏻 다음을 클릭하여 확인하세요.👇🏻</div>
+            <div className="text-md mb-16">
+              👇🏻 다음을 클릭하여 확인하세요.👇🏻
+            </div>
             <div className="flex flex-col gap-4">
               <button
                 type="button"
