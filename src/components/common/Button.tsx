@@ -1,17 +1,28 @@
+/** @jsxImportSource @emotion/react */
 import { cn } from '@/utils/style';
 import { ComponentPropsWithoutRef, FC } from 'react';
 
-type ButtonProps = ComponentPropsWithoutRef<'button'>;
+type ButtonProps = ComponentPropsWithoutRef<'button'> & {
+  color?: string;
+  size?: string;
+  className?: string;
+  children: React.ReactNode;
+};
 
-const Button: FC<ButtonProps> = ({ children, className, ...rest }) => {
+const Button: FC<ButtonProps> = ({
+  color = 'primary',
+  size = 'medium',
+  children,
+  className,
+  ...rest
+}: ButtonProps) => {
+  // const tailwindClasses = `${buttonThemes.colors[color].className} ${buttonThemes.sizes[size].className} ${buttonThemes.common.className}`;
+  // const hoverClasses = `${buttonThemes.colors[color].hoverClassName}`;
+
+  const buttonClass = `btn-${color} btn-${size}`;
+
   return (
-    <button
-      className={cn(
-        'bg-seagull-400 hover:bg-seagull-500 w-full rounded-md px-4 py-3 text-black transition-all',
-        className
-      )}
-      {...rest}
-    >
+    <button className={cn(buttonClass, className)} {...rest}>
       {children}
     </button>
   );

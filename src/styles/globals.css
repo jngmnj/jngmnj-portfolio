@@ -44,8 +44,63 @@ body {
 .link-text {
   @apply text-seagull-600;
   transition: .3s ease-in-out;
+
+  &:hover {
+    @apply text-seagull-700;
+  }
 }
 
-.link-text:hover {
-  @apply text-seagull-700;
+/* Button Theme */
+*[class^=btn] {
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  border-radius: .25rem;
+}
+
+.btn-primary {
+  @apply bg-seagull-400 text-black;
+
+  &:hover {
+    @apply hover:bg-seagull-500;
+  }
+}
+
+.btn-linePrimary {
+  @apply bg-white border border-seagull-400 text-seagull-400;
+
+  &:hover {
+    @apply hover:bg-gray-100;
+  }
+}
+
+.btn-secondary {
+  @apply bg-seagull-500 text-white;
+
+  &:hover {
+    @apply hover:bg-seagull-600;
+  }
+}
+
+.btn-danger {
+  @apply bg-red-500 text-white;
+
+  &:hover {
+    @apply hover:bg-red-600;
+  }
+}
+
+.btn-small {
+  @apply px-2 py-1 text-sm rounded;
+}
+
+.btn-medium {
+  @apply px-4 py-2 text-base rounded-lg;
+}
+
+.btn-large {
+  @apply px-6 py-3 text-lg rounded-xl;
+}
+
+.btn-xlarge {
+  @apply px-8 py-4 text-xl rounded-2xl;
 }
