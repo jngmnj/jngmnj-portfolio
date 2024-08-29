@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   User,
 } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { auth } from '../../firebase';
 
@@ -14,6 +15,7 @@ export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   //  구글 간편 로그인 함수
   const signInWithGoogle = async () => {
@@ -25,7 +27,10 @@ export const useAuth = () => {
       console.log('User Info:', result.user);
       storage.set('userData', result.user);
       setUser(result.user);
-      return result.user;
+      if (result.user !== null) {
+        router.push('/');
+      }
+      // return result.user;
     } catch (error) {
       console.error('Error during sign-in:', error);
     }

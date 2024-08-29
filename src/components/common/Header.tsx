@@ -4,13 +4,20 @@ import storage from '@/utils/storage';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import TopBanner from './TopBanner';
 
-const initialUserData = storage.get<User>('userData');
 
 const Header = () => {
+  let initialUserData = null;
+  useEffect(() => {
+    if(typeof window !== 'undefined') {
+      console.log('userData', storage.get('userData'));
+      initialUserData = storage.get<User>('userData');
+    }    
+  } , []);
+
   const [userData, setUserData] = useState<User | null>(initialUserData);
 
   const { signOut } = useAuth();
