@@ -30,7 +30,7 @@ const Mypage = () => {
           </div>
         </aside>
         <div className="w-3/4">
-          <h2 className="text-2xl font-semibold">마이페이지</h2>
+          <h2 className="text-2xl font-semibold">내 정보 수정</h2>
           <div className="mt-4 flex items-center gap-4">
             <Image
               src={userData?.photoURL ?? '/images/common/img_user.png'}

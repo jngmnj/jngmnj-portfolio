@@ -63,7 +63,7 @@ const Header = () => {
             <div className="flex items-center justify-center gap-3">
               <Link href="/mypage">
                 <Image
-                  src={userData?.photoURL ?? ''}
+                  src={userData?.photoURL ?? '/images/common/img_user.png'}
                   width={40}
                   height={40}
                   className="rounded-full"

@@ -1,14 +1,14 @@
-import ProjectItem from './ProjectItem';
+import ProjectCard from './ProjectCard';
 
 const ProjectList = () => {
   return (
     <div className="flex flex-wrap gap-x-4 gap-y-10">
-      <ProjectItem />
-      <ProjectItem />
-      <ProjectItem />
-      <ProjectItem />
-      <ProjectItem />
-      <ProjectItem />
+      <ProjectCard />
+      <ProjectCard />
+      <ProjectCard />
+      <ProjectCard />
+      <ProjectCard />
+      <ProjectCard />
     </div>
   );
 };
