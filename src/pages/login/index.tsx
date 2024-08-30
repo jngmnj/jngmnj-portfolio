@@ -5,26 +5,33 @@ import { useAuth } from '@/utils/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { signInWithGoogle, signIn } = useAuth();
+
   // 로그인
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const email = e.currentTarget.email.value;
-    const password = e.currentTarget.password.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
     console.log('로그인할께');
-    const response = await signIn(email, password);
-    if (response.user !== null) {
+    const { success, error } = await signIn(email, password);
+    if (success) {
       router.push('/');
+    } else {
+      alert(`로그인 실패: ${error}`);
     }
   };
+
   return (
     <div className="bg-bg-login">
       <div className="container">
@@ -44,8 +51,8 @@ const Login = () => {
               className="mb-4 mt-6 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
-              <Input type="text" placeholder="이메일" />
-              <Input type="password" placeholder="비밀번호" />
+              <Input type="email" ref={emailRef} placeholder="이메일" />
+              <Input type="password" ref={passwordRef} placeholder="비밀번호" />
               <div className="flex justify-between">
                 <Checkbox id="remember">이메일 저장</Checkbox>
                 <button type="button" className="link-text">

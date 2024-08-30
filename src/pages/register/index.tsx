@@ -16,7 +16,8 @@ const Resigster = () => {
 
   const { signInWithGoogle, signUp } = useAuth();
   const router = useRouter();
-  // 로그인
+
+  // 회원가입
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
@@ -30,16 +31,15 @@ const Resigster = () => {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
-    console.log('회원가입할께');
-    const response = await signUp(email, password);
-    console.log(response);
-    if (response.user !== null) {
-      console.log('회원가입 성공');
+    const { success, error } = await signUp(email, password);
+    if (success) {
+      alert('회원가입이 완료되었습니다.');
       router.push('/');
     } else {
-      console.log('왜안되징');
+      alert(`회원가입 실패: ${error}`);
     }
   };
+
   return (
     <div className="bg-bg-login">
       <div className="container">
@@ -59,7 +59,7 @@ const Resigster = () => {
               className="mb-4 mt-6 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
-              <Input type="text" ref={emailRef} placeholder="이메일" />
+              <Input type="email" ref={emailRef} placeholder="이메일" />
               {/* <Input type="text" ref={idRef} placeholder="아이디" /> */}
               <Input type="password" ref={passwordRef} placeholder="비밀번호" />
               <Input

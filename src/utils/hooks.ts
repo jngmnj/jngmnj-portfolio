@@ -39,9 +39,10 @@ export const useAuth = () => {
       );
       storage.set('userData', userCredential?.user);
       setLoading(false);
+      return { success: true, error: null };
     } catch (error) {
       setLoading(false);
-      console.error(error);
+      return { success: false, error };
     }
   };
 
@@ -56,8 +57,10 @@ export const useAuth = () => {
       );
       storage.set('userData', userCredential.user);
       setLoading(false);
+      return { success: true, error: null };
     } catch (error) {
       setLoading(false);
+      return { success: false, error };
     }
   };
 
