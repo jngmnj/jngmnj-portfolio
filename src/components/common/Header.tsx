@@ -18,10 +18,22 @@ const Header = () => {
       // console.log('Header1 userData', storage.get('userData'));
       setUserData(storage.get<User>('userData'));
     }
+
+    // 로컬스토리지 이벤트 핸들러
+    const handleUserDataChange = () => {
+      setUserData(storage.get<User>('userData'));
+    };
+
+    // 이벤트 등록
+    window.addEventListener('storageUserDataChange', handleUserDataChange);
+
+    return () => {
+      window.removeEventListener('storageUserDataChange', handleUserDataChange);
+    };
   }, [route]);
 
   console.log('Header userData', userData);
-  const { signOut } = useAuth();
+  const { logOut } = useAuth();
   return (
     <>
       <TopBanner />
@@ -29,7 +41,7 @@ const Header = () => {
         <Link href="/">
           <h1 className="text-2xl font-bold">jngmnj</h1>
         </Link>
-        <div className="flex items-center justify-center">
+        <div className="hidden items-center justify-center lg:flex">
           <Link href="/about">
             <div className="p-4">About</div>
           </Link>
@@ -62,7 +74,7 @@ const Header = () => {
                 type="button"
                 color="linePrimary"
                 size="small"
-                onClick={signOut}
+                onClick={logOut}
                 className=""
               >
                 <div>로그아웃</div>

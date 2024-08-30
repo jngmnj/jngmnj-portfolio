@@ -95,7 +95,8 @@ const Resigster = () => {
             <div>
               <Button
                 type="submit"
-                className="border-seagull-500 text-seagull-500 hover:bg-seagull-50 mb-4 flex items-center justify-center gap-2 border bg-white"
+                color="linePrimary"
+                className="mb-4 flex w-full items-center justify-center gap-2"
                 onClick={signInWithGoogle}
               >
                 <FcGoogle />

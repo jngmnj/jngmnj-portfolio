@@ -53,7 +53,7 @@ const config: Config = {
         md: '768px', // md(768px) 이하
         lg: '1024px', // lg(1024px) 이하
         xl: '1200px', // xl(1280px) 이하
-        '2xl': '1200px', // 2xl(1536px) 이하
+        '2xl': '1280px', // 2xl(1536px) 이하
       },
     },
   },
