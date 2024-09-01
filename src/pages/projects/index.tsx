@@ -2,7 +2,7 @@ import ProjectList from '@/components/projects/ProjectList';
 
 const index = () => {
   return (
-    <div>
+    <div className="container">
       <ProjectList />
     </div>
   );
