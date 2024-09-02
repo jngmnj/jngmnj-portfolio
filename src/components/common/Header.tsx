@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
+import Sidebar from './Sidebar';
 import TopBanner from './TopBanner';
 
 const Header = () => {
@@ -85,6 +86,7 @@ const Header = () => {
               <div className="p-4">로그인</div>
             </Link>
           )}
+          <Sidebar userData={userData} />
         </div>
       </div>
     </>

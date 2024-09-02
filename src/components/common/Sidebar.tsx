@@ -1,26 +1,71 @@
+import { User } from 'firebase/auth';
 import Link from 'next/link';
+import { useState } from 'react';
+import { CgClose } from 'react-icons/cg';
+import { RiMenu3Line } from 'react-icons/ri';
 
-const Sidebar = () => {
+type SidebarProps = {
+  userData: User | null;
+};
+const Sidebar = ({ userData }: SidebarProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
   return (
-    <div className="absolute left-0 top-0 z-10 h-full w-full border border-blue-600 bg-gray-100 md:block">
-      <Link href="/">
-        <h1 className="text-2xl font-bold">jngmnj</h1>
-      </Link>
-      <div className="hidden items-center justify-center lg:flex">
-        <Link href="/about">
-          <div className="p-4">About</div>
-        </Link>
-        <Link href="/projects">
-          <div className="p-4">Projects</div>
-        </Link>
-        <Link href="/blog">
-          <div className="p-4">Blog</div>
-        </Link>
-        <Link href="/contact">
-          <div className="p-4">Contact</div>
-        </Link>
+    <>
+      <div className="md:block">
+        <button
+          type="button"
+          onClick={handleToggle}
+          className="cursor-pointer p-4"
+        >
+          <RiMenu3Line />
+        </button>
       </div>
-    </div>
+      {isOpen && (
+        <>
+          <div className="fixed right-0 top-0 z-10 h-full max-h-screen w-80 border border-r-gray-200 bg-white p-4 md:block">
+            <button
+              type="button"
+              onClick={handleToggle}
+              className="absolute right-2 top-2 cursor-pointer rounded-2xl p-3 hover:bg-gray-50"
+            >
+              <CgClose className="text-2xl" />
+            </button>
+            <div className="mt-4">
+              <Link href="/about">
+                <div className="rounded-2xl p-4 hover:bg-gray-50">About</div>
+              </Link>
+              <Link href="/projects">
+                <div className="p-4">Projects</div>
+              </Link>
+              <Link href="/blog">
+                <div className="p-4">Blog</div>
+              </Link>
+              <Link href="/contact">
+                <div className="p-4">Contact</div>
+              </Link>
+            </div>
+            <div className="absolute bottom-0">
+              {!userData ? (
+                <Link href="/login">
+                  <div className="p-4">Login</div>
+                </Link>
+              ) : (
+                <Link href="/logout">
+                  <div className="p-4">Logout</div>
+                </Link>
+              )}
+            </div>
+          </div>
+          <div
+            onClick={handleToggle}
+            className="fixed inset-0 z-0 bg-black bg-opacity-20"
+          />
+        </>
+      )}
+    </>
   );
 };
 
