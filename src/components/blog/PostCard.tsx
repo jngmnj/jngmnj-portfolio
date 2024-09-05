@@ -11,11 +11,11 @@ type PostCardProps = {
 };
 const PostCard: FC<PostCardProps> = ({
   id,
-  // title,
-  // category,
-  // content,
-  // created_at,
-  // preview_img_url,
+  title,
+  category,
+  content,
+  created_at,
+  preview_img_url,
 }) => {
   return (
     <div>
