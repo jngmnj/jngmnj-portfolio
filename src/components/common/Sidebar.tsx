@@ -7,11 +7,14 @@ import { RiMenu3Line } from 'react-icons/ri';
 type SidebarProps = {
   userData: User | null;
 };
+
 const Sidebar = ({ userData }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <>
       <div className="md:block">
@@ -34,26 +37,26 @@ const Sidebar = ({ userData }: SidebarProps) => {
               <CgClose className="text-2xl" />
             </button>
             <div className="mt-4">
-              <Link href="/about">
+              <Link href="/about" onClick={() => setIsOpen(false)}>
                 <div className="rounded-2xl p-4 hover:bg-gray-50">About</div>
               </Link>
-              <Link href="/projects">
+              <Link href="/projects" onClick={() => setIsOpen(false)}>
                 <div className="p-4">Projects</div>
               </Link>
-              <Link href="/blog">
+              <Link href="/blog" onClick={() => setIsOpen(false)}>
                 <div className="p-4">Blog</div>
               </Link>
-              <Link href="/contact">
+              <Link href="/contact" onClick={() => setIsOpen(false)}>
                 <div className="p-4">Contact</div>
               </Link>
             </div>
             <div className="absolute bottom-0">
               {!userData ? (
-                <Link href="/login">
+                <Link href="/login" onClick={() => setIsOpen(false)}>
                   <div className="p-4">Login</div>
                 </Link>
               ) : (
-                <Link href="/logout">
+                <Link href="/logout" onClick={() => setIsOpen(false)}>
                   <div className="p-4">Logout</div>
                 </Link>
               )}
