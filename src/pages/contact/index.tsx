@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button';
+import FormInput from '@/components/common/FormInput';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -7,83 +8,101 @@ import { MdEmail } from 'react-icons/md';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
 const Contact = () => {
-  const { register, handleSubmit, reset } = useForm();
-  const { isLoading, setIsLoading } = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FieldValues>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmitContact: SubmitHandler<FieldValues> = (
+  const handleSubmitContact: SubmitHandler<FieldValues> = async (
     data: FieldValues
   ) => {
-    console.log(data);
+    console.log('data', data);
+    const { name, company, email, title, content } = data;
+    setIsLoading(true);
+    // await createContact({ name, company, email, title, content });
 
     reset();
   };
 
   return (
     <div className="container">
-      <div className="flex items-end gap-20">
+      <div className="flex flex-col items-end gap-20 lg:flex-row">
         <form
           onSubmit={handleSubmit(handleSubmitContact)}
           method="post"
-          className="w-1/2"
+          className="w-full lg:w-1/2"
         >
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            disabled={isLoading}
-            {...register('name', { required: '제목을 입력해주세요.' })}
-            placeholder=""
-            type="text"
-            className={`w-full rounded-md border-b bg-white p-4 outline-none`}
-          />
-          <label htmlFor="company">Company</label>
-          <input
-            id="company"
-            disabled={isLoading}
-            {...register('company', { required: '제목을 입력해주세요.' })}
-            placeholder=""
-            type="text"
-            className={`w-full rounded-md border-b bg-white p-4 outline-none`}
-          />
-          <label htmlFor="email">E-mail</label>
-          <input
-            id="email"
-            disabled={isLoading}
-            {...register('email', { required: '제목을 입력해주세요.' })}
-            placeholder=""
-            type="email"
-            className={`w-full rounded-md border-b bg-white p-4 outline-none`}
-          />
-          <label htmlFor="tel">Tel</label>
-          <input
-            id="tel"
-            disabled={isLoading}
-            {...register('tel', { required: '제목을 입력해주세요.' })}
-            placeholder=""
-            type="text"
-            className={`w-full rounded-md border-b bg-white p-4 outline-none`}
-          />
-          <label htmlFor="title">Title</label>
-          <input
-            id="title"
-            disabled={isLoading}
-            {...register('title', { required: '제목을 입력해주세요.' })}
-            placeholder=""
-            type="text"
-            className={`w-full rounded-md border-b bg-white p-4 outline-none`}
-          />
-          <label htmlFor="content">Content</label>
-          <textarea
-            id="content"
-            disabled={isLoading}
-            {...register('content', { required: '내용을 입력해주세요.' })}
-            placeholder=""
-            className={`w-full rounded-md border-b bg-white p-4 outline-none`}
-          />
+          {/* <div className="mb-4">
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              disabled={isLoading}
+              {...register('name', { required: '제목을 입력해주세요.' })}
+              placeholder=""
+              type="text"
+              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+            />
+          </div> */}
+          <div className="mb-4">
+            <FormInput
+              label="Name"
+              id="name"
+              register={register}
+              errors={errors}
+              disabled={isLoading}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="company">Company</label>
+            <input
+              id="company"
+              disabled={isLoading}
+              {...register('company', { required: '제목을 입력해주세요.' })}
+              placeholder=""
+              type="text"
+              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email">E-mail</label>
+            <input
+              id="email"
+              disabled={isLoading}
+              {...register('email', { required: '제목을 입력해주세요.' })}
+              placeholder=""
+              type="email"
+              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="title">Title</label>
+            <input
+              id="title"
+              disabled={isLoading}
+              {...register('title', { required: '제목을 입력해주세요.' })}
+              placeholder=""
+              type="text"
+              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="content">Content</label>
+            <textarea
+              id="content"
+              disabled={isLoading}
+              {...register('content', { required: '내용을 입력해주세요.' })}
+              placeholder=""
+              className={`w-full resize-none rounded-md border-b bg-white p-2 outline-none`}
+            />
+          </div>
           <Button type="submit" color="primary" size="large" className="w-full">
             Submit
           </Button>
         </form>
-        <div className="flex w-1/2 flex-col gap-6">
+        <div className="flex w-full flex-col gap-6 lg:w-1/2">
           <div className="flex items-center">
             <div className="mr-4 flex size-[80px] items-center justify-center rounded-lg border border-gray-300 bg-gray-100 p-4">
               <RiKakaoTalkFill size={40} />
