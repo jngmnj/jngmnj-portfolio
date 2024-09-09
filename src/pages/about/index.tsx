@@ -103,28 +103,61 @@ const index = () => {
       {/* portfolio link */}
       <section className="mb-16 h-full">
         <div className="-mx-2 flex flex-wrap">
-          <div className="w-1/2 px-2">
-            <div className="rounded-lg border px-4 py-6">
-              <div className="text-4xl">01</div>
-              <div className="text-6xl">Web Development</div>
-              <div className="text-md">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Doloremque ad debitis accusantium! Praesentium dicta quaerat
-                tenetur, temporibus magni consequatur.
+          <Link href={`/projects`} className="group w-1/2 px-2 py-3">
+            <div className="h-full rounded-lg border px-4 py-6">
+              <div className="mb-3 text-4xl font-bold group-hover:text-seagull-600">
+                01
+              </div>
+              <div className="mb-6 text-6xl font-bold group-hover:text-seagull-600">
+                Web Development
+              </div>
+              <div className="text-md leading-6">
+                프론트엔드에서 효율적인 코드 작성과 최적화를 통해 사용자
+                친화적인 인터페이스와 성능을 구현합니다.
+                {/* HTML, CSS, Javascript, React, Next.js, Tailwind CSS, Sass, Styled-components, Redux, Context API, RESTful API, GraphQL, Firebase, AWS, Netlify, Vercel 등을 사용할 수 있습니다. */}
+                HTML, CSS, Javascript는 기본으로, typescript를 통해 정적 타입
+                검사를 진행하며, React, Next.js등 여러 프레임워크와 라이브러리를
+                능숙하게 사용합니다.
               </div>
             </div>
-          </div>
-          <div className="w-1/2 px-2">
-            <div className="border">
-              <div className="text-4xl"></div>
-              <div className="text-6xl">Web Development</div>
+          </Link>
+          <Link href={`/projects`} className="w-1/2 px-2 py-3">
+            <div className="h-full rounded-lg border px-4 py-6">
+              <div className="text-4xl">02</div>
+              <div className="text-6xl">UI/UX Design</div>
               <div className="text-md">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Doloremque ad debitis accusantium! Praesentium dicta quaerat
-                tenetur, temporibus magni consequatur.
+                사용자의 요구와 기대를 반영한 최상의 사용자 경험(UX)을
+                설계합니다. Figma, Adobe XD 등 다양한 디자인 툴을 사용하여
+                프로젝트의 시각적 디자인 및 인터랙션을 구현합니다.
               </div>
             </div>
-          </div>
+          </Link>
+          <Link href={`/projects`} className="w-1/2 px-2 py-3">
+            <div className="h-full rounded-lg border px-4 py-6">
+              <div className="text-4xl">03</div>
+              <div className="text-6xl">Database Management(SQL)</div>
+              <div className="text-md">
+                SQL을 활용하여 데이터 쿼리, 삽입, 업데이트, 삭제를 할 수
+                있습니다. Firebase와 Firestore, MySQL, PostgreSQL 등의
+                데이터베이스를 다룰 수 있습니다.
+                {/* 또한 데이터베이스 보안과 백업 관리,
+                다중 사용자 환경에서의 데이터 무결성 유지에 능숙합니다. */}
+              </div>
+            </div>
+          </Link>
+          <Link href={`/projects`} className="w-1/2 px-2 py-3">
+            <div className="h-full rounded-lg border px-4 py-6">
+              <div className="text-4xl">04</div>
+              <div className="text-6xl">Search Engine Optimization(SEO)</div>
+              <div className="text-md">
+                키워드 리서치, 메타 태그 최적화, 내부 링크 구조 개선 등을 통해
+                사이트의 SEO 성능을 향상시킵니다. Google Analytics와 같은 도구를
+                활용해 트래픽 분석 및 SEO 성과 측정을 수행할 수 있습니다.
+                {/* 최신 SEO 동향과 알고리즘 업데이트를 지속적으로 학습하고 반영하여
+                웹사이트의 검색 노출을 극대화합니다. */}
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
       {/* experience */}
