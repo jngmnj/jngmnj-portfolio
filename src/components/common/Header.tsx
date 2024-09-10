@@ -13,7 +13,7 @@ import TopBanner from './TopBanner';
 const Header = () => {
   const { route } = useRouter();
 
-  const [userData, setUserData] = useState<User | null>();
+  const [userData, setUserData] = useState<User | null>(null);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // console.log('Header1 userData', storage.get('userData'));
