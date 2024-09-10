@@ -1,24 +1,49 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import { FaGithub } from 'react-icons/fa';
+import { GoArrowUpRight } from 'react-icons/go';
+import ProjectSlider from './ProjectSlider';
 
 const ProjectCard = () => {
   return (
-    <div className="w-1/3 px-2 py-4">
-      <Link href="" className="block border">
-        <div className="thumb h-[160px]">
-          <Image
-            src="/images/about/img_temp.png"
-            alt="project"
-            width={300}
-            height={200}
-            className="h-full w-full object-cover"
-          />
-        </div>
+    <div className="h-screen w-full border">
+      <div className="flex flex-col-reverse justify-between gap-8 pt-40 lg:flex-row">
         <div className="p-4">
-          <h3 className="text-lg font-bold">Project Title</h3>
-          <p className="mt-2 text-sm">Project Description</p>
+          <Link href="">
+            <h2 className="mb-2 text-6xl font-bold">01</h2>
+            <h1 className="mb-12 text-8xl font-bold">Project Title</h1>
+            <p className="mb-8 text-2xl">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
+              voluptatem animi assumenda consectetur necessitatibus aut iste
+              unde itaque minima quibusdam nobis cumque quod, maiores soluta
+              reprehenderit. Cum tenetur dolorum voluptas.
+            </p>
+          </Link>
+          {/* stack */}
+          <div className="flex gap-2">
+            <div className="rounded-full border px-4 py-2 text-xl">React</div>
+            <div className="rounded-full border px-4 py-2 text-xl">Next.js</div>
+            <div className="rounded-full border px-4 py-2 text-xl">
+              Tailwind CSS
+            </div>
+          </div>
+          {/* links */}
+          <div className="mt-6 flex gap-4 border-t border-t-gray-100 pt-6">
+            <Link href="" className="rounded-full bg-gray-100 p-4">
+              <GoArrowUpRight className="text-3xl" />
+            </Link>
+            <Link
+              href=""
+              className="rounded-full bg-gray-100 p-4"
+              target="_blank"
+            >
+              <FaGithub className="text-3xl" />
+            </Link>
+          </div>
         </div>
-      </Link>
+        <div className="thumb h-full border">
+          <ProjectSlider />
+        </div>
+      </div>
     </div>
   );
 };

@@ -64,7 +64,7 @@ const AdminSidebar = () => {
         <button
           type="button"
           onClick={handleToggle}
-          className="absolute right-2 top-2 z-10 cursor-pointer rounded-2xl p-3 opacity-0 transition hover:opacity-100"
+          className="absolute right-2 top-2 z-10 cursor-pointer rounded-xl p-3 opacity-0 transition hover:bg-gray-50 hover:opacity-100"
         >
           <MdOutlineKeyboardDoubleArrowLeft className="text-2xl" />
         </button>

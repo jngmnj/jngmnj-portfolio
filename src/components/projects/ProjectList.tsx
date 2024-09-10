@@ -2,7 +2,9 @@ import ProjectCard from './ProjectCard';
 
 const ProjectList = () => {
   return (
-    <div className="-mx-2 flex flex-wrap">
+    // project list
+
+    <div className="flex flex-col">
       <ProjectCard />
       <ProjectCard />
       <ProjectCard />
