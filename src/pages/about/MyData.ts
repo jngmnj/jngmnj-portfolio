@@ -21,16 +21,34 @@ export const myData = [
     description: '',
     content: [
       {
-        startDate: '2020-01-01',
-        endDate: '2020-12-31',
-        title: 'Software Engineer',
-        list: ['', '', '', '', ''],
+        startDate: '2023.01',
+        endDate: '재직중',
+        title: 'UIUX Designer / Publisher',
+        list: ['코어소프트'],
       },
       {
-        startDate: '2020-01-01',
-        endDate: '2020-12-31',
-        title: 'Software Engineer',
-        list: ['', '', '', '', ''],
+        startDate: '2022.12',
+        endDate: '2021.10',
+        title: 'UIUX Designer / Publisher',
+        list: ['KNL정보시스템'],
+      },
+      {
+        startDate: '2021.07',
+        endDate: '2021.10',
+        title: 'Fullstack Developer',
+        list: ['나래디자인'],
+      },
+      {
+        startDate: '2019.05',
+        endDate: '2019.10',
+        title: 'Web Designer',
+        list: ['피팅에잇'],
+      },
+      {
+        startDate: '2018.05',
+        endDate: '2018.12',
+        title: '요리사',
+        list: ['다이닝폴'],
       },
     ],
   },
@@ -45,10 +63,16 @@ export const myData = [
         list: ['', '', '', '', ''],
       },
       {
-        startDate: '2020-01-01',
-        endDate: '2020-12-31',
-        title: 'Software Engineer',
-        list: ['', '', '', '', ''],
+        startDate: '2019.10',
+        endDate: '2021.05',
+        title: 'JAVA/Spring 개발자 양성과정',
+        list: ['코리아IT아카데미'],
+      },
+      {
+        startDate: '2013.03',
+        endDate: '2018.02',
+        title: '계명대학교 미술대학 패션디자인전공',
+        list: ['졸업패션쇼'],
       },
     ],
   },
@@ -113,6 +137,18 @@ export const myData = [
       {
         label: '언어',
         value: '한국어, 영어, 일본어',
+      },
+      {
+        label: '경험',
+        value:
+          '2015.06 ~ 2015.07 FISEP 장학생 하계연수(미국 캘리포니아 UC Irvine)',
+      },
+      {
+        label: '자격/수상',
+        value: [
+          '2016.11 제 1회 아웃도어&스포츠디자인 공모전 특선(한국아웃도어스포츠산업협회)',
+          '2016.11 제7회 한국패션디자인학회 공모전 입선(한국패션디자인학회)',
+        ],
       },
     ],
   },

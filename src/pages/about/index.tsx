@@ -1,3 +1,8 @@
+import TabContent1 from '@/components/about/TabContent1';
+import TabContent2 from '@/components/about/TabContent2';
+import TabContent3 from '@/components/about/TabContent3';
+import TabContent4 from '@/components/about/TabContent4';
+import TabMenu from '@/components/about/TabMenu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -5,7 +10,6 @@ import { FaLinkedinIn } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload } from 'react-icons/md';
-import { icons, myData } from './MyData';
 
 const Index = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -192,204 +196,19 @@ const Index = () => {
       {/* experience */}
       <section>
         <div className="flex max-h-[80vh] gap-8">
-          <div className="w-2/5 shrink-0">
-            <div
-              className="mb-6 text-6xl font-bold"
-              style={{ lineHeight: 1.3 }}
-            >
+          <div className="w-1/3 shrink-0">
+            <div className="mb-6 text-6xl font-bold leading-snug">
               저를
               <br />
               뽑아야 하는 이유
             </div>
             <div className="mb-16">👇🏻 다음을 클릭하여 확인하세요.👇🏻</div>
-            <div className="flex flex-col gap-4">
-              {myData.map((data, index) => (
-                <button
-                  type="button"
-                  key={index}
-                  className="btn w-full gap-2 rounded-xl border border-gray-300 px-6 py-3 text-center"
-                  onClick={() => setTabIndex(index)}
-                >
-                  {data.name}
-                </button>
-              ))}
-            </div>
+            <TabMenu setTabIndex={setTabIndex} />
           </div>
-          {tabIndex === 0 && (
-            <div className="w-3/5 overflow-y-auto overflow-x-hidden">
-              <div className="mb-6 text-4xl">{myData[0].name}</div>
-              <p className="mb-6 leading-6">{myData[0].description}</p>
-              {myData[0].content.map((content, index) => (
-                <div className="-mx-2 flex flex-wrap" key={index}>
-                  <div className="w-1/2 p-2">
-                    <div className="rounded-2xl border px-4 py-6">
-                      <div className="mb-2 text-2xl">
-                        {'startDate' in content && 'endDate' in content
-                          ? `${content.startDate} - ${content.endDate}`
-                          : ''}
-                      </div>
-                      <div className="mb-4 text-3xl">{content.title}</div>
-                      <div className="flex items-center gap-3">
-                        <div className="size-[12px] rounded-full bg-green-400"></div>
-                        {'list' in content &&
-                          content.list.map((item: string, index: number) => (
-                            <div key={index}>{item}</div>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {tabIndex === 1 && (
-            <div className="w-3/5 overflow-y-auto overflow-x-hidden">
-              <div className="mb-6 text-4xl">{myData[1].name}</div>
-              <p className="mb-6 leading-6">{myData[1].description}</p>
-              {myData[1].content.map((content, index) => (
-                <div className="-mx-2 flex flex-wrap" key={index}>
-                  <div className="w-1/2 p-2">
-                    <div className="rounded-2xl border px-4 py-6">
-                      <div className="mb-2 text-2xl">
-                        {'startDate' in content && 'endDate' in content
-                          ? `${content.startDate} - ${content.endDate}`
-                          : ''}
-                      </div>
-                      <div className="mb-4 text-3xl">{content.title}</div>
-                      <div className="flex items-center gap-3">
-                        <div className="size-[12px] rounded-full bg-green-400"></div>
-                        {'list' in content &&
-                          content.list.map((item: string, index: number) => (
-                            <div key={index}>{item}</div>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {tabIndex === 2 && (
-            <div className="w-3/5 overflow-y-auto overflow-x-hidden">
-              <div className="mb-6 text-4xl">{myData[2].name}</div>
-              <p className="mb-6 leading-6">{myData[2].description}</p>
-              <div className="-mx-2 flex h-3/5 flex-wrap">
-                {myData[2].content.map((content, index) => {
-                  const IconComponent =
-                    'icon' in content &&
-                    icons[content.icon as keyof typeof icons];
-                  return (
-                    <div className="w-1/4 p-2" key={index}>
-                      <div className="group relative flex h-full items-center justify-center rounded-2xl border px-4 py-6">
-                        {IconComponent && (
-                          <IconComponent
-                            className="text-6xl"
-                            {...(IconComponent as React.HTMLAttributes<SVGElement>)}
-                          />
-                        )}
-                        <div className="absolute bottom-2 right-2 rounded-md bg-gray-50 px-2 py-1 opacity-0 transition group-hover:opacity-80">
-                          {'title' in content && content.title}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          {tabIndex === 3 && (
-            <div className="w-3/5 overflow-y-auto overflow-x-hidden">
-              <div className="mb-6 text-4xl">{myData[3].name}</div>
-              <p className="mb-6 leading-6">{myData[3].description}</p>
-              <div className="-mx-2 flex flex-wrap">
-                {myData[3].content.map((content, index) => {
-                  return (
-                    <div className="w-1/2 p-2" key={index}>
-                      <div className="flex items-center gap-4">
-                        <div className="text-base text-gray-500">
-                          {'label' in content && content.label}
-                        </div>
-                        <div className="text-xl font-medium text-gray-700">
-                          {'value' in content && content.value}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          {/* <div className="w-3/5 overflow-y-auto overflow-x-hidden">
-            <div className="mb-6 text-4xl">My experience</div>
-            <p className="mb-6 leading-6">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis
-              dolorum doloribus ipsa, optio exercitationem reiciendis voluptate
-              distinctio unde minus reprehenderit odit, praesentium iusto
-              voluptatibus esse amet id repudiandae a qui.
-            </p>
-            <div className="-mx-2 flex flex-wrap">
-              <div className="w-1/2 p-2">
-                <div className="rounded-2xl border px-4 py-6">
-                  <div className="mb-2 text-2xl">2024 - 현재</div>
-                  <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
-                  <div className=" flex items-center gap-3">
-                    <div className="size-[12px] rounded-full bg-green-400"></div>
-                    Core Soft Inc.
-                  </div>
-                </div>
-              </div>
-              <div className="w-1/2 p-2">
-                <div className="rounded-2xl border px-4 py-6">
-                  <div className="mb-2 text-2xl">2024 - 현재</div>
-                  <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
-                  <div className=" flex items-center gap-3">
-                    <div className="size-[12px] rounded-full bg-green-400"></div>
-                    Core Soft Inc.
-                  </div>
-                </div>
-              </div>
-              <div className="w-1/2 p-2">
-                <div className="rounded-2xl border px-4 py-6">
-                  <div className="mb-2 text-2xl">2024 - 현재</div>
-                  <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
-                  <div className=" flex items-center gap-3">
-                    <div className="size-[12px] rounded-full bg-green-400"></div>
-                    Core Soft Inc.
-                  </div>
-                </div>
-              </div>
-              <div className="w-1/2 p-2">
-                <div className="rounded-2xl border px-4 py-6">
-                  <div className="mb-2 text-2xl">2024 - 현재</div>
-                  <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
-                  <div className=" flex items-center gap-3">
-                    <div className="size-[12px] rounded-full bg-green-400"></div>
-                    Core Soft Inc.
-                  </div>
-                </div>
-              </div>
-              <div className="w-1/2 p-2">
-                <div className="rounded-2xl border px-4 py-6">
-                  <div className="mb-2 text-2xl">2024 - 현재</div>
-                  <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
-                  <div className=" flex items-center gap-3">
-                    <div className="size-[12px] rounded-full bg-green-400"></div>
-                    Core Soft Inc.
-                  </div>
-                </div>
-              </div>
-              <div className="w-1/2 p-2">
-                <div className="rounded-2xl border px-4 py-6">
-                  <div className="mb-2 text-2xl">2024 - 현재</div>
-                  <div className="mb-4 text-3xl">UIUX Designer / Publisher</div>
-                  <div className=" flex items-center gap-3">
-                    <div className="size-[12px] rounded-full bg-green-400"></div>
-                    Core Soft Inc.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
+          {tabIndex === 0 && <TabContent1 />}
+          {tabIndex === 1 && <TabContent2 />}
+          {tabIndex === 2 && <TabContent3 />}
+          {tabIndex === 3 && <TabContent4 />}
         </div>
       </section>
     </div>
