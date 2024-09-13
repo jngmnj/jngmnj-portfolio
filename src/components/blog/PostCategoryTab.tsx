@@ -1,5 +1,4 @@
 import { cn } from '@/utils/style';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 type Category = {
@@ -8,12 +7,18 @@ type Category = {
 };
 const PostCategoryTab = ({}) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get<Category[]>('/api/categories');
+        // const { data } = await axios.get<Category[]>('/api/categories');
+        const data = [
+          { id: 0, name: '전체' },
+          { id: 1, name: '개발' },
+          { id: 2, name: '디자인' },
+          { id: 3, name: '일상' },
+        ];
         setCategories(data);
       } catch (e) {
         console.log(e);
@@ -29,10 +34,12 @@ const PostCategoryTab = ({}) => {
           type="button"
           key={index}
           className={cn(
-            activeTab ? 'after:h-2 after:bg-seagull-500' : '',
-            "relative gap-2 rounded-xl px-6 py-3 text-center after:absolute after:bottom-0 after:left-0 after:block after:h-px after:w-full after:bg-gray-200 after:mix-blend-multiply after:content-[''] hover:after:w-full"
+            activeTab === index
+              ? 'text-seagull-500 after:h-2 after:bg-seagull-500'
+              : 'after:bg-gray-200',
+            "relative gap-2 rounded-xl px-6 py-3 text-center after:absolute after:bottom-0 after:left-0 after:z-10 after:block after:h-px after:w-full after:mix-blend-multiply after:content-[''] hover:after:w-full"
           )}
-          //   onClick={() => setTabIndex(index)}
+          onClick={() => setActiveTab(index)}
         >
           {category.name}
         </button>
