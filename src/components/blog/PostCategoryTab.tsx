@@ -1,32 +1,17 @@
 import { cn } from '@/utils/style';
-import { useEffect, useState } from 'react';
+import { Category } from './PostList';
 
-type Category = {
-  id: number;
-  name: string;
+type PostCategoryTabProps = {
+  categories: Category[];
+  handleTabClick: (index: number) => void;
+  activeTab: number;
 };
-const PostCategoryTab = ({}) => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [activeTab, setActiveTab] = useState(0);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        // const { data } = await axios.get<Category[]>('/api/categories');
-        const data = [
-          { id: 0, name: '전체' },
-          { id: 1, name: '개발' },
-          { id: 2, name: '디자인' },
-          { id: 3, name: '일상' },
-        ];
-        setCategories(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchCategories();
-  }, []);
-
+const PostCategoryTab = ({
+  categories,
+  handleTabClick,
+  activeTab,
+}: PostCategoryTabProps) => {
   return (
     <div className="flex w-full border-b border-b-gray-200">
       {categories.map((category, index) => (
@@ -39,7 +24,7 @@ const PostCategoryTab = ({}) => {
               : 'after:bg-gray-200',
             "relative gap-2 rounded-xl px-6 py-3 text-center after:absolute after:bottom-0 after:left-0 after:z-10 after:block after:h-px after:w-full after:mix-blend-multiply after:content-[''] hover:after:w-full"
           )}
-          onClick={() => setActiveTab(index)}
+          onClick={() => handleTabClick(index)}
         >
           {category.name}
         </button>
