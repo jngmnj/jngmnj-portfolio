@@ -7,9 +7,9 @@ type FormInputProps = {
   errors: any;
   disabled: boolean;
   isLoading: boolean;
-  type: string;
-  placeholder: string;
-  className: string;
+  type?: string;
+  placeholder?: string;
+  className?: string;
 };
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -33,10 +33,13 @@ const FormInput: React.FC<FormInputProps> = ({
         placeholder={placeholder}
         type={type}
         className={cn(
-          `w-full rounded-md border-b bg-white p-2 outline-none ${errors[id] ? 'border-red-500' : 'border-gray-300'} ${errors[id] ? 'focus:border-red-500' : 'focus:border-gray-300'} rounded-none`,
+          `w-full border-b bg-white p-2 outline-none ${errors[id] ? 'border-red-500' : 'border-gray-300'} ${errors[id] ? 'focus:border-red-500' : 'focus:border-gray-300'} rounded-none`,
           className
         )}
       />
+      {errors[id] && (
+        <p className="mt-1 text-xs text-red-500">{errors[id].message}</p>
+      )}
     </div>
   );
 };

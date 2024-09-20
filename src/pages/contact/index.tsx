@@ -48,44 +48,43 @@ const Contact = () => {
           </div> */}
           <div className="mb-4">
             <FormInput
-              label="Name"
+              label="이름"
               id="name"
               register={register}
               errors={errors}
               disabled={isLoading}
+              isLoading={false}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="company">Company</label>
-            <input
+            <FormInput
+              label="회사"
               id="company"
+              register={register}
+              errors={errors}
               disabled={isLoading}
-              {...register('company', { required: '제목을 입력해주세요.' })}
-              placeholder=""
-              type="text"
-              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+              isLoading={false}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email">E-mail</label>
-            <input
+            <FormInput
+              label="이메일"
               id="email"
-              disabled={isLoading}
-              {...register('email', { required: '제목을 입력해주세요.' })}
-              placeholder=""
               type="email"
-              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+              register={register}
+              errors={errors}
+              disabled={isLoading}
+              isLoading={false}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="title">Title</label>
-            <input
+            <FormInput
+              label="제목"
               id="title"
               disabled={isLoading}
-              {...register('title', { required: '제목을 입력해주세요.' })}
-              placeholder=""
-              type="text"
-              className={`w-full rounded-md border-b bg-white p-2 outline-none`}
+              register={register}
+              errors={errors}
+              isLoading={false}
             />
           </div>
           <div className="mb-4">
