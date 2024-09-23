@@ -28,7 +28,7 @@ const Sidebar = ({ userData }: SidebarProps) => {
       </div>
       {isOpen && (
         <>
-          <div className="fixed right-0 top-0 z-10 h-full max-h-screen w-80 border border-r-gray-200 bg-white p-4 md:block">
+          <div className="fixed right-0 top-0 z-20 h-full max-h-screen w-80 border border-r-gray-200 bg-white p-4 md:block">
             <button
               type="button"
               onClick={handleToggle}
@@ -64,7 +64,7 @@ const Sidebar = ({ userData }: SidebarProps) => {
           </div>
           <div
             onClick={handleToggle}
-            className="fixed inset-0 z-0 bg-black bg-opacity-20"
+            className="fixed inset-0 z-10 bg-black/20"
           />
         </>
       )}
