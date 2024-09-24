@@ -40,7 +40,13 @@ const Header = () => {
       <TopBanner />
       <div className="inner flex items-center justify-between">
         <Link href="/">
-          <h1 className="text-2xl font-bold">jngmnj</h1>
+          <h1 className="hidden text-2xl font-bold">jngmnj</h1>
+          <Image
+            src="/images/common/logo.svg"
+            width={100}
+            height={27}
+            alt="logo"
+          />
         </Link>
         <div className="hidden items-center justify-center lg:flex">
           <Link href="/about">

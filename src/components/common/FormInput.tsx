@@ -10,6 +10,7 @@ type FormInputProps = {
   type?: string;
   placeholder?: string;
   className?: string;
+  required?: boolean | string;
 };
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -22,25 +23,27 @@ const FormInput: React.FC<FormInputProps> = ({
   type = 'text',
   placeholder = '',
   className = '',
+  required = true,
 }) => {
+  required = required ? `${label}을 입력해주세요.` : required;
   return (
-    <div>
+    <>
       <label htmlFor={id}>{label}</label>
       <input
         id={id}
         disabled={isLoading}
-        {...register(id, { required: `${label}을 입력해주세요.` })}
+        {...register(id, { required: required })}
         placeholder={placeholder}
         type={type}
         className={cn(
-          `w-full border-b bg-white p-2 outline-none ${errors[id] ? 'border-red-500' : 'border-gray-300'} ${errors[id] ? 'focus:border-red-500' : 'focus:border-gray-300'} rounded-none`,
+          `w-full border-b bg-transparent p-2 outline-none ${errors[id] ? 'border-red-500' : 'border-gray-300'} ${errors[id] ? 'focus:border-red-500' : 'focus:border-gray-300'} rounded-none`,
           className
         )}
       />
       {errors[id] && (
         <p className="mt-1 text-xs text-red-500">{errors[id].message}</p>
       )}
-    </div>
+    </>
   );
 };
 
