@@ -26,16 +26,8 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // console.log('Header1 userData', storage.get('userData'));
-      const storageData = storage.get<User>('userData');
-      console.log(storageData);
-      setUserData(storageData);
-      if (userData == null || userData == undefined) {
-        // router.push('/login');
-        console.log('userdata가 업음!', storage.get<User>('userData'));
-      }
+      setUserData(storage.get<User>('userData'));
     }
-
     // 로컬스토리지 이벤트 핸들러
     const handleUserDataChange = () => {
       setUserData(storage.get<User>('userData'));
@@ -47,6 +39,19 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
       window.removeEventListener('storageUserDataChange', handleUserDataChange);
     };
   }, [router.route]);
+
+  // setUserData 직후에 useData 읽으면 null임 -> useEffect로 처리
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (userData === null) {
+        alert('로그인이 필요합니다.');
+        router.push('/login');
+      }
+    }, 2000);
+
+    // 클린업 함수: 컴포넌트가 언마운트될 때 타이머 해제
+    return () => clearTimeout(timer);
+  }, [router, userData]);
 
   return (
     <>

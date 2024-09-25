@@ -5,8 +5,8 @@ import ProjectSlider from './ProjectSlider';
 
 const ProjectCard = () => {
   return (
-    <div className="h-screen w-full border">
-      <div className="flex flex-col-reverse justify-between gap-8 pt-40 lg:flex-row">
+    <div className="w-full">
+      <div className="flex flex-col-reverse justify-between gap-8 lg:flex-row">
         <div className="p-4">
           <Link href="">
             <h2 className="mb-2 text-6xl font-bold">01</h2>
