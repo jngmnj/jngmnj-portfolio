@@ -43,6 +43,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
   // setUserData 직후에 useData 읽으면 null임 -> useEffect로 처리
   useEffect(() => {
     const timer = setTimeout(() => {
+      // 나중에 role이 admin인지 확인하기
       if (userData === null) {
         alert('로그인이 필요합니다.');
         router.push('/login');
@@ -74,39 +75,54 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
             />
           </Link>
         </div>
+        <div className="mt-4">
+          <div className="flex items-center gap-2 rounded-md bg-gray-100 px-2 py-3">
+            <div className="relative size-10 overflow-hidden rounded-full">
+              <Image
+                src={userData?.photoURL || '/images/common/img_user.png'}
+                alt={userData?.displayName || 'no-profile'}
+                layout="fill"
+              />
+            </div>
+            <div>
+              <p className="font-semibold">{userData?.displayName}</p>
+              <p className="text-xs text-gray-500">{userData?.email}</p>
+            </div>
+          </div>
+        </div>
         <div className="mt-8 flex flex-col gap-2">
           <Link href="/about">
-            <div className="flex items-center gap-4 rounded-2xl p-4 font-semibold text-gray-500 transition hover:text-seagull-500">
+            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoHome />
               <span>HOME</span>
             </div>
           </Link>
           <Link href="/admin/projects">
-            <div className="flex items-center gap-4 rounded-2xl p-4 font-semibold text-gray-500 transition hover:text-seagull-500">
+            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoStack />
               <span>프로젝트 관리</span>
             </div>
           </Link>
           <Link href="/admin/offers">
-            <div className="flex items-center gap-4 rounded-2xl p-4 font-semibold text-gray-500 transition hover:text-seagull-500">
+            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoNorthStar />
               <span>메인페이지 관리</span>
             </div>
           </Link>
           <Link href="/admin/users">
-            <div className="flex items-center gap-4 rounded-2xl p-4 font-semibold text-gray-500 transition hover:text-seagull-500">
+            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoPeople />
               <span>회원 관리</span>
             </div>
           </Link>
           <Link href="/admin/contact">
-            <div className="flex items-center gap-4 rounded-2xl p-4 font-semibold text-gray-500 transition hover:text-seagull-500">
+            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoHeart />
               <span>문의/방명록</span>
             </div>
           </Link>
           <Link href="/admin/setting">
-            <div className="flex items-center gap-4 rounded-2xl p-4 font-semibold text-gray-500 transition hover:text-seagull-500">
+            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoTools />
               <span>사이트 관리</span>
             </div>
