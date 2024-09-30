@@ -60,7 +60,7 @@ const ImageUploader = () => {
   return (
     <div>
       <input type="file" multiple onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
+      <button onClick={handleUpload}>업로드</button>
 
       {uploadedUrls.length > 0 && (
         <div>

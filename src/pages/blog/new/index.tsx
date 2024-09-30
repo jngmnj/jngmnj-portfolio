@@ -1,7 +1,7 @@
-import ImageUploader from '@/components/blog/ImageUploader';
 import { MarkdownEditor } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
+import { uploadImage } from '@/utils/imageUpload';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { FormEvent, useRef, useState } from 'react';
@@ -12,11 +12,22 @@ const New = () => {
 
   const titleRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [content, setContent] = useState('');
+  const [category, setCategory] = useState('');
+  // const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState('[]');
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleImageUplaod = async (event) => {
+    const file = event.target.files[0];
+    const imageURL = await uploadImage(file);
+
+    if (imageURL) {
+      // 업로드된 이미지 URL을 마크다운에 추가
+      setContent((prev) => `${prev}![${file.name}](${imageURL})`);
+    }
+  };
+
+  const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!titleRef.current?.value) return alert('제목을 입력해주세요.');
@@ -25,19 +36,25 @@ const New = () => {
     // if (!tags) return alert('태그를 입력해주세요.');
 
     const formData = new FormData();
-    formData.append('title', titleRef.current?.value ?? '');
+
+    formData.append('title', titleRef.current?.value);
     formData.append('category', category);
     formData.append('content', content);
     formData.append('tags', tags);
 
     // 이미지 파일이 있을 경우
     if (fileRef.current?.files) {
-      formData.append('file', fileRef.current.files[0]);
+      formData.append('image', fileRef.current.files[0]);
     }
 
     try {
-      await axios.post('/api/blog', formData);
-      alert('글이 작성되었습니다.');
+      const response = await axios.post('/api/posts', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = response.data;
+      console.log(data);
       router.push('/blog');
     } catch (e) {
       console.log(e);
@@ -47,16 +64,17 @@ const New = () => {
   return (
     <div className="container flex flex-col pb-20 pt-12">
       <h1 className="mb-8 text-center text-2xl font-medium">글쓰기</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitForm}>
         <div className="flex flex-col gap-3">
           <Input type="text" placeholder="제목" ref={titleRef} />
-          <ImageUploader />
-          {/* <Input
+          {/* <ImageUploader /> */}
+          <Input
             type="file"
             // 이미지파일만 받음
             accept="imgage/*"
             ref={fileRef}
-          /> */}
+            onChange={handleImageUplaod}
+          />
           <ReactSelect
             instanceId={'category'}
             placeholder="카테고리"
