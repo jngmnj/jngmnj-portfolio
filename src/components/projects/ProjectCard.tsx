@@ -1,14 +1,20 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
 import ProjectSlider from './ProjectSlider';
 
-const ProjectCard = () => {
+interface ProjectCardProps {
+  openModal: (id: string) => void;
+}
+const ProjectCard = ({ openModal }: ProjectCardProps) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="w-full">
       <div className="flex flex-col-reverse justify-between gap-8 lg:flex-row">
         <div className="p-4">
-          <Link href="">
+          <button onClick={() => openModal('1')} className="text-left">
             <h2 className="mb-2 text-6xl font-bold">01</h2>
             <h1 className="mb-12 text-8xl font-bold">Project Title</h1>
             <p className="mb-8 text-2xl">
@@ -17,7 +23,7 @@ const ProjectCard = () => {
               unde itaque minima quibusdam nobis cumque quod, maiores soluta
               reprehenderit. Cum tenetur dolorum voluptas.
             </p>
-          </Link>
+          </button>
           {/* stack */}
           <div className="flex gap-2">
             <div className="rounded-full border px-4 py-2 text-xl">React</div>

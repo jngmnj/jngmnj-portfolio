@@ -15,3 +15,16 @@ export type Post = {
   commentsCount?: number; // 댓글 수 (선택적)
   isPublished: boolean; // 게시 여부
 };
+
+export type Project = {
+  id?: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  images: string[];
+  stack: string[];
+  links: {
+    github: string;
+    demo: string;
+  };
+};
