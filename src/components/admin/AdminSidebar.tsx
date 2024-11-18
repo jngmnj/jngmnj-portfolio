@@ -62,7 +62,6 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           isOpen ? 'w-60' : 'w-20'
         )}
         onClick={() => handleOpen(true)}
-        onMouseEnter={() => handleOpen(true)}
       >
         <div className="mt-4 text-center">
           <Link href="/" className="text-center">
@@ -91,7 +90,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-2">
-          <Link href="/about">
+          <Link href="/admin">
             <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
               <GoHome />
               <span>HOME</span>

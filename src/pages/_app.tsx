@@ -23,11 +23,14 @@ export default function App({ Component, pageProps }: AppProps) {
           <AdminSidebar isOpen={isOpen} handleOpen={setIsOpen} />
           <div
             className={cn(
-              isOpen ? 'ml-60' : 'ml-0',
+              isOpen ? 'ml-60' : 'ml-20',
               'transition-all duration-300 ease-in-out'
             )}
           >
-            <AdminHeader handleToggle={() => setIsOpen((prev) => !prev)} />
+            <AdminHeader
+              isOpen={isOpen}
+              handleToggle={() => setIsOpen((prev) => !prev)}
+            />
             <Component {...pageProps} />
           </div>
         </>
