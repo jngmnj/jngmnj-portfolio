@@ -7,7 +7,7 @@ const TabContent1 = () => {
       <div className="-mx-2 flex flex-wrap">
         {myData[0].content.map((content, index) => (
           <div className="w-1/2 p-2" key={index}>
-            <div className="rounded-2xl border px-4 py-6">
+            <div className="h-full rounded-2xl border px-4 py-6">
               <div className="mb-2 text-2xl">
                 {'startDate' in content && 'endDate' in content
                   ? `${content.startDate} - ${content.endDate}`

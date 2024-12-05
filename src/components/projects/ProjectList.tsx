@@ -1,3 +1,4 @@
+import Modal from '../common/Modal';
 import ProjectCard from './ProjectCard';
 
 const ProjectList = () => {
@@ -6,15 +7,17 @@ const ProjectList = () => {
   };
   return (
     // project list
-
-    <div className="flex flex-col gap-20">
-      <ProjectCard openModal={openModal} />
-      <ProjectCard openModal={openModal} />
-      <ProjectCard openModal={openModal} />
-      <ProjectCard openModal={openModal} />
-      <ProjectCard openModal={openModal} />
-      <ProjectCard openModal={openModal} />
-    </div>
+    <>
+      <div className="flex flex-col gap-20">
+        <ProjectCard openModal={openModal} />
+        <ProjectCard openModal={openModal} />
+        <ProjectCard openModal={openModal} />
+        <ProjectCard openModal={openModal} />
+        <ProjectCard openModal={openModal} />
+        <ProjectCard openModal={openModal} />
+      </div>
+      <Modal id="1" />
+    </>
   );
 };
 

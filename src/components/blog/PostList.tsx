@@ -1,4 +1,6 @@
+import { Post } from '@/types';
 import { useEffect, useState } from 'react';
+import { Firebase } from '../../../firebase';
 import PostCard from './PostCard';
 import PostCategoryTab from './PostCategoryTab';
 
@@ -7,7 +9,7 @@ export type Category = {
   name: string;
 };
 
-const PostList = () => {
+const PostList = async () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -29,6 +31,9 @@ const PostList = () => {
     fetchCategories();
   }, []);
 
+  const db = Firebase.firestore();
+  const posts = await db.collection('posts').get();
+
   return (
     <div className="flex w-full flex-wrap gap-6">
       <PostCategoryTab
@@ -36,47 +41,19 @@ const PostList = () => {
         activeTab={activeTab}
         handleTabClick={setActiveTab}
       />
-      {}
-      <PostCard
-        id={''}
-        title={''}
-        category={''}
-        content={''}
-        created_at={''}
-        preview_img_url={''}
-      />
-      <PostCard
-        id={''}
-        title={''}
-        category={''}
-        content={''}
-        created_at={''}
-        preview_img_url={''}
-      />
-      <PostCard
-        id={''}
-        title={''}
-        category={''}
-        content={''}
-        created_at={''}
-        preview_img_url={''}
-      />
-      <PostCard
-        id={''}
-        title={''}
-        category={''}
-        content={''}
-        created_at={''}
-        preview_img_url={''}
-      />
-      <PostCard
-        id={''}
-        title={''}
-        category={''}
-        content={''}
-        created_at={''}
-        preview_img_url={''}
-      />
+      {/* posts map */}
+      {posts?.map((post: Post) => (
+        <PostCard
+          key={post.id}
+          id={post.id}
+          title={post.title}
+          category={post.category}
+          content={post}
+          created_at={post.createdAt}
+          preview_img_url={post.previewImgUrl}
+          // {...post}
+        />
+      )}
     </div>
   );
 };
