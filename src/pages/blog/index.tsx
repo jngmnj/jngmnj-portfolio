@@ -1,6 +1,6 @@
 import PostList from '@/components/blog/PostList';
 
-const index = () => {
+const PostListPage = () => {
   return (
     <div className="container grid grid-cols-3 gap-10">
       <div className="col-span-2">
@@ -22,4 +22,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default PostListPage;

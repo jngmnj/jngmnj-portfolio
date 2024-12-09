@@ -1,13 +1,15 @@
 import storage from '@/utils/storage';
+import { useQuery } from '@tanstack/react-query';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(true);
@@ -84,3 +86,21 @@ export const useAuth = () => {
     signInWithGoogle,
   };
 };
+
+export const useCategories = () =>
+  useQuery({
+    queryKey: ['category'],
+    queryFn: async () => {
+      const categories = await getDocs(collection(db, 'categories'));
+      return Array.from(categories.docs).map((doc) => doc.data());
+    },
+  });
+
+export const useTags = () =>
+  useQuery({
+    queryKey: ['tags'],
+    queryFn: async () => {
+      const tags = await getDocs(collection(db, 'tags'));
+      return Array.from(tags.docs).map((doc) => doc.data());
+    },
+  });

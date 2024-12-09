@@ -19,14 +19,14 @@ const PostCard: FC<PostCardProps> = ({
   title,
   category,
   content,
-  created_at,
-  preview_img_url,
+  createdAt,
+  previewImgUrl: preview_img_url,
 }) => {
   return (
-    <div>
+    <div className="w-full">
       <Link
         href={`/blog/${id}`}
-        className="group flex w-full gap-8 rounded-2xl p-0 transition-all ease-in-out hover:bg-gray-50 hover:p-4"
+        className="group flex w-full justify-between gap-8 rounded-2xl p-0 transition-all ease-in-out hover:bg-gray-50 hover:p-4"
       >
         <div>
           {/* 전체리스트일경우 카테고리 표시 */}
@@ -37,7 +37,9 @@ const PostCard: FC<PostCardProps> = ({
           <div className="mb-2 line-clamp-3 text-base text-gray-500">
             {content}
           </div>
-          <div className="text-xs text-gray-500">{created_at}</div>
+          <div className="text-xs text-gray-500">
+            {createdAt?.toDate().toLocaleDateString()}
+          </div>
         </div>
         <div className="size-[200px] shrink-0 rounded-2xl border border-gray-100">
           <Image

@@ -1,7 +1,7 @@
 import { MarkdownEditor } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
-import { uploadImage } from '@/utils/imageUpload';
+import { useCategories, useTags } from '@/utils/hooks';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { FormEvent, useRef, useState } from 'react';
@@ -17,15 +17,18 @@ const New = () => {
   // const [tags, setTags] = useState<string[]>([]);
   const [tags, setTags] = useState('[]');
 
-  const handleImageUplaod = async (event) => {
-    const file = event.target.files[0];
-    const imageURL = await uploadImage(file);
+  const { data: existingCategories } = useCategories();
+  const { data: existingTags } = useTags();
 
-    if (imageURL) {
-      // 업로드된 이미지 URL을 마크다운에 추가
-      setContent((prev) => `${prev}![${file.name}](${imageURL})`);
-    }
-  };
+  // const handleImageUplaod = async (event) => {
+  //   const file = event.target.files[0];
+  //   const imageURL = await uploadImage(file);
+
+  //   if (imageURL) {
+  //     // 업로드된 이미지 URL을 마크다운에 추가
+  //     setContent((prev) => `${prev}![${file.name}](${imageURL})`);
+  //   }
+  // };
 
   const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,23 +70,25 @@ const New = () => {
       <form onSubmit={handleSubmitForm}>
         <div className="flex flex-col gap-3">
           <Input type="text" placeholder="제목" ref={titleRef} />
-          {/* <ImageUploader /> */}
-          <Input
-            type="file"
-            // 이미지파일만 받음
-            accept="imgage/*"
-            ref={fileRef}
-            onChange={handleImageUplaod}
-          />
+          <Input type="file" ref={fileRef} />
           <ReactSelect
             instanceId={'category'}
             placeholder="카테고리"
             isMulti={false}
+            options={(existingCategories ?? []).map((category) => ({
+              value: category.category_id,
+              label: category.category_name,
+            }))}
             onChange={(e) => e && setCategory(e?.value)}
           />
+          {/* 태그는 복수로 만들기 */}
           <ReactSelect
             instanceId={'tags'}
             placeholder="태그"
+            options={(existingTags ?? []).map((tag) => ({
+              value: tag.tag_id,
+              label: tag.tag_name,
+            }))}
             onChange={(e) =>
               e && setTags(JSON.stringify(e.map((e) => e.value)))
             }

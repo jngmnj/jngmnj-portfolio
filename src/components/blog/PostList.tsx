@@ -1,6 +1,8 @@
 import { Post } from '@/types';
+import { useCategories } from '@/utils/hooks';
+import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Firebase } from '../../../firebase';
+import { db } from '../../../firebase';
 import PostCard from './PostCard';
 import PostCategoryTab from './PostCategoryTab';
 
@@ -9,52 +11,61 @@ export type Category = {
   name: string;
 };
 
-const PostList = async () => {
+const PostList = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeTab, setActiveTab] = useState(0);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        // const { data } = await axios.get<Category[]>('/api/categories');
-        const data = [
-          { id: 0, name: '전체' },
-          { id: 1, name: '개발' },
-          { id: 2, name: '디자인' },
-          { id: 3, name: '일상' },
-        ];
-        setCategories(data);
-      } catch (e) {
-        console.log(e);
+    const fetchData = async () => {
+      const docSnap = await getDocs(collection(db, 'posts'));
+
+      if (!docSnap.empty) {
+        setPosts(
+          docSnap.docs.map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              }) as Post
+          )
+        );
+      } else {
+        console.log('No documents found!');
       }
     };
-    fetchCategories();
-  }, []);
 
-  const db = Firebase.firestore();
-  const posts = await db.collection('posts').get();
+    fetchData();
+  }, [activeTab]);
+
+  const { data, error, isLoading } = useCategories();
+
+  // 카테고리 데이터가 로드되면 카테고리 목록을 설정
+  useEffect(() => {
+    if (data) {
+      const categoriesData = data.map((doc: any) => ({
+        id: doc.category_id,
+        name: doc.category_name,
+      }));
+      setCategories(categoriesData);
+    }
+  }, [data]);
 
   return (
-    <div className="flex w-full flex-wrap gap-6">
-      <PostCategoryTab
-        categories={categories}
-        activeTab={activeTab}
-        handleTabClick={setActiveTab}
-      />
-      {/* posts map */}
-      {posts?.map((post: Post) => (
-        <PostCard
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          category={post.category}
-          content={post}
-          created_at={post.createdAt}
-          preview_img_url={post.previewImgUrl}
-          // {...post}
+    <>
+      <div className="mb-6">
+        <PostCategoryTab
+          categories={categories}
+          activeTab={activeTab}
+          handleTabClick={setActiveTab}
         />
-      )}
-    </div>
+      </div>
+      <div className="flex w-full flex-col flex-wrap gap-6">
+        {posts.map((post) => (
+          <PostCard key={post.id} {...post} />
+        ))}
+      </div>
+    </>
   );
 };
 
