@@ -1,7 +1,4 @@
-import { Post } from '@/types';
 import { useEffect, useState } from 'react';
-import { Firebase } from '../../../firebase';
-import PostCard from './PostCard';
 import PostCategoryTab from './PostCategoryTab';
 
 export type Category = {
@@ -31,9 +28,6 @@ const PostList = async () => {
     fetchCategories();
   }, []);
 
-  const db = Firebase.firestore();
-  const posts = await db.collection('posts').get();
-
   return (
     <div className="flex w-full flex-wrap gap-6">
       <PostCategoryTab
@@ -41,19 +35,6 @@ const PostList = async () => {
         activeTab={activeTab}
         handleTabClick={setActiveTab}
       />
-      {/* posts map */}
-      {posts?.map((post: Post) => (
-        <PostCard
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          category={post.category}
-          content={post}
-          created_at={post.createdAt}
-          preview_img_url={post.previewImgUrl}
-          // {...post}
-        />
-      )}
     </div>
   );
 };

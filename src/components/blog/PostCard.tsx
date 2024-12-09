@@ -19,8 +19,8 @@ const PostCard: FC<PostCardProps> = ({
   title,
   category,
   content,
-  created_at,
-  preview_img_url,
+  createdAt,
+  previewImgUrl: preview_img_url,
 }) => {
   return (
     <div>
