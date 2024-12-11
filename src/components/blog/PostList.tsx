@@ -11,7 +11,12 @@ export type Category = {
   name: string;
 };
 
-const PostList = () => {
+type PostListProps = {
+  tag?: string;
+  category?: string;
+};
+
+const PostList = ({ category, tag }: PostListProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeTab, setActiveTab] = useState(0);
   const [posts, setPosts] = useState<Post[]>([]);

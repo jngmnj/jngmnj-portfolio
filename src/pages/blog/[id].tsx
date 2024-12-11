@@ -16,16 +16,23 @@ const PostView = ({
 }: PostProps) => {
   return (
     <div className="container">
-      <div className="grid grid-flow-col grid-cols-3 grid-rows-2 gap-4 lg:grid-rows-1">
-        <div className="col-span-3 border lg:col-span-2">
-          <Image
-            src={previewImgUrl || '/images/common/img_user.png'}
-            alt="preview"
-            width={800}
-            height={400}
-          />
+      <div className="">
+        <div className="border">
+          <h1>{title}</h1>
+          <p>{category}</p>
+          <p>{tags}</p>
+          {/* <p>createdAt?.toDate().toLocaleDateString()}</p>*/}
+          <p>
+            {createdAt
+              ? createdAt.toDate().toLocaleDateString()
+              : 'No date available'}
+          </p>
+          <p>{content}</p>
+
+          {previewImgUrl && (
+            <Image src={previewImgUrl} alt="preview" width={800} height={400} />
+          )}
         </div>
-        <div className="col-span-3 border lg:col-span-1">dd</div>
       </div>
     </div>
   );
@@ -52,7 +59,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       category,
       tags,
       content,
-      createdAt: createdAt ? createdAt.toDate().toISOString() : null,
+      // createdAt: createdAt ? createdAt.toDate().toISOString() : null,
+      createdAt: createdAt || null,
       previewImgUrl: previewImgUrl || null,
     },
   };
