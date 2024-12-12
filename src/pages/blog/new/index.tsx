@@ -36,7 +36,6 @@ const New = () => {
     if (!titleRef.current?.value) return alert('제목을 입력해주세요.');
     if (!category) return alert('카테고리을 입력해주세요.');
     if (!content) return alert('내용을 입력해주세요.');
-    // if (!tags) return alert('태그를 입력해주세요.');
 
     const formData = new FormData();
 
@@ -46,9 +45,9 @@ const New = () => {
     formData.append('tags', tags);
 
     // 이미지 파일이 있을 경우
-    if (fileRef.current?.files) {
-      formData.append('image', fileRef.current.files[0]);
-    }
+    // if (fileRef.current?.files) {
+    //   formData.append('image', fileRef.current.files[0]);
+    // }
 
     try {
       const response = await axios.post('/api/posts', {
@@ -58,7 +57,7 @@ const New = () => {
 
       const data = response.data;
       console.log(data);
-      router.push('/blog');
+      router.push(`/blog/${data.id}`);
     } catch (e) {
       console.log(e);
       alert('글 작성에 실패했습니다.');

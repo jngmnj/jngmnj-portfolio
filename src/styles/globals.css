@@ -41,9 +41,12 @@ body {
   padding-bottom: 5rem;
 }
 
+.container.narrow {
+  max-width: 768px;
+}
 .link-text {
   @apply text-seagull-600;
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 
   &:hover {
     @apply text-seagull-700;
@@ -51,10 +54,10 @@ body {
 }
 
 /* Button Theme */
-*[class^=btn] {
+*[class^='btn'] {
   cursor: pointer;
-  transition: all .2s ease-in-out;
-  border-radius: .25rem;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.25rem;
 }
 
 .btn-primary {
@@ -66,7 +69,7 @@ body {
 }
 
 .btn-linePrimary {
-  @apply bg-white border border-seagull-400 text-seagull-400;
+  @apply border border-seagull-400 bg-white text-seagull-400;
 
   &:hover {
     @apply hover:bg-gray-100;
@@ -90,17 +93,17 @@ body {
 }
 
 .btn-small {
-  @apply px-2 py-1 text-sm rounded;
+  @apply rounded px-2 py-1 text-sm;
 }
 
 .btn-medium {
-  @apply px-4 py-2 text-base rounded-lg;
+  @apply rounded-lg px-4 py-2 text-base;
 }
 
 .btn-large {
-  @apply px-6 py-3 text-lg rounded-xl;
+  @apply rounded-xl px-6 py-3 text-lg;
 }
 
 .btn-xlarge {
-  @apply px-8 py-4 text-xl rounded-2xl;
+  @apply rounded-2xl px-8 py-4 text-xl;
 }

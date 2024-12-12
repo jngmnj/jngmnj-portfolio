@@ -30,3 +30,17 @@ export type Project = {
     demo: string;
   };
 };
+
+export type User = {
+  userId: string;
+  userName: string;
+  password: string;
+  email: string;
+  displayName: string;
+  organization: string | null;
+  photoURL: string | null;
+  role: 'admin' | 'user';
+  lastLogin: Timestamp;
+  createdAt: Timestamp;
+  status: string;
+};

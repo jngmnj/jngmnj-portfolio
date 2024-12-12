@@ -22,6 +22,9 @@ const PostCard: FC<PostCardProps> = ({
   createdAt,
   previewImgUrl: preview_img_url,
 }) => {
+  const stripHtmlTags = (content: string): string => {
+    return content.replace(/<[^>]*>/g, '');
+  };
   return (
     <div className="w-full">
       <Link
@@ -35,7 +38,7 @@ const PostCard: FC<PostCardProps> = ({
             {title}
           </div>
           <div className="mb-2 line-clamp-3 text-base text-gray-500">
-            {content}
+            {content ? stripHtmlTags(content) : ''}
           </div>
           <div className="text-xs text-gray-500">
             {createdAt?.toDate().toLocaleDateString()}

@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { cn } from '@/utils/style';
+import Link from 'next/link';
 import { ComponentPropsWithoutRef, ElementType, FC } from 'react';
 
 type ButtonProps<T extends ElementType = 'button'> = {
-  as?: T; // 버튼 태그 변경을 위한 타입
+  href?: string;
   color?: string;
   size?: string;
   className?: string;
@@ -11,7 +12,7 @@ type ButtonProps<T extends ElementType = 'button'> = {
 } & ComponentPropsWithoutRef<T>;
 
 const Button: FC<ButtonProps> = ({
-  as: Component = 'button',
+  href = '',
   color = 'primary',
   size = 'medium',
   children,
@@ -20,13 +21,20 @@ const Button: FC<ButtonProps> = ({
 }: ButtonProps) => {
   // const tailwindClasses = `${buttonThemes.colors[color].className} ${buttonThemes.sizes[size].className} ${buttonThemes.common.className}`;
   // const hoverClasses = `${buttonThemes.colors[color].hoverClassName}`;
-
   const buttonClass = `btn-${color} btn-${size}`;
 
+  if (href) {
+    return (
+      <Link href={href} className={cn(buttonClass, className)}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <Component className={cn(buttonClass, className)} {...rest}>
+    <button className={cn(buttonClass, className)} {...rest}>
       {children}
-    </Component>
+    </button>
   );
 };
 
