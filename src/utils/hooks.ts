@@ -1,5 +1,6 @@
+import { deletePost, updatePost } from '@/pages/api/posts';
 import storage from '@/utils/storage';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -104,3 +105,21 @@ export const useTags = () =>
       return Array.from(tags.docs).map((doc) => doc.data());
     },
   });
+
+export const useUpdatePost = (postId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(updatePost, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts']);
+    },
+  });
+};
+
+export const useDeletePost = (postId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(deletePost, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts']);
+    },
+  });
+};

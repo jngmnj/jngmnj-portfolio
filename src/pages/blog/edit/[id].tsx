@@ -1,19 +1,18 @@
 import { MarkdownViewer } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
 import { Post } from '@/types';
-import { useDeletePost } from '@/utils/hooks';
 import { doc, getDoc } from 'firebase/firestore';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { db } from '../../../firebase';
+import { db } from '../../../../firebase';
 
 type PostProps = Partial<Post> & {
   createdAt: string | null;
 };
 
-const PostView = ({
+const PostEdit = ({
   id,
   title,
   authorName,
@@ -26,8 +25,8 @@ const PostView = ({
   const created = createdAt ? new Date(createdAt) : null;
   const router = useRouter();
 
-  const handleDeletePost = (postId: string) => {
-    useDeletePost(postId).mutate();
+  const handleUpdatePost = (postId: string) => {
+    router.push(`/blog/edit/${postId}`);
   };
 
   return (
@@ -49,7 +48,7 @@ const PostView = ({
             <Button
               color="primary"
               size="small"
-              onClick={() => router.push(`/blog/edit/${id}`)}
+              onClick={handleUpdatePost(`${id}`)}
             >
               수정
             </Button>
@@ -96,7 +95,7 @@ const PostView = ({
   );
 };
 
-export default PostView;
+export default PostEdit;
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,

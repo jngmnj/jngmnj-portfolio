@@ -2,10 +2,10 @@ import { Post } from '@/types';
 import { FirestoreError } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
+export const createPost = async (
   req: NextApiRequest,
   res: NextApiResponse<Post | FirestoreError>
-) {
+) => {
   if (req.method !== 'POST')
     return res.status(405).end(`Method ${req.method} Not Allowed`);
 
@@ -27,4 +27,8 @@ export default async function handler(
     res.setHeader('Allow', ['GET', 'POST']);
     res.status(405).end(`Method ${method} Not Allowed`);
   }
-}
+};
+
+export const updatePost = async (postId: string, data: Partial<Post>) => {};
+
+export const deletePost = async (postId: string) => {};
