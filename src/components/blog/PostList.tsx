@@ -1,6 +1,6 @@
 import { Post } from '@/types';
 import { useCategories } from '@/utils/hooks';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase';
 import PostCard from './PostCard';
@@ -23,7 +23,17 @@ const PostList = ({ category, tag }: PostListProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const docSnap = await getDocs(collection(db, 'posts'));
+      const postRef = collection(db, 'posts');
+
+      let q = query(postRef);
+      if (category) {
+        q = query(postRef, where('category', '==', category));
+      }
+      if (tag) {
+        q = query(postRef, where('tags', 'array-contains', tag));
+      }
+
+      const docSnap = await getDocs(q);
 
       if (!docSnap.empty) {
         setPosts(
@@ -58,13 +68,15 @@ const PostList = ({ category, tag }: PostListProps) => {
 
   return (
     <>
-      <div className="mb-6">
-        <PostCategoryTab
-          categories={categories}
-          activeTab={activeTab}
-          handleTabClick={setActiveTab}
-        />
-      </div>
+      {!category && !tag && (
+        <div className="mb-6">
+          <PostCategoryTab
+            categories={categories}
+            activeTab={activeTab}
+            handleTabClick={setActiveTab}
+          />
+        </div>
+      )}
       <div className="flex w-full flex-col flex-wrap gap-6">
         {posts.map((post) => (
           <PostCard key={post.id} {...post} />

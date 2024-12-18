@@ -72,7 +72,7 @@ body {
   @apply border border-seagull-400 bg-white text-seagull-400;
 
   &:hover {
-    @apply hover:bg-gray-100;
+    @apply hover:bg-seagull-50;
   }
 }
 

@@ -30,6 +30,7 @@ const PostView = ({
     useDeletePost(postId).mutate();
   };
 
+  console.log('id', id);
   return (
     <div className="narrow container">
       <div className="">
@@ -43,20 +44,20 @@ const PostView = ({
             </Link>
           </p>
           <h1 className="mb-3 text-3xl font-medium">{title}</h1>
-          <div className="mb-8 flex gap-4">
+          <div className="mb-8 flex gap-2">
             <div>{authorName}</div>
             <div>{created!.toLocaleDateString()}</div>
             <Button
-              color="primary"
+              color="linePrimary"
               size="small"
               onClick={() => router.push(`/blog/edit/${id}`)}
             >
               수정
             </Button>
             <Button
-              color="primary"
+              color="linePrimary"
               size="small"
-              onClick={handleDeletePost(`${id}`)}
+              onClick={() => handleDeletePost(id as string)}
             >
               삭제
             </Button>
@@ -78,7 +79,7 @@ const PostView = ({
               tags.map((tag, index) => (
                 <Link
                   key={index}
-                  href={`/tags/${tag}`}
+                  href={`/blog/tags/${tag}`}
                   className="rounded-lg bg-gray-100 px-2 py-1 text-sm transition hover:bg-gray-200"
                 >
                   # {tag}
@@ -113,6 +114,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      id,
       ...restData,
       createdAt: createdAt.toDate().toISOString(),
       previewImgUrl: previewImgUrl || null,

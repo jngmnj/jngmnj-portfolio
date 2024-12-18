@@ -1,5 +1,7 @@
-const Tags = () => {
-  return <div>index</div>;
+import Tags from '@/components/blog/Tags';
+
+const TagsPage = () => {
+  return <Tags />;
 };
 
-export default Tags;
+export default TagsPage;

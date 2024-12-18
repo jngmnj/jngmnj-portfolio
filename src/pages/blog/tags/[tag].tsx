@@ -1,4 +1,5 @@
 import PostList from '@/components/blog/PostList';
+import Tags from '@/components/blog/Tags';
 import { GetServerSideProps } from 'next';
 
 type TagPostsProps = {
@@ -6,7 +7,16 @@ type TagPostsProps = {
 };
 
 const TagPosts = ({ tag }: TagPostsProps) => {
-  return <PostList tag={tag} />;
+  return (
+    <div className="container grid grid-cols-3 gap-10">
+      <div className="col-span-2">
+        <PostList tag={tag} />
+      </div>
+      <div className="">
+        <Tags />
+      </div>
+    </div>
+  );
 };
 
 export default TagPosts;
