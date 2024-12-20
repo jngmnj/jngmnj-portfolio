@@ -1,34 +1,28 @@
-import { Post } from '@/types';
-import { FirestoreError } from 'firebase/firestore';
+import { addDoc, collection, FirestoreError } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { db } from '../../../firebase';
 
-export const createPost = async (
+const postsHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Post | FirestoreError>
+  res: NextApiResponse<{ id: string } | FirestoreError>
 ) => {
-  if (req.method !== 'POST')
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  const { method, body } = req;
 
-  if (method === 'POST') {
-    try {
-      const posts = await getPosts();
-      res.status(200).json(posts);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  console.log('여기');
+  switch (method) {
+    case 'POST': {
+      try {
+        const docRef = await addDoc(collection(db, 'posts'), body);
+        if (docRef.id) {
+          return res.status(200).json({ id: docRef.id });
+        }
+      } catch (error) {
+        return res.status(400).json(error as FirestoreError);
+      }
     }
-  } else if (method === 'POST') {
-    try {
-      const post = await createPost(req.body);
-      res.status(201).json(post);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  } else {
-    res.setHeader('Allow', ['GET', 'POST']);
-    res.status(405).end(`Method ${method} Not Allowed`);
+    default:
+      return res.status(405).end(`Method ${method} Not Allowed`);
   }
 };
 
-export const updatePost = async (postId: string, data: Partial<Post>) => {};
-
-export const deletePost = async (postId: string) => {};
+export default postsHandler;

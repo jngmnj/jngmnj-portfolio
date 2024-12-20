@@ -43,6 +43,9 @@ const New = () => {
     formData.append('category', category);
     formData.append('content', content);
     formData.append('tags', tags);
+    formData.append('createdAt', new Date().toISOString());
+    formData.append('isPublished', 'true'); // 임시
+    formData.append('authorId', 'admin'); // 임시
 
     // 이미지 파일이 있을 경우
     // if (fileRef.current?.files) {
@@ -50,17 +53,17 @@ const New = () => {
     // }
 
     try {
+      console.log('Title:', formData.get('title'));
       const response = await axios.post('/api/posts', {
         method: 'POST',
         body: formData,
       });
-
       const data = response.data;
       console.log(data);
       router.push(`/blog/${data.id}`);
     } catch (e) {
       console.log(e);
-      alert('글 작성에 실패했습니다.');
+      // alert('글 작성에 실패했습니다.');
     }
   };
   return (
