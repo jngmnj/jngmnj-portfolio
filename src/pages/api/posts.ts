@@ -8,7 +8,8 @@ const postsHandler = async (
 ) => {
   const { method, body } = req;
 
-  console.log('여기');
+  console.log('body에 뭐가 담겨있나. ', body);
+  console.log('req에 뭐가 담겨있나. ', req);
   switch (method) {
     case 'POST': {
       try {

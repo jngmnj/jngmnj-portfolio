@@ -60,7 +60,7 @@ const New = () => {
       });
       const data = response.data;
       console.log(data);
-      router.push(`/blog/${data.id}`);
+      // router.push(`/blog/${data.id}`);
     } catch (e) {
       console.log(e);
       // alert('글 작성에 실패했습니다.');
