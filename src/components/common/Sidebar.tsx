@@ -1,3 +1,4 @@
+import { cn } from '@/utils/style';
 import { User } from 'firebase/auth';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -26,48 +27,54 @@ const Sidebar = ({ userData }: SidebarProps) => {
           <RiMenu3Line />
         </button>
       </div>
-      {isOpen && (
-        <>
-          <div className="fixed right-0 top-0 z-20 h-full max-h-screen w-80 border border-r-gray-200 bg-white p-4 md:block">
-            <button
-              type="button"
-              onClick={handleToggle}
-              className="absolute right-2 top-2 cursor-pointer rounded-2xl p-3 hover:bg-gray-50"
-            >
-              <CgClose className="text-2xl" />
-            </button>
-            <div className="mt-4">
-              <Link href="/about" onClick={() => setIsOpen(false)}>
-                <div className="rounded-2xl p-4 hover:bg-gray-50">About</div>
-              </Link>
-              <Link href="/projects" onClick={() => setIsOpen(false)}>
-                <div className="p-4">Projects</div>
-              </Link>
-              <Link href="/blog" onClick={() => setIsOpen(false)}>
-                <div className="p-4">Blog</div>
-              </Link>
-              <Link href="/contact" onClick={() => setIsOpen(false)}>
-                <div className="p-4">Contact</div>
-              </Link>
-            </div>
-            <div className="absolute bottom-0">
-              {!userData ? (
-                <Link href="/login" onClick={() => setIsOpen(false)}>
-                  <div className="p-4">Login</div>
-                </Link>
-              ) : (
-                <Link href="/logout" onClick={() => setIsOpen(false)}>
-                  <div className="p-4">Logout</div>
-                </Link>
-              )}
-            </div>
-          </div>
-          <div
+      <>
+        <div
+          className={cn(
+            'fixed top-0 z-20 h-full max-h-screen w-80 border border-r-gray-200 bg-white p-4 transition-all duration-300 md:block',
+            isOpen ? 'right-0' : 'right-[-80rem]'
+          )}
+        >
+          <button
+            type="button"
             onClick={handleToggle}
-            className="fixed inset-0 z-10 bg-black/20"
-          />
-        </>
-      )}
+            className="absolute right-2 top-2 cursor-pointer rounded-2xl p-3 hover:bg-gray-50"
+          >
+            <CgClose className="text-2xl" />
+          </button>
+          <div className="mt-4">
+            <Link href="/about" onClick={() => setIsOpen(false)}>
+              <div className="rounded-2xl p-4 hover:bg-gray-50">About</div>
+            </Link>
+            <Link href="/projects" onClick={() => setIsOpen(false)}>
+              <div className="p-4">Projects</div>
+            </Link>
+            <Link href="/blog" onClick={() => setIsOpen(false)}>
+              <div className="p-4">Blog</div>
+            </Link>
+            <Link href="/contact" onClick={() => setIsOpen(false)}>
+              <div className="p-4">Contact</div>
+            </Link>
+          </div>
+          <div className="absolute bottom-0">
+            {!userData ? (
+              <Link href="/login" onClick={() => setIsOpen(false)}>
+                <div className="p-4">Login</div>
+              </Link>
+            ) : (
+              <Link href="/logout" onClick={() => setIsOpen(false)}>
+                <div className="p-4">Logout</div>
+              </Link>
+            )}
+          </div>
+        </div>
+        <div
+          onClick={handleToggle}
+          className={cn(
+            'fixed inset-0 z-10 bg-black/20',
+            isOpen ? 'block' : 'hidden'
+          )}
+        />
+      </>
     </>
   );
 };

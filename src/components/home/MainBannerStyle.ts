@@ -10,7 +10,7 @@ export const StyledSlide = styled(SwiperSlide)`
   background-color: #f5f5f5;
   text-align: center;
   border: 1px solid red;
-  width: 60%;
+  width: 50%;
   height: 100%;
   border-radius: 16px;
 `;
