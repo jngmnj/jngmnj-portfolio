@@ -15,7 +15,7 @@ const New = () => {
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
   // const [tags, setTags] = useState<string[]>([]);
-  const [tags, setTags] = useState('[]');
+  const [tags, setTags] = useState<string[]>([]);
 
   const { data: existingCategories } = useCategories();
   const { data: existingTags } = useTags();
@@ -30,6 +30,14 @@ const New = () => {
   //   }
   // };
 
+  const handleChange = (selectedOptions: any) => {
+    if (selectedOptions) {
+      const selectedValues = selectedOptions.map((option: any) => option.value);
+      setTags(selectedValues);
+    } else {
+      setTags([]);
+    }
+  };
   const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -42,7 +50,7 @@ const New = () => {
     formData.append('title', titleRef.current?.value);
     formData.append('category', category);
     formData.append('content', content);
-    formData.append('tags', tags);
+    formData.append('tags', JSON.stringify(tags));
     formData.append('createdAt', new Date().toISOString());
     formData.append('isPublished', 'true'); // 임시
     formData.append('authorId', 'admin'); // 임시
@@ -54,12 +62,13 @@ const New = () => {
 
     try {
       console.log('Title:', formData.get('title'));
-      const response = await axios.post('/api/posts', {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post('/api/posts/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      const data = response.data;
-      console.log(data);
+      const docRefId = response.data;
+      console.log(docRefId);
       // router.push(`/blog/${data.id}`);
     } catch (e) {
       console.log(e);
@@ -91,9 +100,10 @@ const New = () => {
               value: tag.tag_id,
               label: tag.tag_name,
             }))}
-            onChange={(e) =>
-              e && setTags(JSON.stringify(e.map((e) => e.value)))
-            }
+            // onChange={(e) =>
+            //   e && setTags(JSON.stringify(e.map((e) => e.value)))
+            // }
+            onChange={handleChange}
             isMulti
           />
           <MarkdownEditor

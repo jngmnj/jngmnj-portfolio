@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
 import Sidebar from './Sidebar';
 import TopBanner from './TopBanner';
 
@@ -63,9 +62,10 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex items-center justify-center">
-          <button type="button" className="p-4">
+          {/* 기능 추후 구현 */}
+          {/* <button type="button" className="p-4">
             <FiSearch />
-          </button>
+          </button> */}
           {userData ? (
             <div className="flex items-center justify-center gap-3">
               <Link href="/mypage">
