@@ -8,10 +8,10 @@ const Modal = ({ id, setIsModalOpen }: ModalProps) => {
   return (
     <div>
       <div
-        className="fixed left-0 top-0 z-50 size-full bg-black opacity-50"
+        className="fixed left-0 top-0 z-40 size-full cursor-pointer bg-black opacity-50"
         onClick={() => setIsModalOpen(false)}
       ></div>
-      <div className="fixed left-0 top-0 z-50 flex size-full items-center justify-center">
+      <div className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2">
         <div className="relative rounded-lg bg-white p-8">
           <button
             className="absolute right-4 top-4"

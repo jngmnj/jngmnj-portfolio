@@ -10,7 +10,7 @@ import { StyledSlide, StyledSwiper } from './ProjectSliderStyle';
 
 const ProjectSlider = () => {
   return (
-    <div>
+    <div className="relative">
       <StyledSwiper
         modules={[Navigation, A11y, Autoplay]}
         // spaceBetween={32}
@@ -53,7 +53,7 @@ const ProjectSlider = () => {
           />
         </StyledSlide>
       </StyledSwiper>
-      <div className="custom-navigation relative mt-4 flex justify-end gap-2">
+      <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 justify-between gap-2 px-4">
         <button className="rounded-lg bg-seagull-500 p-2" id="custom-prev">
           <GoChevronLeft className="text-2xl text-white" />
         </button>

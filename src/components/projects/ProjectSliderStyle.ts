@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const StyledSwiper = styled(Swiper)`
   width: 600px;
-  height: 400px;
+  // height: 400px;
   position: relative;
   max-width: 100%;
 `;
