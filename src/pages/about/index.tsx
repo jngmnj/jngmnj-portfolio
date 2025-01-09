@@ -117,7 +117,7 @@ const Index = () => {
               <div className="mb-3 text-4xl font-bold transition group-hover:text-seagull-600">
                 01
               </div>
-              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600">
+              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600 md:text-4xl">
                 Web Development
                 <div className="rounded-full border border-seagull-600 p-4 opacity-0 transition group-hover:opacity-100">
                   <GoArrowUpRight className="text-3xl text-seagull-600" />
@@ -138,7 +138,7 @@ const Index = () => {
               <div className="mb-3 text-4xl font-bold transition group-hover:text-seagull-600">
                 02
               </div>
-              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600">
+              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600 md:text-4xl">
                 UI/UX Design
                 <div className="rounded-full border border-seagull-600 p-4 opacity-0 transition group-hover:opacity-100">
                   <GoArrowUpRight className="text-3xl text-seagull-600" />
@@ -156,7 +156,7 @@ const Index = () => {
               <div className="mb-3 text-4xl font-bold transition group-hover:text-seagull-600">
                 03
               </div>
-              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600">
+              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600 md:text-4xl">
                 Database Management(SQL)
                 <div className="rounded-full border border-seagull-600 p-4 opacity-0 transition group-hover:opacity-100">
                   <GoArrowUpRight className="text-3xl text-seagull-600" />
@@ -176,7 +176,7 @@ const Index = () => {
               <div className="mb-3 text-4xl font-bold transition group-hover:text-seagull-600">
                 04
               </div>
-              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600">
+              <div className="mb-6 flex items-end gap-4 text-6xl font-bold transition group-hover:text-seagull-600 md:text-4xl">
                 Search Engine Optimization(SEO)
                 <div className="rounded-full border border-seagull-600 p-4 opacity-0 transition group-hover:opacity-100">
                   <GoArrowUpRight className="text-3xl text-seagull-600" />
