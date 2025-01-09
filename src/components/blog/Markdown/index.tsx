@@ -19,7 +19,7 @@ export const MarkdownEditor = ({ ...rest }: MDEditorProps) => {
 
 export const MarkdownViewer = ({ ...rest }: MarkdownPreviewProps) => {
   return (
-    <div className="rounded-md border border-gray-200">
+    <div className="">
       <MDViewer {...rest} />
     </div>
   );
