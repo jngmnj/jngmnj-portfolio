@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import FormInput from '@/components/common/FormInput';
 import { cn } from '@/utils/style';
+import axios from 'axios';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -24,6 +25,22 @@ const Contact = () => {
     const { name, company, email, title, content } = data;
     setIsLoading(true);
     // await createContact({ name, company, email, title, content });
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('company', company);
+    formData.append('email', email);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('createdAt', new Date().toISOString());
+
+    try {
+      const res = await axios.post('/api/contact', formData);
+      console.log('res', formData);
+      alert('성공적으로 전송되었습니다.');
+    } catch (error) {
+      console.error('Failed to send contact:', error);
+      alert('전송에 실패했습니다.');
+    }
 
     reset();
   };
@@ -37,17 +54,6 @@ const Contact = () => {
             method="post"
             className=""
           >
-            {/* <div className="mb-4">
-              <label htmlFor="name">Name</label>
-              <input
-                id="name"
-                disabled={isLoading}
-                {...register('name', { required: '제목을 입력해주세요.' })}
-                placeholder=""
-                type="text"
-                className={`w-full rounded-md border-b bg-white p-2 outline-none`}
-              />
-            </div> */}
             <div className="mb-4">
               <FormInput
                 label="이름"
