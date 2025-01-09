@@ -67,12 +67,11 @@ const New = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      const docRefId = response.data;
-      console.log(docRefId);
-      // router.push(`/blog/${data.id}`);
+      const docRefId = response.data.id;
+      router.push(`/blog/${docRefId}`);
     } catch (e) {
       console.log(e);
-      // alert('글 작성에 실패했습니다.');
+      alert('글 작성에 실패했습니다.');
     }
   };
   return (

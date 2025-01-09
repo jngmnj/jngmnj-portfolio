@@ -1,4 +1,9 @@
-import { addDoc, collection, FirestoreError } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  FirestoreError,
+  Timestamp,
+} from 'firebase/firestore';
 import formidable from 'formidable';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../../../firebase';
@@ -34,12 +39,19 @@ export default async function handler(
       }
     }
 
+    let createdAtTimestamp;
+    if (fields.createdAt && typeof fields.createdAt === 'string') {
+      createdAtTimestamp = Timestamp.fromDate(new Date(fields.createdAt));
+    } else {
+      createdAtTimestamp = Timestamp.now();
+    }
+
     const postRequest = {
       title: fields.title?.[0],
       category: fields.category?.[0],
       tags: tagsArray,
       content: fields.content?.[0],
-      createdAt: fields.createdAt?.[0],
+      createdAt: createdAtTimestamp,
       isPublished: fields.isPublished?.[0],
       authorId: fields.authorId?.[0],
     };
