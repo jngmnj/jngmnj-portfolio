@@ -1,4 +1,4 @@
-import { myData } from '../../pages/about/MyData';
+import myData from '../../data/MyData';
 
 const TabContent4 = () => {
   return (

@@ -1,13 +1,13 @@
 import { MarkdownViewer } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
 import { Post } from '@/types';
-import { useDeletePost } from '@/utils/hooks';
+// import { useDeletePost } from '@/utils/hooks';
 import { doc, getDoc } from 'firebase/firestore';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { db } from '../../../firebase';
+import { db } from '../../../firebaseConfig';
 
 type PostProps = Partial<Post> & {
   createdAt: string | null;
@@ -26,9 +26,9 @@ const PostView = ({
   const created = createdAt ? new Date(createdAt) : null;
   const router = useRouter();
 
-  const handleDeletePost = (postId: string) => {
-    useDeletePost(postId).mutate();
-  };
+  // const handleDeletePost = (postId: string) => {
+  //   useDeletePost(postId).mutate();
+  // };
 
   console.log('id', id);
   return (
@@ -57,7 +57,7 @@ const PostView = ({
             <Button
               color="linePrimary"
               size="small"
-              onClick={() => handleDeletePost(id as string)}
+              // onClick={() => handleDeletePost(id as string)}
             >
               삭제
             </Button>

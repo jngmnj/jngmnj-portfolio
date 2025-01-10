@@ -1,6 +1,6 @@
-import { deletePost, updatePost } from '@/pages/api/posts';
+// import { deletePost, updatePost } from '@/pages/api/posts';
 import storage from '@/utils/storage';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -10,7 +10,7 @@ import {
 import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../firebaseConfig';
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(true);
@@ -106,20 +106,20 @@ export const useTags = () =>
     },
   });
 
-export const useUpdatePost = (postId: string) => {
-  const queryClient = useQueryClient();
-  return useMutation(updatePost, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['posts']);
-    },
-  });
-};
+// export const useUpdatePost = (postId: string) => {
+//   const queryClient = useQueryClient();
+//   return useMutation(updatePost, {
+//     onSuccess: () => {
+//       queryClient.invalidateQueries(['posts']);
+//     },
+//   });
+// };
 
-export const useDeletePost = (postId: string) => {
-  const queryClient = useQueryClient();
-  return useMutation(deletePost, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['posts']);
-    },
-  });
-};
+// export const useDeletePost = (postId: string) => {
+//   const queryClient = useQueryClient();
+//   return useMutation(deletePost, {
+//     onSuccess: () => {
+//       queryClient.invalidateQueries(['posts']);
+//     },
+//   });
+// };

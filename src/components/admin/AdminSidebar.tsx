@@ -26,11 +26,13 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setUserData(storage.get<User>('userData'));
+      // setUserData(storage.get<User>('userData'));
+      setUserData(storage.get<User>('userData') ?? null);
     }
     // 로컬스토리지 이벤트 핸들러
     const handleUserDataChange = () => {
-      setUserData(storage.get<User>('userData'));
+      // setUserData(storage.get<User>('userData'));
+      setUserData(storage.get<User>('userData') ?? null);
     };
     // 이벤트 등록
     window.addEventListener('storageUserDataChange', handleUserDataChange);

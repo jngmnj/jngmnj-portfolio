@@ -15,7 +15,7 @@ export const icons = {
   SiTypescript,
 };
 
-export const myData = [
+const myData = [
   {
     name: '💻 경력',
     description: '',
@@ -153,3 +153,4 @@ export const myData = [
     ],
   },
 ];
+export default myData;

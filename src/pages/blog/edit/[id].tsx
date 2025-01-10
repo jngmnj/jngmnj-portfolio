@@ -6,7 +6,7 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { db } from '../../../../firebase';
+import { db } from '../../../../firebaseConfig';
 
 type PostProps = Partial<Post> & {
   createdAt: string | null;
@@ -48,14 +48,14 @@ const PostEdit = ({
             <Button
               color="primary"
               size="small"
-              onClick={handleUpdatePost(`${id}`)}
+              onClick={() => handleUpdatePost(`${id}`)}
             >
               수정
             </Button>
             <Button
               color="primary"
               size="small"
-              onClick={handleDeletePost(`${id}`)}
+              // onClick={handleDeletePost(`${id}`)}
             >
               삭제
             </Button>

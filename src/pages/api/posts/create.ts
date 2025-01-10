@@ -6,7 +6,7 @@ import {
 } from 'firebase/firestore';
 import formidable from 'formidable';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../../../firebase';
+import { db } from '../../../../firebaseConfig';
 
 export const config = {
   api: {
@@ -22,10 +22,13 @@ export default async function handler(
 
   const form = formidable({ multiples: true });
   try {
-    const [fields] = await new Promise((resolve, reject) => {
+    const { fields } = await new Promise<{
+      fields: formidable.Fields;
+      files: formidable.Files;
+    }>((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
         if (err) reject(err);
-        else resolve([fields, files]);
+        else resolve({ fields, files });
       });
     });
 

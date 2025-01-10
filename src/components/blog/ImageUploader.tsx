@@ -2,7 +2,7 @@ import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { app } from '../../../firebase'; // Firebase 초기화 파일
+import { app } from '../../../firebaseConfig'; // Firebase 초기화 파일
 
 const storage = getStorage(app);
 

@@ -8,11 +8,12 @@ const storage = {
       window.dispatchEvent(new Event('storageUserDataChange'));
     }
   },
-  get: <T>(key: string, defaultValue?: T): T => {
+  get: <T>(key: string, defaultValue?: T): T | null => {
     if (typeof window !== 'undefined') {
       const value = localStorage.getItem(key);
-      return (value ? JSON.parse(value) : defaultValue) as T;
+      return value ? (JSON.parse(value) as T) : (defaultValue ?? null);
     }
+    return defaultValue ?? null;
   },
   remove: (key: string) => {
     if (typeof window !== 'undefined') {

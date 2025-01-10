@@ -1,5 +1,5 @@
 import React from 'react';
-import { icons, myData } from '../../pages/about/MyData';
+import myData, { icons } from '../../data/MyData';
 
 const TabContent3 = () => {
   return (

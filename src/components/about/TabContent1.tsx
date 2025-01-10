@@ -1,4 +1,4 @@
-import { myData } from '../../pages/about/MyData';
+import myData from '../../data/MyData';
 const TabContent1 = () => {
   return (
     <div className="w-2/3 overflow-y-auto overflow-x-hidden">

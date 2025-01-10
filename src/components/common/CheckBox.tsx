@@ -1,7 +1,7 @@
 import { cn } from '@/utils/style';
 import { ComponentPropsWithoutRef, FC } from 'react';
 
-type CheckboxProps = ComponentPropsWithoutRef<'button'>;
+type CheckboxProps = ComponentPropsWithoutRef<'input'>;
 
 const Checkbox: FC<CheckboxProps> = ({ children, className, ...rest }) => {
   return (
@@ -9,7 +9,7 @@ const Checkbox: FC<CheckboxProps> = ({ children, className, ...rest }) => {
       <input type="checkbox" {...rest} className="peer hidden" />
       <span
         className={cn(
-          'peer-checked:bg-seagull-500 flex size-5 items-center justify-center rounded-sm border border-gray-400 peer-checked:border-transparent',
+          'flex size-5 items-center justify-center rounded-sm border border-gray-400 peer-checked:border-transparent peer-checked:bg-seagull-500',
           className
         )}
       >

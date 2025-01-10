@@ -1,5 +1,5 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../../firebase';
+import { storage } from '../../firebaseConfig';
 
 interface UploadImageResult {
   url: string;

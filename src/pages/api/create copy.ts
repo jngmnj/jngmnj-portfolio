@@ -1,7 +1,7 @@
 import { addDoc, collection, FirestoreError } from 'firebase/firestore';
 import formidable from 'formidable';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../../firebase';
+import { db } from '../../../firebaseConfig';
 
 export default async function handler(
   req: NextApiRequest,
