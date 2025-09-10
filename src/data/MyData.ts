@@ -22,7 +22,7 @@ const myData = [
     content: [
       {
         startDate: '2023.01',
-        endDate: '재직중',
+        endDate: '2025.03',
         title: 'UIUX Designer / Publisher',
         list: ['코어소프트'],
       },
@@ -32,24 +32,6 @@ const myData = [
         title: 'UIUX Designer / Publisher',
         list: ['KNL정보시스템'],
       },
-      {
-        startDate: '2021.07',
-        endDate: '2021.10',
-        title: 'Fullstack Developer',
-        list: ['나래디자인'],
-      },
-      {
-        startDate: '2019.05',
-        endDate: '2019.10',
-        title: 'Web Designer',
-        list: ['피팅에잇'],
-      },
-      {
-        startDate: '2018.05',
-        endDate: '2018.12',
-        title: '요리사',
-        list: ['다이닝폴'],
-      },
     ],
   },
   {
@@ -57,10 +39,10 @@ const myData = [
     description: '',
     content: [
       {
-        startDate: '2020-01-01',
-        endDate: '2020-12-31',
-        title: 'Software Engineer',
-        list: ['', '', '', '', ''],
+        startDate: '2024.03',
+        endDate: '재학중',
+        title: '컴퓨터과학 전공',
+        list: ['한국방송통신대학교'],
       },
       {
         startDate: '2019.10',

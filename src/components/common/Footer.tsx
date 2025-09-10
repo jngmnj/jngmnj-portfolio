@@ -8,12 +8,12 @@ const Footer = () => {
       <div className="flex items-center justify-center">
         <Link href="https://github.com/jngmnj" target="_blank">
           <div className="p-4">
-            <IoLogoGithub className="h-[24px] w-[24px] text-white" />
+            <IoLogoGithub className="size-[24px] text-white" />
           </div>
         </Link>
         <Link href="https://instagram.com/jngmnj" target="_blank">
           <div className="p-4">
-            <IoLogoInstagram className="h-[24px] w-[24px] text-white" />
+            <IoLogoInstagram className="size-[24px] text-white" />
           </div>
         </Link>
       </div>
