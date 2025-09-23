@@ -4,13 +4,13 @@ import storage from '@/utils/storage';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import TopBanner from './TopBanner';
 
 const Header = () => {
-  const { route } = useRouter();
+  const pathname = usePathname();
 
   const [userData, setUserData] = useState<User | null>(null);
   useEffect(() => {
@@ -30,7 +30,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('storageUserDataChange', handleUserDataChange);
     };
-  }, [route]);
+  }, [pathname]);
 
   console.log('Header userData', userData);
   const { logOut } = useAuth();
