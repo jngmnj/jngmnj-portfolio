@@ -4,9 +4,7 @@ import ProjectCard from './ProjectCard';
 
 const ProjectList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  useEffect(() => {
-    console.log('modal open', isModalOpen);
-  }, [isModalOpen]);
+  useEffect(() => {}, [isModalOpen]);
 
   const openModal = (id: string) => {
     setIsModalOpen(true);

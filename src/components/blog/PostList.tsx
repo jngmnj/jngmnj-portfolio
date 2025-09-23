@@ -46,7 +46,7 @@ const PostList = ({ category, tag }: PostListProps) => {
           )
         );
       } else {
-        console.log('No documents found!');
+        console.error('No documents found!');
       }
     };
 

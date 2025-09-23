@@ -15,7 +15,6 @@ const Header = () => {
   const [userData, setUserData] = useState<User | null>(null);
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // console.log('Header1 userData', storage.get('userData'));
       setUserData(storage.get<User>('userData'));
     }
 
@@ -32,7 +31,6 @@ const Header = () => {
     };
   }, [pathname]);
 
-  console.log('Header userData', userData);
   const { logOut } = useAuth();
   return (
     <>

@@ -23,7 +23,6 @@ export default function ContactPage() {
   const handleSubmitContact: SubmitHandler<FieldValues> = async (
     data: FieldValues
   ) => {
-    console.log('data', data);
     const { name, company, email, title, content } = data;
     setIsLoading(true);
     // await createContact({ name, company, email, title, content });
@@ -37,7 +36,9 @@ export default function ContactPage() {
 
     try {
       const res = await axios.post('/api/contact', formData);
-      console.log('res', formData);
+      if (res.status === 200) {
+        reset();
+      }
       alert('성공적으로 전송되었습니다.');
     } catch (error) {
       console.error('Failed to send contact:', error);
