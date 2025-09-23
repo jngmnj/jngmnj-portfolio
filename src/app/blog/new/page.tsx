@@ -7,7 +7,6 @@ import { useCategories, useTags } from '@/utils/hooks';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
-import ReactSelect from 'react-select';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -21,13 +20,12 @@ export default function NewPostPage() {
   const { data: existingCategories } = useCategories();
   const { data: existingTags } = useTags();
 
-  const handleChange = (selectedOptions: any) => {
-    if (selectedOptions) {
-      const selectedValues = selectedOptions.map((option: any) => option.value);
-      setTags(selectedValues);
-    } else {
-      setTags([]);
-    }
+  const handleTagChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValues = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setTags(selectedValues);
   };
 
   const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
@@ -69,26 +67,31 @@ export default function NewPostPage() {
         <div className="flex flex-col gap-3">
           <Input type="text" placeholder="제목" ref={titleRef} />
           <Input type="file" ref={fileRef} />
-          <ReactSelect
-            instanceId={'category'}
-            placeholder="카테고리"
-            isMulti={false}
-            options={(existingCategories ?? []).map((category) => ({
-              value: category.category_id,
-              label: category.category_name,
-            }))}
-            onChange={(e: any) => e && setCategory(e?.value)}
-          />
-          <ReactSelect
-            instanceId={'tags'}
-            placeholder="태그"
-            options={(existingTags ?? []).map((tag) => ({
-              value: tag.tag_id,
-              label: tag.tag_name,
-            }))}
-            onChange={handleChange}
-            isMulti
-          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="focus:ring-primary-500 w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2"
+          >
+            <option value="">카테고리를 선택하세요</option>
+            {(existingCategories ?? []).map((cat) => (
+              <option key={cat.category_id} value={cat.category_id}>
+                {cat.category_name}
+              </option>
+            ))}
+          </select>
+          <select
+            multiple
+            value={tags}
+            onChange={handleTagChange}
+            className="focus:ring-primary-500 w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2"
+            size={4}
+          >
+            {(existingTags ?? []).map((tag) => (
+              <option key={`${tag.tag_id}-${tag.tag_name}`} value={tag.tag_id}>
+                {tag.tag_name}
+              </option>
+            ))}
+          </select>
           <MarkdownEditor
             height={500}
             value={content}
