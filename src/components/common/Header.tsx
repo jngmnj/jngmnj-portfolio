@@ -35,64 +35,66 @@ const Header = () => {
   return (
     <>
       <TopBanner />
-      <div className="inner flex items-center justify-between">
-        <Link href="/">
-          <h1 className="hidden text-2xl font-bold">jngmnj</h1>
-          <Image
-            src="/images/common/logo.svg"
-            width={100}
-            height={27}
-            alt="logo"
-          />
-        </Link>
-        <div className="hidden items-center justify-center lg:flex">
-          <Link href="/about">
-            <div className="p-4">About</div>
+      <header className="sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white">
+        <div className="inner flex items-center justify-between">
+          <Link href="/">
+            <h1 className="hidden text-2xl font-bold">jngmnj</h1>
+            <Image
+              src="/images/common/logo.svg"
+              width={100}
+              height={27}
+              alt="logo"
+            />
           </Link>
-          <Link href="/projects">
-            <div className="p-4">Projects</div>
-          </Link>
-          <Link href="/blog">
-            <div className="p-4">Blog</div>
-          </Link>
-          <Link href="/contact">
-            <div className="p-4">Contact</div>
-          </Link>
-        </div>
-        <div className="flex items-center justify-center">
-          {/* 기능 추후 구현 */}
-          {/* <button type="button" className="p-4">
-            <FiSearch />
-          </button> */}
-          {userData ? (
-            <div className="flex items-center justify-center gap-3">
-              <Link href="/mypage">
-                <Image
-                  src={userData?.photoURL ?? '/images/common/img_user.png'}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                  alt=""
-                />
-              </Link>
-              <Button
-                type="button"
-                color="linePrimary"
-                size="small"
-                onClick={logOut}
-                className=""
-              >
-                <div>로그아웃</div>
-              </Button>
-            </div>
-          ) : (
-            <Link href="/login">
-              <div className="p-4">로그인</div>
+          <div className="hidden items-center justify-center lg:flex">
+            <Link href="/about">
+              <div className="p-4">About</div>
             </Link>
-          )}
-          <Sidebar userData={userData} />
+            <Link href="/projects">
+              <div className="p-4">Projects</div>
+            </Link>
+            <Link href="/blog">
+              <div className="p-4">Blog</div>
+            </Link>
+            <Link href="/contact">
+              <div className="p-4">Contact</div>
+            </Link>
+          </div>
+          <div className="flex items-center justify-center">
+            {/* 기능 추후 구현 */}
+            {/* <button type="button" className="p-4">
+              <FiSearch />
+            </button> */}
+            {userData ? (
+              <div className="flex items-center justify-center gap-3">
+                <Link href="/mypage">
+                  <Image
+                    src={userData?.photoURL ?? '/images/common/img_user.png'}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                    alt=""
+                  />
+                </Link>
+                <Button
+                  type="button"
+                  color="linePrimary"
+                  size="small"
+                  onClick={logOut}
+                  className=""
+                >
+                  <div>로그아웃</div>
+                </Button>
+              </div>
+            ) : (
+              <Link href="/login">
+                <div className="p-4">로그인</div>
+              </Link>
+            )}
+            <Sidebar userData={userData} />
+          </div>
         </div>
-      </div>
+      </header>
     </>
   );
 };
