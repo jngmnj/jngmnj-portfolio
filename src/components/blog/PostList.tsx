@@ -77,7 +77,7 @@ const PostList = ({ category, tag }: PostListProps) => {
           />
         </div>
       )}
-      <div className="flex w-full flex-col flex-wrap gap-6">
+      <div className="flex w-full flex-col gap-6 sm:gap-8">
         {posts.map((post) => (
           <PostCard key={post.id} {...post} />
         ))}

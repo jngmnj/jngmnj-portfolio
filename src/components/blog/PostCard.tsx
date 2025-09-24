@@ -29,30 +29,35 @@ const PostCard: FC<PostCardProps> = ({
     <div className="w-full">
       <Link
         href={`/blog/${id}`}
-        className="group flex w-full justify-between gap-8 rounded-2xl p-0 transition-all ease-in-out hover:bg-gray-50 hover:p-4"
+        className="group flex w-full flex-col gap-4 rounded-2xl p-0 transition-all ease-in-out hover:bg-gray-50 hover:p-4 sm:flex-row sm:gap-6 lg:gap-8"
       >
-        <div>
+        {/* 텍스트 콘텐츠 */}
+        <div className="flex-1">
           {/* 전체리스트일경우 카테고리 표시 */}
-          <div className="font-semibold text-seagull-500">{category}</div>
-          <div className="relative mb-4 w-max text-2xl font-semibold transition after:absolute after:bottom-0 after:block after:h-4 after:w-0 after:bg-seagull-200 after:mix-blend-multiply after:transition-all after:duration-500 after:content-[''] group-hover:after:w-full">
+          <div className="text-seagull-500 mb-2 text-sm font-semibold">
+            {category}
+          </div>
+          <div className="after:bg-seagull-200 relative mb-4 w-max text-xl font-semibold transition after:absolute after:bottom-0 after:block after:h-4 after:w-0 after:mix-blend-multiply after:transition-all after:duration-500 after:content-[''] group-hover:after:w-full sm:text-2xl">
             {title}
           </div>
-          <div className="mb-2 line-clamp-3 text-base text-gray-500">
+          <div className="mb-3 line-clamp-3 text-sm text-gray-500 sm:text-base">
             {content ? stripHtmlTags(content) : ''}
           </div>
           <div className="text-xs text-gray-500">
             {createdAt?.toDate().toLocaleDateString()}
           </div>
         </div>
-        <div className="size-[200px] shrink-0 rounded-2xl border border-gray-100">
+
+        {/* 이미지 */}
+        <div className="h-48 w-full shrink-0 rounded-2xl border border-gray-100 sm:h-40 sm:w-48 lg:h-48 lg:w-52">
           <Image
             src={
               preview_img_url ? preview_img_url : '/images/common/img_user.png' // 임시 이미지
             }
             width={300}
             height={200}
-            alt={''}
-            className="object-cover"
+            alt={title || 'Post thumbnail'}
+            className="h-full w-full rounded-2xl object-cover"
           />
         </div>
       </Link>
