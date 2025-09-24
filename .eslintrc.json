@@ -1,39 +1,15 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "prettier",
-    "plugin:tailwindcss/recommended"
-  ],
-
+  "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    "tailwindcss/classnames-order": [
+    "prefer-const": "warn",
+    "no-var": "error",
+    "no-console": "warn",
+    "no-debugger": "warn",
+    "@typescript-eslint/no-unused-vars": [
       "warn",
       {
-        "callees": ["cva", "cn"]
-      }
-    ],
-    "tailwindcss/enforces-negative-arbitrary-values": [
-      "warn",
-      {
-        "callees": ["cva", "cn"]
-      }
-    ],
-    "tailwindcss/enforces-shorthand": [
-      "warn",
-      {
-        "callees": ["cva", "cn"]
-      }
-    ],
-    "tailwindcss/no-contradicting-classname": [
-      "warn",
-      {
-        "callees": ["cva", "cn"]
-      }
-    ],
-    "tailwindcss/no-custom-classname": [
-      "warn",
-      {
-        "callees": ["cva", "cn"]
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
       }
     ]
   }

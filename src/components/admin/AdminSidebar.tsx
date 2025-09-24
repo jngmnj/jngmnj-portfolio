@@ -4,7 +4,7 @@ import { cn } from '@/utils/style';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
   GoHeart,
@@ -40,7 +40,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
     return () => {
       window.removeEventListener('storageUserDataChange', handleUserDataChange);
     };
-  }, [router.route]);
+  }, [router]);
 
   // setUserData 직후에 useData 읽으면 null임 -> useEffect로 처리
   useEffect(() => {

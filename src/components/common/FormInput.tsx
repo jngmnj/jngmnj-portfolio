@@ -1,10 +1,11 @@
 import { cn } from '@/utils/style';
+import { FieldErrors, FieldValues } from 'react-hook-form';
 
 type FormInputProps = {
   label: string;
   id: string;
-  register: any;
-  errors: any;
+  register: (name: string, options?: { required?: boolean | string }) => object;
+  errors: FieldErrors<FieldValues>;
   disabled: boolean;
   isLoading: boolean;
   type?: string;
@@ -41,7 +42,9 @@ const FormInput: React.FC<FormInputProps> = ({
         )}
       />
       {errors[id] && (
-        <p className="mt-1 text-xs text-red-500">{errors[id].message}</p>
+        <p className="mt-1 text-xs text-red-500">
+          {String(errors[id]?.message || '오류가 발생했습니다.')}
+        </p>
       )}
     </>
   );
