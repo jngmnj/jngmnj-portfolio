@@ -126,7 +126,7 @@ export default function HomePage() {
             target="_blank"
             className="group"
           >
-            <div className="cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
+            <div className="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
               <h3 className="mb-2 text-xl font-semibold">
                 포트폴리오 웹사이트
               </h3>
@@ -153,7 +153,7 @@ export default function HomePage() {
             target="_blank"
             className="group"
           >
-            <div className="cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
+            <div className="cursor-porigin-center h-full rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
               <h3 className="mb-2 text-xl font-semibold">
                 보드게임 플랫폼, 보드큐(Boardque)
               </h3>
@@ -179,7 +179,7 @@ export default function HomePage() {
             target="_blank"
             className="group"
           >
-            <div className="cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
+            <div className="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
               <h3 className="mb-2 text-xl font-semibold">
                 오즈코딩스쿨 통합교육 플랫폼(LMS)
               </h3>
