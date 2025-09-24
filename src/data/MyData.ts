@@ -17,7 +17,7 @@ export const icons = {
 
 const myData = [
   {
-    name: '💻 경력',
+    name: 'Career',
     description: '',
     content: [
       {
@@ -35,7 +35,7 @@ const myData = [
     ],
   },
   {
-    name: '📚 교육',
+    name: 'Education',
     description: '',
     content: [
       {
@@ -43,6 +43,12 @@ const myData = [
         endDate: '재학중',
         title: '컴퓨터과학 전공',
         list: ['한국방송통신대학교'],
+      },
+      {
+        startDate: '2025.03',
+        endDate: '2025.08',
+        title: '프론트엔드 개발자 부트캠프',
+        list: ['오즈코딩스쿨'],
       },
       {
         startDate: '2019.10',
@@ -59,7 +65,7 @@ const myData = [
     ],
   },
   {
-    name: '🛠️ 기술',
+    name: 'Skills',
     description: '',
     content: [
       {
@@ -97,15 +103,15 @@ const myData = [
     ],
   },
   {
-    name: '🙋 자기소개',
+    name: 'Profile',
     description: '',
     content: [
       {
-        label: '이름',
+        label: 'Name',
         value: '지정민',
       },
       {
-        label: '경력',
+        label: 'Experience',
         value: '5+ years',
       },
       {
@@ -117,16 +123,16 @@ const myData = [
         value: 'Available',
       },
       {
-        label: '언어',
+        label: 'Languages',
         value: '한국어, 영어, 일본어',
       },
       {
-        label: '경험',
+        label: 'Experience',
         value:
           '2015.06 ~ 2015.07 FISEP 장학생 하계연수(미국 캘리포니아 UC Irvine)',
       },
       {
-        label: '자격/수상',
+        label: 'Awards',
         value: [
           '2016.11 제 1회 아웃도어&스포츠디자인 공모전 특선(한국아웃도어스포츠산업협회)',
           '2016.11 제7회 한국패션디자인학회 공모전 입선(한국패션디자인학회)',

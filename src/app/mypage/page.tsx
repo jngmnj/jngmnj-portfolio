@@ -13,7 +13,6 @@ export default function MypagePage() {
     if (typeof window !== 'undefined') {
       setUserData(storage.get<User>('userData'));
     }
-    console.log(userData);
   }, []);
 
   return (

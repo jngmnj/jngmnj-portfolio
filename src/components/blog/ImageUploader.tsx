@@ -32,7 +32,6 @@ const saveImageUrlsToFirestore = async (urls: string[]) => {
     urls,
     uploadedAt: new Date(),
   });
-  console.log('Document written with ID: ', docRef.id);
   return docRef.id;
 };
 
@@ -50,8 +49,7 @@ const ImageUploader = () => {
   const handleUpload = async () => {
     if (files) {
       const urls = await uploadImages(files);
-      setUploadedUrls(urls); // 업로드된 이미지 URL을 상태에 저장
-      console.log('Uploaded URLs:', urls);
+      setUploadedUrls(urls);
 
       const docRefId = await saveImageUrlsToFirestore(uploadedUrls); // Firestore에 이미지 URL 저장
     }

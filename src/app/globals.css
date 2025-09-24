@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-black: #17171b;
+  --font-base: 14px;
+
+  --color-waikawa-gray-50: #f2f7fb;
+  --color-waikawa-gray-100: #e7f0f8;
+  --color-waikawa-gray-200: #d3e2f2;
+  --color-waikawa-gray-300: #b9cfe8;
+  --color-waikawa-gray-400: #9cb6dd;
+  --color-waikawa-gray-500: #839dd1;
+  --color-waikawa-gray-600: #6a7fc1;
+  --color-waikawa-gray-700: #6374ae;
+  --color-waikawa-gray-800: #4a5989;
+  --color-waikawa-gray-900: #414e6e;
+  --color-waikawa-gray-950: #262c40;
+
+  --color-seagull-50: #effaff;
+  --color-seagull-100: #dff4ff;
+  --color-seagull-200: #b8ecff;
+  --color-seagull-300: #78deff;
+  --color-seagull-400: #4bd4ff;
+  --color-seagull-500: #06b8f1;
+  --color-seagull-600: #0094ce;
+  --color-seagull-700: #0076a7;
+  --color-seagull-800: #02638a;
+  --color-seagull-900: #085272;
+  --color-seagull-950: #06344b;
+
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+  --background-image-bg-login: url(/images/bg/img_bg_login.png);
+}
+
+@font-face {
+  font-family: 'SUIT-Variable';
+  src:
+    url('/fonts/SUIT-Variable/SUIT-Variable.woff2') format('woff2'),
+    url('/fonts/SUIT-Variable/SUIT-Variable.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'SUIT-Variable', sans-serif;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1344px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.container {
+  padding: 5rem 1.5rem 10rem;
+  margin: 0 auto;
+}
+
+.container.narrow {
+  max-width: 768px;
+}
+.link-text {
+  @apply text-seagull-600;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    @apply text-seagull-700;
+  }
+}
+
+/* Button Theme */
+*[class^='btn'] {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.25rem;
+}
+
+.btn-primary {
+  @apply bg-seagull-400 text-black;
+
+  &:hover {
+    @apply hover:bg-seagull-500;
+  }
+}
+
+.btn-linePrimary {
+  @apply border-seagull-400 text-seagull-400 border bg-white;
+
+  &:hover {
+    @apply hover:bg-seagull-50;
+  }
+}
+
+.btn-secondary {
+  @apply bg-seagull-500 text-white;
+
+  &:hover {
+    @apply hover:bg-seagull-600;
+  }
+}
+
+.btn-danger {
+  @apply bg-red-500 text-white;
+
+  &:hover {
+    @apply hover:bg-red-600;
+  }
+}
+
+.btn-small {
+  @apply rounded px-2 py-1 text-sm;
+}
+
+.btn-medium {
+  @apply rounded-lg px-4 py-2 text-base;
+}
+
+.btn-large {
+  @apply rounded-xl px-6 py-3 text-lg;
+}
+
+.btn-xlarge {
+  @apply rounded-2xl px-8 py-4 text-xl;
+}

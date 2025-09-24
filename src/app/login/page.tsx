@@ -25,7 +25,6 @@ export default function LoginPage() {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
-    console.log('로그인할께');
     const { success, error } = await signIn(email, password);
     if (success) {
       router.push('/');

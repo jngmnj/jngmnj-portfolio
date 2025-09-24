@@ -46,7 +46,6 @@ export default function NewPostPage() {
     formData.append('authorId', 'admin'); // 임시
 
     try {
-      console.log('Title:', formData.get('title'));
       const response = await axios.post('/api/posts/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -55,7 +54,7 @@ export default function NewPostPage() {
       const docRefId = response.data.id;
       router.push(`/blog/${docRefId}`);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       alert('글 작성에 실패했습니다.');
     }
   };

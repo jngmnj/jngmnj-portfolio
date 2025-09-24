@@ -7,9 +7,10 @@ import { RiMenu3Line } from 'react-icons/ri';
 
 type SidebarProps = {
   userData: User | null;
+  className?: string;
 };
 
-const Sidebar = ({ userData }: SidebarProps) => {
+const Sidebar = ({ userData, className }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
@@ -18,7 +19,7 @@ const Sidebar = ({ userData }: SidebarProps) => {
 
   return (
     <>
-      <div className="md:block">
+      <div className={cn('md:block', className)}>
         <button
           type="button"
           onClick={handleToggle}
@@ -37,7 +38,7 @@ const Sidebar = ({ userData }: SidebarProps) => {
           <button
             type="button"
             onClick={handleToggle}
-            className="absolute right-2 top-2 cursor-pointer rounded-2xl p-3 hover:bg-gray-50"
+            className="absolute top-2 right-2 cursor-pointer rounded-2xl p-3 hover:bg-gray-50"
           >
             <CgClose className="text-2xl" />
           </button>
