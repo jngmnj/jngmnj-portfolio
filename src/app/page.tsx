@@ -121,58 +121,84 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg border p-6">
-            <h3 className="mb-2 text-xl font-semibold">포트폴리오 웹사이트</h3>
-            <p className="mb-4 text-gray-600">
-              Next.js와 Tailwind CSS를 사용하여 제작한 반응형 포트폴리오
-              웹사이트입니다.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                Next.js
-              </span>
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                TypeScript
-              </span>
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                Tailwind CSS
-              </span>
+          <Link
+            href="https://github.com/jngmnj/jngmnj-portfolio"
+            target="_blank"
+            className="group"
+          >
+            <div className="cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
+              <h3 className="mb-2 text-xl font-semibold">
+                포트폴리오 웹사이트
+              </h3>
+              <p className="mb-4 text-gray-600">
+                Next.js와 Tailwind CSS를 사용하여 제작한 반응형 포트폴리오
+                웹사이트
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  Next.js
+                </span>
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  TypeScript
+                </span>
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  Tailwind CSS
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="rounded-lg border p-6">
-            <h3 className="mb-2 text-xl font-semibold">E-commerce Platform</h3>
-            <p className="mb-4 text-gray-600">
-              React와 Node.js를 사용하여 개발한 풀스택 이커머스 플랫폼입니다.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                React
-              </span>
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                Node.js
-              </span>
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                MongoDB
-              </span>
+          </Link>
+
+          <Link
+            href="https://github.com/main-10-2team/boardgame-frontend"
+            target="_blank"
+            className="group"
+          >
+            <div className="cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
+              <h3 className="mb-2 text-xl font-semibold">
+                보드게임 플랫폼, 보드큐(Boardque)
+              </h3>
+              <p className="mb-4 text-gray-600">
+                보드게임 입문자부터 마니아까지, 조건 기반 추천과 리뷰·평점을
+                통해 신뢰성 있는 보드게임 선택을 돕는 서비스
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  Next.js
+                </span>
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  TypeScript
+                </span>
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  Tanstack Query
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="rounded-lg border p-6">
-            <h3 className="mb-2 text-xl font-semibold">Task Management App</h3>
-            <p className="mb-4 text-gray-600">
-              Firebase를 활용한 실시간 협업 태스크 관리 애플리케이션입니다.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                React
-              </span>
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                Firebase
-              </span>
-              <span className="rounded bg-gray-100 px-2 py-1 text-xs">
-                Material-UI
-              </span>
+          </Link>
+          <Link
+            href="https://github.com/OZ-Coding-School/oz_externship_fe_01_team2"
+            target="_blank"
+            className="group"
+          >
+            <div className="cursor-pointer rounded-lg border border-gray-200 p-6 transition-all group-hover:shadow-md hover:border-gray-400">
+              <h3 className="mb-2 text-xl font-semibold">
+                오즈코딩스쿨 통합교육 플랫폼(LMS)
+              </h3>
+              <p className="mb-4 text-gray-600">
+                AI 기반 자동 응답 기능을 갖춘 통합 교육 플랫폼(LMS)
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  React
+                </span>
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  TypeScript
+                </span>
+                <span className="rounded bg-gray-100 px-2 py-1 text-xs">
+                  Tailwind CSS
+                </span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </section>
 
