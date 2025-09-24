@@ -48,16 +48,24 @@ const Header = () => {
           </Link>
           <div className="hidden items-center justify-center lg:flex">
             <Link href="/about">
-              <div className="p-4">About</div>
+              <div className="hover:text-seagull-500 p-4 transition-colors">
+                About
+              </div>
             </Link>
             <Link href="/projects">
-              <div className="p-4">Projects</div>
+              <div className="hover:text-seagull-500 p-4 transition-colors">
+                Projects
+              </div>
             </Link>
             <Link href="/blog">
-              <div className="p-4">Blog</div>
+              <div className="hover:text-seagull-500 p-4 transition-colors">
+                Blog
+              </div>
             </Link>
             <Link href="/contact">
-              <div className="p-4">Contact</div>
+              <div className="hover:text-seagull-500 p-4 transition-colors">
+                Contact
+              </div>
             </Link>
           </div>
           <div className="flex items-center justify-center">
@@ -81,17 +89,19 @@ const Header = () => {
                   color="linePrimary"
                   size="small"
                   onClick={logOut}
-                  className=""
+                  className="hidden lg:block"
                 >
-                  <div>로그아웃</div>
+                  <div>Logout</div>
                 </Button>
               </div>
             ) : (
-              <Link href="/login">
-                <div className="p-4">로그인</div>
+              <Link href="/login" className="hidden lg:block">
+                <div className="hover:text-seagull-500 p-4 transition-colors">
+                  Login
+                </div>
               </Link>
             )}
-            <Sidebar userData={userData} />
+            <Sidebar userData={userData} className="lg:hidden" />
           </div>
         </div>
       </header>
