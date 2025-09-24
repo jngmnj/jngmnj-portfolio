@@ -1,5 +1,5 @@
 import { cn } from '@/utils/style';
-import { Category } from './PostList';
+import { Category } from './CategoryFilter';
 
 type PostCategoryTabProps = {
   categories: Category[];
