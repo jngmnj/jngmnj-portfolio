@@ -1,4 +1,5 @@
 import { useCategories } from '@/utils/hooks';
+import { DocumentData } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import PostCategoryTab from './PostCategoryTab';
 
@@ -22,9 +23,9 @@ const CategoryFilter = ({
   // 카테고리 데이터가 로드되면 카테고리 목록을 설정
   useEffect(() => {
     if (data) {
-      const categoriesData = data.map((doc: any) => ({
-        id: doc.category_id,
-        name: doc.category_name,
+      const categoriesData = data.map((doc: DocumentData) => ({
+        id: doc.category_id as number,
+        name: doc.category_name as string,
       }));
       setCategories(categoriesData);
     }

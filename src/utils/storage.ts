@@ -1,5 +1,5 @@
 const storage = {
-  set: (key: string, value: any) => {
+  set: <T>(key: string, value: T) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(key, JSON.stringify(value));
     }
