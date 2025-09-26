@@ -4,8 +4,11 @@ import ClientLayout from './ClientLayout';
 import './globals.css';
 import {
   DEFAULT_DESCRIPTION,
+  DEFAULT_KEYWORDS,
+  DEFAULT_NAME,
   DEFAULT_TITLE,
   HOME_OG_IMAGE_URL,
+  ROBOTS_CONFIG,
   SITE_URL,
 } from './lib/constants';
 
@@ -13,8 +16,37 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: `${DEFAULT_TITLE} | Frontend Engineer`,
   description: DEFAULT_DESCRIPTION,
+  keywords: DEFAULT_KEYWORDS,
+  robots: ROBOTS_CONFIG,
   openGraph: {
-    images: HOME_OG_IMAGE_URL,
+    title: `${DEFAULT_TITLE} | Frontend Engineer`,
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    siteName: `${DEFAULT_TITLE} Portfolio`,
+    images: [
+      {
+        url: HOME_OG_IMAGE_URL,
+        width: 1200,
+        height: 630,
+        alt: `${DEFAULT_TITLE} Portfolio`,
+      },
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${DEFAULT_TITLE} | Frontend Engineer`,
+    description: DEFAULT_DESCRIPTION,
+    images: [HOME_OG_IMAGE_URL],
+  },
+  authors: [{ name: DEFAULT_NAME }],
+  creator: DEFAULT_NAME,
+  publisher: DEFAULT_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
   },
 };
 
@@ -29,13 +61,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/favicon/apple-touch-icon.png"
+          href="/favicon/apple-icon.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon/favicon-32x32.png"
+          href="/favicon/icon.png"
         />
         <link
           rel="icon"
@@ -43,7 +75,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           sizes="16x16"
           href="/favicon/favicon-16x16.png"
         />
-        <link rel="manifest" href="/favicon/site.webmanifest" />
+        <link rel="manifest" href="/manifest.json" />
         <link
           rel="mask-icon"
           href="/favicon/safari-pinned-tab.svg"

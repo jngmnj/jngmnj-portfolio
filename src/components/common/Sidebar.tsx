@@ -1,3 +1,4 @@
+import { LINKS } from '@/app/lib/constants';
 import { cn } from '@/utils/style';
 import { User } from 'firebase/auth';
 import Link from 'next/link';
@@ -30,7 +31,7 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
     { href: '/', label: 'Home', icon: IoHomeOutline },
     { href: '/about', label: 'About', icon: IoPersonOutline },
     { href: '/projects', label: 'Projects', icon: IoFolderOutline },
-    { href: '/blog', label: 'Blog', icon: IoDocumentTextOutline },
+    { href: LINKS.github_blog, label: 'Blog', icon: IoDocumentTextOutline },
     { href: '/contact', label: 'Contact', icon: IoMailOutline },
   ];
 
