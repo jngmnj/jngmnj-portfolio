@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { db } from '../../../../firebaseConfig';
+import { LINKS } from '../../lib/constants';
 
 type PostProps = {
   params: Promise<{
@@ -91,8 +92,8 @@ export default function BlogDetailPage({ params }: PostProps) {
         <div className="">
           <p>
             <Link
-              href={`/blog/category/`}
-              className="text-base font-semibold text-seagull-500"
+              href={`${LINKS.blog}/category/${category}`}
+              className="text-seagull-500 text-base font-semibold"
             >
               {category}
             </Link>
@@ -104,7 +105,7 @@ export default function BlogDetailPage({ params }: PostProps) {
             <Button
               color="linePrimary"
               size="small"
-              onClick={() => router.push(`/blog/edit/${id}`)}
+              onClick={() => router.push(`${LINKS.blog}/edit/${id}`)}
             >
               수정
             </Button>
@@ -132,7 +133,7 @@ export default function BlogDetailPage({ params }: PostProps) {
               tags.map((tag, index) => (
                 <Link
                   key={index}
-                  href={`/blog/tags/${tag}`}
+                  href={`${LINKS.tag}/${tag}`}
                   className="rounded-lg bg-gray-100 px-2 py-1 text-sm transition hover:bg-gray-200"
                 >
                   # {tag}
