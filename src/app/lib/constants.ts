@@ -41,3 +41,19 @@ export const ROBOTS_CONFIG = {
     'max-snippet': -1,
   },
 };
+
+// links
+export const LINKS = {
+  github: 'https://github.com/jngmnj',
+  instagram: 'https://instagram.com/jngmnj',
+  linkedin: 'https://www.linkedin.com/in/jngmnj',
+  github_blog: 'https://jngmnj.github.io/',
+  projects: '/projects',
+  blog: '/blog',
+  contact: '/contact',
+  about: '/about',
+  home: '/',
+  admin: '/admin',
+  chatbot: '/chatbot',
+  tag: '/blog/tags',
+};

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { LINKS } from '../../app/lib/constants';
 import Sidebar from './Sidebar';
 import TopBanner from './TopBanner';
 
@@ -57,7 +58,7 @@ const Header = () => {
                 Projects
               </div>
             </Link>
-            <Link href="/blog">
+            <Link href={LINKS.github_blog} target="_blank">
               <div className="hover:text-seagull-500 p-4 transition-colors">
                 Blog
               </div>
