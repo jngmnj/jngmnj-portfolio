@@ -82,7 +82,7 @@ function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
-      <div className="mx-auto">{children}</div>
+      <div className="mx-auto min-h-screen">{children}</div>
       <Footer />
     </>
   );
