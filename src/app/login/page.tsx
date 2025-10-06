@@ -34,7 +34,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="bg-bg-login">
+    <div className="bg-bg-login h-full min-h-full">
       <div className="container">
         <div className="flex w-full items-center gap-12">
           <div className="w-1/2">
@@ -49,7 +49,7 @@ export default function LoginPage() {
           <div className="w-1/2 rounded-xl border border-gray-300 bg-white px-6 py-10">
             <h1 className="text-2xl font-semibold">로그인</h1>
             <form
-              className="mb-4 mt-6 flex flex-col gap-4"
+              className="mt-6 mb-4 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
               <Input type="email" ref={emailRef} placeholder="이메일" />
