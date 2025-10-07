@@ -80,10 +80,10 @@ function AdminLayout({ children }: { children: ReactNode }) {
 
 function MainLayout({ children }: { children: ReactNode }) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="mx-auto min-h-screen">{children}</div>
+      <div className="mx-auto w-full flex-1">{children}</div>
       <Footer />
-    </>
+    </div>
   );
 }
