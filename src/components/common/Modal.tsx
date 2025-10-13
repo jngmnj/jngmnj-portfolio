@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
 import { Project } from '../../data/projects';
+import { useScrollLock } from '../../utils/hooks';
 
 interface ModalProps {
   project: Project | null;
@@ -11,6 +12,9 @@ interface ModalProps {
 }
 
 const Modal = ({ project, setIsModalOpen }: ModalProps) => {
+  // 모달이 열릴 때 body 스크롤 막기
+  useScrollLock(true);
+
   // ESC 키로 모달 닫기
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
