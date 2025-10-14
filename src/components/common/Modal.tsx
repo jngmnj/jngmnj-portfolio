@@ -23,7 +23,7 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
   useEffect(() => {
     // 모달이 열릴 때 현재 포커스 저장
     previousFocusRef.current = document.activeElement as HTMLElement;
-    
+
     // 애니메이션 후 닫기 버튼에 포커스
     const timer = setTimeout(() => {
       closeButtonRef.current?.focus();
@@ -60,7 +60,7 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
       const focusableElements = modal.querySelectorAll<HTMLElement>(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
-      
+
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -155,10 +155,16 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <h1 id="modal-title" className="mb-2 text-3xl font-bold text-white">
+                <h1
+                  id="modal-title"
+                  className="mb-2 text-3xl font-bold text-white"
+                >
                   {project.title}
                 </h1>
-                <p id="modal-description" className="text-lg leading-relaxed text-white/90">
+                <p
+                  id="modal-description"
+                  className="text-lg leading-relaxed text-white/90"
+                >
                   {project.description}
                 </p>
               </motion.div>
