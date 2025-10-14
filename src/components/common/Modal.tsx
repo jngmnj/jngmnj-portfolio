@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
 import { Project } from '../../data/projects';
@@ -12,8 +12,29 @@ interface ModalProps {
 }
 
 const Modal = ({ project, setIsModalOpen }: ModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
   // 모달이 열릴 때 body 스크롤 막기
   useScrollLock(true);
+
+  // 포커스 관리: 모달 열릴 때 닫기 버튼에 포커스, 닫힐 때 원래 포커스로 복원
+  useEffect(() => {
+    // 모달이 열릴 때 현재 포커스 저장
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    
+    // 애니메이션 후 닫기 버튼에 포커스
+    const timer = setTimeout(() => {
+      closeButtonRef.current?.focus();
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      // 모달이 닫힐 때 원래 포커스로 복원
+      previousFocusRef.current?.focus();
+    };
+  }, []);
 
   // ESC 키로 모달 닫기
   useEffect(() => {
@@ -26,6 +47,41 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
     document.addEventListener('keydown', handleEscKey);
     return () => document.removeEventListener('keydown', handleEscKey);
   }, [setIsModalOpen]);
+
+  // 포커스 트랩: Tab 키로 모달 내부만 순환
+  useEffect(() => {
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+
+      const modal = modalRef.current;
+      if (!modal) return;
+
+      // 포커스 가능한 요소들 선택
+      const focusableElements = modal.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement?.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+    return () => document.removeEventListener('keydown', handleTabKey);
+  }, []);
 
   if (!project) return null;
   return (
@@ -45,6 +101,11 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
         />
         <div className="fixed top-1/2 left-1/2 z-70 max-h-[95vh] w-[95vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 overflow-hidden">
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
             className="relative rounded-xl bg-white shadow-2xl"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -54,6 +115,7 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
           >
             {/* Close Button */}
             <motion.button
+              ref={closeButtonRef}
               className="absolute top-4 right-4 z-10 rounded-full bg-white/90 p-2 shadow-md transition-colors hover:bg-gray-100"
               onClick={() => setIsModalOpen(false)}
               whileHover={{ scale: 1.1 }}
@@ -93,10 +155,10 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <h1 className="mb-2 text-3xl font-bold text-white">
+                <h1 id="modal-title" className="mb-2 text-3xl font-bold text-white">
                   {project.title}
                 </h1>
-                <p className="text-lg leading-relaxed text-white/90">
+                <p id="modal-description" className="text-lg leading-relaxed text-white/90">
                   {project.description}
                 </p>
               </motion.div>
