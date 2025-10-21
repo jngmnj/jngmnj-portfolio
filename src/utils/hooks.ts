@@ -2,6 +2,7 @@
 import storage from '@/utils/storage';
 import { useQuery } from '@tanstack/react-query';
 import {
+  AuthError,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -28,6 +29,17 @@ export const useAuth = () => {
       }
     } catch (error) {
       console.error('Error during sign-in:', error);
+      const authError = error as AuthError;
+      // 에러 메시지를 사용자에게 표시
+      if (authError.code === 'auth/popup-closed-by-user') {
+        alert('로그인 창이 닫혔습니다.');
+      } else if (authError.code === 'auth/popup-blocked') {
+        alert('팝업이 차단되었습니다. 브라우저 설정에서 팝업을 허용해주세요.');
+      } else {
+        alert(
+          `로그인 실패: ${authError.message || '알 수 없는 오류가 발생했습니다.'}`
+        );
+      }
     }
   };
 
