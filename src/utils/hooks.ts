@@ -86,7 +86,11 @@ export const useAuth = () => {
       storage.set('userData', null);
       router.push('/');
     } catch (error) {
-      console.error(error);
+      console.error('Logout error:', error);
+      const authError = error as AuthError;
+      alert(
+        `로그아웃 실패: ${authError.message || '알 수 없는 오류가 발생했습니다.'}`
+      );
     }
   };
 
