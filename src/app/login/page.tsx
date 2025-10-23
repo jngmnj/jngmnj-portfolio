@@ -35,9 +35,9 @@ export default function LoginPage() {
 
   return (
     <div className="bg-bg-login h-full min-h-full">
-      <div className="container">
-        <div className="flex w-full items-center gap-12">
-          <div className="w-1/2">
+      <div className="container py-6 md:py-12">
+        <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
+          <div className="hidden w-full md:block md:w-1/2">
             <Image
               src="/images/about/img_temp.png"
               width={500}
@@ -46,17 +46,20 @@ export default function LoginPage() {
               className="size-full object-cover"
             />
           </div>
-          <div className="w-1/2 rounded-xl border border-gray-300 bg-white px-6 py-10">
-            <h1 className="text-2xl font-semibold">로그인</h1>
+          <div className="w-full rounded-xl border border-gray-300 bg-white px-4 py-8 md:w-1/2 md:px-6 md:py-10">
+            <h1 className="text-xl font-semibold md:text-2xl">로그인</h1>
             <form
               className="mt-6 mb-4 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
               <Input type="email" ref={emailRef} placeholder="이메일" />
               <Input type="password" ref={passwordRef} placeholder="비밀번호" />
-              <div className="flex justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
                 <Checkbox id="remember">이메일 저장</Checkbox>
-                <button type="button" className="link-text">
+                <button
+                  type="button"
+                  className="link-text cursor-pointer text-left sm:text-right"
+                >
                   비밀번호 찾기
                 </button>
               </div>
@@ -74,9 +77,11 @@ export default function LoginPage() {
                 Sign in with Google
               </Button>
             </div>
-            <div className="flex items-center justify-center gap-4">
-              <span>아직 회원이 아니신가요?</span>
-              <Link href="/register" className="link-text">
+            <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-4">
+              <span className="text-sm sm:text-base">
+                아직 회원이 아니신가요?
+              </span>
+              <Link href="/register" className="link-text text-sm sm:text-base">
                 회원가입
               </Link>
             </div>
