@@ -1,4 +1,5 @@
 import { LINKS } from '@/app/lib/constants';
+import { useAuth } from '@/utils/hooks';
 import { cn } from '@/utils/style';
 import { User } from 'firebase/auth';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -23,6 +24,7 @@ type SidebarProps = {
 
 const Sidebar = ({ userData, className }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logOut } = useAuth();
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -141,14 +143,17 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
                     <span className="font-medium">Login</span>
                   </Link>
                 ) : (
-                  <Link
-                    href="/logout"
-                    onClick={() => setIsOpen(false)}
-                    className="group flex items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-700"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false);
+                      logOut();
+                    }}
+                    className="group flex w-full items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-700"
                   >
                     <IoLogOutOutline className="text-xl" />
                     <span className="font-medium">Logout</span>
-                  </Link>
+                  </button>
                 )}
               </motion.div>
             </div>
