@@ -2,7 +2,6 @@
 import storage from '@/utils/storage';
 import { useQuery } from '@tanstack/react-query';
 import {
-  AuthError,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -12,6 +11,31 @@ import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../../firebaseConfig';
+
+// Firebase 에러 코드를 한국어 메시지로 변환
+const getErrorMessage = (error: any): string => {
+  const errorCode = error?.code || '';
+
+  const errorMessages: Record<string, string> = {
+    'auth/user-not-found': '사용자를 찾을 수 없습니다',
+    'auth/wrong-password': '비밀번호가 올바르지 않습니다',
+    'auth/invalid-email': '이메일 형식이 올바르지 않습니다',
+    'auth/user-disabled': '계정이 비활성화되었습니다',
+    'auth/too-many-requests': '너무 많은 요청입니다. 잠시 후 다시 시도해주세요',
+    'auth/email-already-in-use': '이미 사용 중인 이메일입니다',
+    'auth/weak-password': '비밀번호가 너무 약합니다',
+    'auth/network-request-failed': '네트워크 오류가 발생했습니다',
+    'auth/popup-closed-by-user': '로그인 창이 닫혔습니다',
+    'auth/popup-blocked':
+      '팝업이 차단되었습니다. 브라우저 설정에서 팝업을 허용해주세요',
+  };
+
+  return (
+    errorMessages[errorCode] ||
+    error?.message ||
+    '알 수 없는 오류가 발생했습니다'
+  );
+};
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(true);
@@ -29,17 +53,8 @@ export const useAuth = () => {
       }
     } catch (error) {
       console.error('Error during sign-in:', error);
-      const authError = error as AuthError;
-      // 에러 메시지를 사용자에게 표시
-      if (authError.code === 'auth/popup-closed-by-user') {
-        alert('로그인 창이 닫혔습니다.');
-      } else if (authError.code === 'auth/popup-blocked') {
-        alert('팝업이 차단되었습니다. 브라우저 설정에서 팝업을 허용해주세요.');
-      } else {
-        alert(
-          `로그인 실패: ${authError.message || '알 수 없는 오류가 발생했습니다.'}`
-        );
-      }
+      const errorMessage = getErrorMessage(error);
+      alert(`로그인 실패: ${errorMessage}`);
     }
   };
 
@@ -57,7 +72,8 @@ export const useAuth = () => {
       return { success: true, error: null };
     } catch (error) {
       setLoading(false);
-      return { success: false, error };
+      const errorMessage = getErrorMessage(error);
+      return { success: false, error: errorMessage };
     }
   };
 
@@ -75,7 +91,8 @@ export const useAuth = () => {
       return { success: true, error: null };
     } catch (error) {
       setLoading(false);
-      return { success: false, error };
+      const errorMessage = getErrorMessage(error);
+      return { success: false, error: errorMessage };
     }
   };
 
@@ -87,10 +104,8 @@ export const useAuth = () => {
       router.push('/');
     } catch (error) {
       console.error('Logout error:', error);
-      const authError = error as AuthError;
-      alert(
-        `로그아웃 실패: ${authError.message || '알 수 없는 오류가 발생했습니다.'}`
-      );
+      const errorMessage = getErrorMessage(error);
+      alert(`로그아웃 실패: ${errorMessage}`);
     }
   };
 
