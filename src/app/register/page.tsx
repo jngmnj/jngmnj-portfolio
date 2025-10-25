@@ -3,49 +3,144 @@
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/CheckBox';
 import Input from '@/components/common/Input';
+import Toast from '@/components/common/Toast';
 import { useAuth } from '@/utils/hooks';
+import { useToast } from '@/utils/useToast';
+import { validateEmail, validatePassword, validatePasswordMatch } from '@/utils/validation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function RegisterPage() {
   const emailRef = React.useRef<HTMLInputElement>(null);
-  // const idRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const passwordCheckRef = React.useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordCheckError, setPasswordCheckError] = useState('');
+  const { toast, showToast, hideToast } = useToast();
 
   const { signInWithGoogle, signUp } = useAuth();
   const router = useRouter();
 
+  // 실시간 이메일 검증
+  const handleEmailChange = () => {
+    const email = emailRef.current?.value || '';
+    if (email && !validateEmail(email)) {
+      setEmailError('올바른 이메일 형식을 입력해주세요.');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  // 실시간 비밀번호 검증
+  const handlePasswordChange = () => {
+    const password = passwordRef.current?.value || '';
+    if (password && !validatePassword(password)) {
+      setPasswordError('비밀번호는 최소 6자 이상이어야 합니다.');
+    } else {
+      setPasswordError('');
+    }
+    // 비밀번호 확인과 일치하는지도 검증
+    const passwordCheck = passwordCheckRef.current?.value || '';
+    if (passwordCheck && !validatePasswordMatch(password, passwordCheck)) {
+      setPasswordCheckError('비밀번호가 일치하지 않습니다.');
+    } else {
+      setPasswordCheckError('');
+    }
+  };
+
+  // 실시간 비밀번호 확인 검증
+  const handlePasswordCheckChange = () => {
+    const password = passwordRef.current?.value || '';
+    const passwordCheck = passwordCheckRef.current?.value || '';
+    if (passwordCheck && !validatePasswordMatch(password, passwordCheck)) {
+      setPasswordCheckError('비밀번호가 일치하지 않습니다.');
+    } else {
+      setPasswordCheckError('');
+    }
+  };
+
   // 회원가입
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
-    const passwordCheck = passwordCheckRef.current?.value;
-    if (!email || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
+    const email = emailRef.current?.value || '';
+    const password = passwordRef.current?.value || '';
+    const passwordCheck = passwordCheckRef.current?.value || '';
+
+    // 입력값 검증
+    if (!email || !password || !passwordCheck) {
+      showToast('모든 필드를 입력해주세요.', 'error');
       return;
     }
-    if (password !== passwordCheck) {
-      alert('비밀번호가 일치하지 않습니다.');
+
+    // 이메일 형식 검증
+    if (!validateEmail(email)) {
+      setEmailError('올바른 이메일 형식을 입력해주세요.');
       return;
-    }
-    const { success, error } = await signUp(email, password);
-    if (success) {
-      alert('회원가입이 완료되었습니다.');
-      router.push('/');
     } else {
-      alert(`회원가입 실패: ${error}`);
+      setEmailError('');
+    }
+
+    // 비밀번호 길이 검증
+    if (!validatePassword(password)) {
+      setPasswordError('비밀번호는 최소 6자 이상이어야 합니다.');
+      return;
+    } else {
+      setPasswordError('');
+    }
+
+    // 비밀번호 일치 검증
+    if (!validatePasswordMatch(password, passwordCheck)) {
+      setPasswordCheckError('비밀번호가 일치하지 않습니다.');
+      return;
+    } else {
+      setPasswordCheckError('');
+    }
+
+    setIsLoading(true);
+    const { success, error } = await signUp(email, password);
+    setIsLoading(false);
+
+    if (success) {
+      showToast('회원가입이 완료되었습니다.', 'success');
+      setTimeout(() => router.push('/'), 1000);
+    } else {
+      showToast(`회원가입 실패: ${error}`, 'error');
+    }
+  };
+
+  // Google 회원가입
+  const handleGoogleSignUp = async () => {
+    setIsLoading(true);
+    try {
+      await signInWithGoogle();
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '알 수 없는 오류가 발생했습니다';
+      showToast(`Google 회원가입 실패: ${errorMessage}`, 'error');
     }
   };
 
   return (
-    <div className="bg-bg-login h-full min-h-full">
-      <div className="container py-6 md:py-12">
-        <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
+      <div className="bg-bg-login h-full min-h-full">
+        <div className="container py-6 md:py-12">
+          <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
           <div className="hidden w-full md:block md:w-1/2">
             <Image
               src="/images/about/img_temp.png"
@@ -61,16 +156,44 @@ export default function RegisterPage() {
               className="mt-6 mb-4 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
-              <Input type="email" ref={emailRef} placeholder="이메일" />
-              {/* <Input type="text" ref={idRef} placeholder="아이디" /> */}
-              <Input type="password" ref={passwordRef} placeholder="비밀번호" />
-              <Input
-                type="password"
-                ref={passwordCheckRef}
-                placeholder="비밀번호확인"
-              />
+              <div>
+                <Input
+                  type="email"
+                  ref={emailRef}
+                  placeholder="이메일"
+                  disabled={isLoading}
+                  onChange={handleEmailChange}
+                />
+                {emailError && (
+                  <p className="mt-1 text-sm text-red-600">{emailError}</p>
+                )}
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  ref={passwordRef}
+                  placeholder="비밀번호"
+                  disabled={isLoading}
+                  onChange={handlePasswordChange}
+                />
+                {passwordError && (
+                  <p className="mt-1 text-sm text-red-600">{passwordError}</p>
+                )}
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  ref={passwordCheckRef}
+                  placeholder="비밀번호확인"
+                  disabled={isLoading}
+                  onChange={handlePasswordCheckChange}
+                />
+                {passwordCheckError && (
+                  <p className="mt-1 text-sm text-red-600">{passwordCheckError}</p>
+                )}
+              </div>
               <div className="">
-                <Checkbox id="remember">
+                <Checkbox id="remember" disabled={isLoading}>
                   <p className="text-sm sm:text-base">
                     <Link
                       href={'/policy'}
@@ -91,15 +214,18 @@ export default function RegisterPage() {
                   </p>
                 </Checkbox>
               </div>
-              <Button type="submit">회원가입</Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? '회원가입 중...' : '회원가입'}
+              </Button>
             </form>
             {/* 간편 회원가입 */}
             <div>
               <Button
-                type="submit"
+                type="button"
                 color="linePrimary"
                 className="mb-4 flex w-full items-center justify-center gap-2"
-                onClick={signInWithGoogle}
+                onClick={handleGoogleSignUp}
+                disabled={isLoading}
               >
                 <FcGoogle />
                 Sign up with Google
@@ -113,7 +239,9 @@ export default function RegisterPage() {
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
+
