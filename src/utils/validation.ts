@@ -16,4 +16,3 @@ export const validatePasswordMatch = (
 ): boolean => {
   return password === passwordCheck;
 };
-

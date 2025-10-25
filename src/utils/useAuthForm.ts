@@ -1,7 +1,7 @@
-import { RefObject, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { validateEmail, validatePassword } from './validation';
+import { RefObject, useState } from 'react';
 import { useToast } from './useToast';
+import { validateEmail, validatePassword } from './validation';
 
 interface UseAuthFormProps {
   emailRef: RefObject<HTMLInputElement>;
@@ -9,7 +9,11 @@ interface UseAuthFormProps {
   onSuccess: () => void;
 }
 
-export const useAuthForm = ({ emailRef, passwordRef, onSuccess }: UseAuthFormProps) => {
+export const useAuthForm = ({
+  emailRef,
+  passwordRef,
+  onSuccess,
+}: UseAuthFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -74,4 +78,3 @@ export const useAuthForm = ({ emailRef, passwordRef, onSuccess }: UseAuthFormPro
     router,
   };
 };
-
