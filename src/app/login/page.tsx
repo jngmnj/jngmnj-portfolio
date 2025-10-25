@@ -121,16 +121,19 @@ export default function LoginPage() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다';
-      setToast({ 
-        message: `Google 로그인 실패: ${errorMessage}`, 
-        type: 'error' 
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : '알 수 없는 오류가 발생했습니다';
+      setToast({
+        message: `Google 로그인 실패: ${errorMessage}`,
+        type: 'error',
       });
     }
   };
 
   return (
-    <div className="bg-bg-login h-full min-h-full">
+    <>
       {toast && (
         <Toast
           message={toast.message}
@@ -138,8 +141,9 @@ export default function LoginPage() {
           onClose={() => setToast(null)}
         />
       )}
-      <div className="container py-6 md:py-12">
-        <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
+      <div className="bg-bg-login h-full min-h-full">
+        <div className="container py-6 md:py-12">
+          <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
           <div className="hidden w-full md:block md:w-1/2">
             <Image
               src="/images/about/img_temp.png"
@@ -216,14 +220,8 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
+        </div>
       </div>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </div>
+    </>
   );
 }
