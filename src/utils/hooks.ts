@@ -13,8 +13,8 @@ import { useEffect, useState } from 'react';
 import { auth, db } from '../../firebaseConfig';
 
 // Firebase 에러 코드를 한국어 메시지로 변환
-const getErrorMessage = (error: any): string => {
-  const errorCode = error?.code || '';
+const getErrorMessage = (error: unknown): string => {
+  const errorCode = (error as { code?: string })?.code || '';
 
   const errorMessages: Record<string, string> = {
     'auth/user-not-found': '사용자를 찾을 수 없습니다',
@@ -32,7 +32,7 @@ const getErrorMessage = (error: any): string => {
 
   return (
     errorMessages[errorCode] ||
-    error?.message ||
+    (error instanceof Error ? error.message : undefined) ||
     '알 수 없는 오류가 발생했습니다'
   );
 };

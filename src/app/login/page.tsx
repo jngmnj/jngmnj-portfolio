@@ -47,6 +47,26 @@ export default function LoginPage() {
     return password.length >= 6;
   };
 
+  // 실시간 이메일 검증
+  const handleEmailChange = () => {
+    const email = emailRef.current?.value || '';
+    if (email && !validateEmail(email)) {
+      setEmailError('올바른 이메일 형식을 입력해주세요.');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  // 실시간 비밀번호 검증
+  const handlePasswordChange = () => {
+    const password = passwordRef.current?.value || '';
+    if (password && !validatePassword(password)) {
+      setPasswordError('비밀번호는 최소 6자 이상이어야 합니다.');
+    } else {
+      setPasswordError('');
+    }
+  };
+
   // 로그인
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,6 +121,11 @@ export default function LoginPage() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다';
+      setToast({ 
+        message: `Google 로그인 실패: ${errorMessage}`, 
+        type: 'error' 
+      });
     }
   };
 
@@ -136,6 +161,7 @@ export default function LoginPage() {
                   ref={emailRef}
                   placeholder="이메일"
                   disabled={isLoading}
+                  onChange={handleEmailChange}
                 />
                 {emailError && (
                   <p className="mt-1 text-sm text-red-600">{emailError}</p>
@@ -147,12 +173,13 @@ export default function LoginPage() {
                   ref={passwordRef}
                   placeholder="비밀번호"
                   disabled={isLoading}
+                  onChange={handlePasswordChange}
                 />
                 {passwordError && (
                   <p className="mt-1 text-sm text-red-600">{passwordError}</p>
                 )}
               </div>
-              <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
+              <div>
                 <Checkbox
                   id="remember"
                   checked={rememberEmail}
@@ -161,13 +188,6 @@ export default function LoginPage() {
                 >
                   이메일 저장
                 </Checkbox>
-                <button
-                  type="button"
-                  className="link-text cursor-pointer text-left sm:text-right"
-                  disabled={isLoading}
-                >
-                  비밀번호 찾기
-                </button>
               </div>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? '로그인 중...' : '로그인'}
