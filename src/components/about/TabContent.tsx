@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import myData, { icons } from '../../data/MyData';
 
@@ -97,9 +98,35 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
 
   return (
     <div className="overflow-x-hidden overflow-y-auto">
-      <div className="mb-6 text-4xl">{data.name}</div>
-      <p className="mb-6 leading-6">{data.description}</p>
-      {renderContent()}
+      <motion.div
+        className="mb-6 text-4xl"
+        key={`title-${tabIndex}`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        {data.name}
+      </motion.div>
+      <motion.p
+        className="mb-6 leading-6"
+        key={`description-${tabIndex}`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
+        {data.description}
+      </motion.p>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tabIndex}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+          {renderContent()}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

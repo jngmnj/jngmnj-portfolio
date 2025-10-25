@@ -9,7 +9,7 @@ import {
 } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { auth, db } from '../../firebaseConfig';
 
 export const useAuth = () => {
@@ -123,3 +123,29 @@ export const useTags = () =>
 //     },
 //   });
 // };
+
+/**
+ * 모달이 열릴 때 body의 스크롤을 막는 hook
+ * @param isLocked - 모달이 열려있는지 여부
+ */
+export const useScrollLock = (isLocked: boolean) => {
+  useEffect(() => {
+    if (isLocked) {
+      // 현재 스크롤 위치 저장
+      const scrollY = window.scrollY;
+
+      // body에 스크롤 방지 스타일 적용
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+
+      return () => {
+        // 스크롤 복원
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isLocked]);
+};
