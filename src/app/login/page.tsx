@@ -3,38 +3,116 @@
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/CheckBox';
 import Input from '@/components/common/Input';
+import Toast from '@/components/common/Toast';
 import { useAuth } from '@/utils/hooks';
+import storage from '@/utils/storage';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function LoginPage() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const [rememberEmail, setRememberEmail] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [toast, setToast] = useState<{
+    message: string;
+    type: 'success' | 'error' | 'info' | 'warning';
+  } | null>(null);
+
   const router = useRouter();
   const { signInWithGoogle, signIn } = useAuth();
+
+  // 저장된 이메일 불러오기
+  useEffect(() => {
+    const savedEmail = storage.get<string>('savedEmail');
+    if (savedEmail && emailRef.current) {
+      emailRef.current.value = savedEmail;
+      setRememberEmail(true);
+    }
+  }, []);
+
+  // 이메일 형식 검증
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // 비밀번호 길이 검증
+  const validatePassword = (password: string): boolean => {
+    return password.length >= 6;
+  };
 
   // 로그인
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+    const email = emailRef.current?.value || '';
+    const password = passwordRef.current?.value || '';
+
+    // 입력값 검증
     if (!email || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
+      setToast({ message: '이메일과 비밀번호를 입력해주세요.', type: 'error' });
       return;
     }
-    const { success, error } = await signIn(email, password);
-    if (success) {
-      router.push('/');
+
+    // 이메일 형식 검증
+    if (!validateEmail(email)) {
+      setEmailError('올바른 이메일 형식을 입력해주세요.');
+      return;
     } else {
-      alert(`로그인 실패: ${error}`);
+      setEmailError('');
+    }
+
+    // 비밀번호 길이 검증
+    if (!validatePassword(password)) {
+      setPasswordError('비밀번호는 최소 6자 이상이어야 합니다.');
+      return;
+    } else {
+      setPasswordError('');
+    }
+
+    setIsLoading(true);
+    const { success, error } = await signIn(email, password);
+    setIsLoading(false);
+
+    if (success) {
+      // 이메일 저장
+      if (rememberEmail) {
+        storage.set('savedEmail', email);
+      } else {
+        storage.remove('savedEmail');
+      }
+      setToast({ message: '로그인에 성공했습니다.', type: 'success' });
+      setTimeout(() => router.push('/'), 1000);
+    } else {
+      setToast({ message: `로그인 실패: ${error}`, type: 'error' });
+    }
+  };
+
+  // Google 로그인
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      await signInWithGoogle();
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="bg-bg-login h-full min-h-full">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <div className="container py-6 md:py-12">
         <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
           <div className="hidden w-full md:block md:w-1/2">
@@ -52,26 +130,57 @@ export default function LoginPage() {
               className="mt-6 mb-4 flex flex-col gap-4"
               onSubmit={handleSubmit}
             >
-              <Input type="email" ref={emailRef} placeholder="이메일" />
-              <Input type="password" ref={passwordRef} placeholder="비밀번호" />
+              <div>
+                <Input
+                  type="email"
+                  ref={emailRef}
+                  placeholder="이메일"
+                  disabled={isLoading}
+                />
+                {emailError && (
+                  <p className="mt-1 text-sm text-red-600">{emailError}</p>
+                )}
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  ref={passwordRef}
+                  placeholder="비밀번호"
+                  disabled={isLoading}
+                />
+                {passwordError && (
+                  <p className="mt-1 text-sm text-red-600">{passwordError}</p>
+                )}
+              </div>
               <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
-                <Checkbox id="remember">이메일 저장</Checkbox>
+                <Checkbox
+                  id="remember"
+                  checked={rememberEmail}
+                  onChange={(e) => setRememberEmail(e.target.checked)}
+                  disabled={isLoading}
+                >
+                  이메일 저장
+                </Checkbox>
                 <button
                   type="button"
                   className="link-text cursor-pointer text-left sm:text-right"
+                  disabled={isLoading}
                 >
                   비밀번호 찾기
                 </button>
               </div>
-              <Button type="submit">로그인</Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? '로그인 중...' : '로그인'}
+              </Button>
             </form>
             {/* 간편로그인 */}
             <div>
               <Button
-                type="submit"
+                type="button"
                 color="linePrimary"
                 className="mb-4 flex w-full items-center justify-center gap-2"
-                onClick={signInWithGoogle}
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
               >
                 <FcGoogle />
                 Sign in with Google
@@ -88,6 +197,13 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
