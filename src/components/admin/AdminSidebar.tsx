@@ -60,72 +60,107 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
     <>
       <div
         className={cn(
-          `fixed left-0 top-0 z-10 h-full max-h-screen border-r border-r-gray-200 bg-white p-4 transition-all duration-300`,
+          `fixed top-0 left-0 z-10 h-full max-h-screen border-r border-r-gray-200 bg-white p-4 transition-all duration-300`,
           isOpen ? 'w-60' : 'w-20'
         )}
         onClick={() => handleOpen(true)}
       >
-        <div className="mt-4 text-center">
-          <Link href="/" className="text-center">
-            <Image
-              src="/images/common/logo.svg"
-              alt="logo"
-              width={140}
-              height={40}
-              className="mx-auto"
-            />
+        <div className="mt-4 overflow-hidden text-center">
+          <Link href="/" className="flex items-center justify-center gap-2">
+            <div className="bg-seagull-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white">
+              <Image
+                src="/favicon/android-chrome-192x192.png"
+                alt="logo"
+                width={32}
+                height={32}
+                className="brightness-0 invert-[1]"
+              />
+            </div>
+            <div className="overflow-hidden">
+              <Image
+                src="/images/common/logo.svg"
+                alt="logo"
+                width={120}
+                height={34}
+                className="-ml-3.5 h-8 w-auto"
+              />
+            </div>
           </Link>
         </div>
         <div className="mt-4">
-          <div className="flex items-center gap-2 rounded-md bg-gray-100 px-2 py-3">
-            <div className="relative size-10 overflow-hidden rounded-full">
+          <div
+            className={`flex items-center rounded-md bg-gray-100 px-2 py-3 ${isOpen ? 'gap-2' : 'justify-center'}`}
+          >
+            <div className="relative size-8 shrink-0 overflow-hidden rounded-full">
               <Image
                 src={userData?.photoURL || '/images/common/img_user.png'}
                 alt={userData?.displayName || 'no-profile'}
                 layout="fill"
               />
             </div>
-            <div>
+            <div className="overflow-hidden whitespace-nowrap">
               <p className="font-semibold">{userData?.displayName}</p>
               <p className="text-xs text-gray-500">{userData?.email}</p>
             </div>
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-2">
-          <Link href="/admin">
-            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
-              <GoHome />
-              <span>HOME</span>
+          <Link href="/admin" title="관리자 홈">
+            <div
+              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoHome className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">HOME</span>
             </div>
           </Link>
-          <Link href="/admin/projects">
-            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
-              <GoStack />
-              <span>프로젝트 관리</span>
+          <Link href="/admin/projects" title="프로젝트 관리">
+            <div
+              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoStack className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">
+                프로젝트 관리
+              </span>
             </div>
           </Link>
-          <Link href="/admin/offers">
-            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
-              <GoNorthStar />
-              <span>메인페이지 관리</span>
+          <Link href="/admin/offers" title="메인페이지 관리">
+            <div
+              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoNorthStar className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">
+                메인페이지 관리
+              </span>
             </div>
           </Link>
-          <Link href="/admin/users">
-            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
-              <GoPeople />
-              <span>회원 관리</span>
+          <Link href="/admin/users" title="회원 관리">
+            <div
+              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoPeople className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">
+                회원 관리
+              </span>
             </div>
           </Link>
-          <Link href="/admin/contact">
-            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
-              <GoHeart />
-              <span>문의/방명록</span>
+          <Link href="/admin/contact" title="문의/방명록">
+            <div
+              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoHeart className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">
+                문의/방명록
+              </span>
             </div>
           </Link>
-          <Link href="/admin/setting">
-            <div className="flex items-center gap-4 rounded-2xl px-2 py-3 font-semibold text-gray-500 transition hover:text-seagull-500">
-              <GoTools />
-              <span>사이트 관리</span>
+          <Link href="/admin/setting" title="사이트 관리">
+            <div
+              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoTools className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">
+                사이트 관리
+              </span>
             </div>
           </Link>
         </div>
