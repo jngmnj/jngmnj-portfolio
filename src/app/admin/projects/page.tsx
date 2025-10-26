@@ -17,7 +17,7 @@ export default function AdminProjectsPage() {
             setEditingProject(null);
             setShowForm(true);
           }}
-          className="bg-seagull-500 hover:bg-seagull-600 rounded-lg px-6 py-2 text-white transition"
+          className="bg-seagull-500 hover:bg-seagull-600 cursor-pointer rounded-lg px-6 py-2 text-white transition"
         >
           + 새 프로젝트
         </button>

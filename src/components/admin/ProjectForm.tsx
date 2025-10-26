@@ -1,11 +1,10 @@
 'use client';
 
-import ImageUploader from '@/components/blog/ImageUploader';
 import Button from '@/components/common/Button';
-import FormInput from '@/components/common/FormInput';
 import Input from '@/components/common/Input';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface ProjectFormProps {
   editingProject?: any;
@@ -20,34 +19,68 @@ export default function ProjectForm({
 }: ProjectFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    title: editingProject?.title || '',
-    description: editingProject?.description || '',
-    image: editingProject?.image || '',
-    technologies: editingProject?.technologies || [],
-    githubUrl: editingProject?.githubUrl || '',
-    liveUrl: editingProject?.liveUrl || '',
-    category: editingProject?.category || 'Web Development',
+  const [techInput, setTechInput] = useState('');
+  const [responsibilityInput, setResponsibilityInput] = useState('');
+  const [featureInput, setFeatureInput] = useState('');
+  const [challengeInput, setChallengeInput] = useState('');
+  const [resultInput, setResultInput] = useState('');
+  const [imageInput, setImageInput] = useState('');
+  const [techStackCategory, setTechStackCategory] = useState('frontend');
+  const [techStackInput, setTechStackInput] = useState('');
+
+  const {
+    register,
+    handleSubmit: handleFormSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: editingProject?.title || '',
+      description: editingProject?.description || '',
+      image: editingProject?.image || '',
+      technologies: editingProject?.technologies || [],
+      githubUrl: editingProject?.githubUrl || '',
+      liveUrl: editingProject?.liveUrl || '',
+      category: editingProject?.category || 'Web Development',
+      // Detail fields
+      detail: editingProject?.detail || {
+        overview: '',
+        features: [],
+        images: [],
+        techStack: {},
+        timeline: {
+          startDate: '',
+          endDate: '',
+          duration: '',
+        },
+        team: {
+          size: 1,
+          role: '',
+          responsibilities: [],
+        },
+        contributions: [],
+        challenges: [],
+        results: [],
+      },
+    },
   });
 
-  const [techInput, setTechInput] = useState('');
+  const formData = watch();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: any) => {
     setLoading(true);
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('image', formData.image);
-      formDataToSend.append(
-        'technologies',
-        JSON.stringify(formData.technologies)
-      );
-      formDataToSend.append('githubUrl', formData.githubUrl);
-      formDataToSend.append('liveUrl', formData.liveUrl);
-      formDataToSend.append('category', formData.category);
+      formDataToSend.append('title', data.title);
+      formDataToSend.append('description', data.description);
+      formDataToSend.append('image', data.image);
+      formDataToSend.append('technologies', JSON.stringify(data.technologies));
+      formDataToSend.append('githubUrl', data.githubUrl);
+      formDataToSend.append('liveUrl', data.liveUrl || '');
+      formDataToSend.append('category', data.category);
+      formDataToSend.append('detail', JSON.stringify(data.detail));
 
       const response = await fetch('/api/projects/create', {
         method: 'POST',
@@ -70,19 +103,18 @@ export default function ProjectForm({
 
   const addTechnology = () => {
     if (techInput.trim()) {
-      setFormData({
-        ...formData,
-        technologies: [...formData.technologies, techInput.trim()],
-      });
+      const currentTechs = formData.technologies || [];
+      setValue('technologies', [...currentTechs, techInput.trim()]);
       setTechInput('');
     }
   };
 
   const removeTechnology = (index: number) => {
-    setFormData({
-      ...formData,
-      technologies: formData.technologies.filter((_, i) => i !== index),
-    });
+    const currentTechs = formData.technologies || [];
+    setValue(
+      'technologies',
+      currentTechs.filter((_: string, i: number) => i !== index)
+    );
   };
 
   return (
@@ -91,47 +123,59 @@ export default function ProjectForm({
         {editingProject ? '프로젝트 수정' : '새 프로젝트'}
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <FormInput
-          label="제목"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          required
-        />
-
+      <form onSubmit={handleFormSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="mb-2 block text-sm font-medium">설명</label>
-          <textarea
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-            rows={4}
-            className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">이미지 URL</label>
-          <div className="mb-2">
-            <ImageUploader
-              onImageUpload={(url) => setFormData({ ...formData, image: url })}
-            />
-          </div>
+          <label className="mb-2 block text-sm font-medium">
+            제목 <span className="text-red-500">*</span>
+          </label>
           <Input
             type="text"
-            value={formData.image}
-            onChange={(e) =>
-              setFormData({ ...formData, image: e.target.value })
-            }
-            placeholder="이미지 URL을 입력하거나 업로드하세요"
-            required
+            {...register('title', { required: '제목을 입력해주세요.' })}
+            placeholder="프로젝트 제목을 입력하세요"
           />
+          {errors.title && (
+            <p className="mt-1 text-xs text-red-500">
+              {String(errors.title?.message)}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium">기술 스택</label>
+          <label className="mb-2 block text-sm font-medium">
+            설명 <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            {...register('description', { required: '설명을 입력해주세요.' })}
+            rows={4}
+            className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+          />
+          {errors.description && (
+            <p className="mt-1 text-xs text-red-500">
+              {String(errors.description?.message)}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            이미지 URL <span className="text-red-500">*</span>
+          </label>
+          <Input
+            type="text"
+            {...register('image', { required: '이미지 URL을 입력해주세요.' })}
+            placeholder="이미지 URL을 입력하세요"
+          />
+          {errors.image && (
+            <p className="mt-1 text-xs text-red-500">
+              {String(errors.image?.message)}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            기술 스택 <span className="text-red-500">*</span>
+          </label>
           <div className="flex gap-2">
             <Input
               type="text"
@@ -150,7 +194,7 @@ export default function ProjectForm({
             </Button>
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
-            {formData.technologies.map((tech, index) => (
+            {formData.technologies.map((tech: string, index: number) => (
               <span
                 key={index}
                 className="bg-seagull-100 text-seagull-700 inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm"
@@ -168,47 +212,569 @@ export default function ProjectForm({
           </div>
         </div>
 
-        <FormInput
-          label="GitHub URL"
-          type="url"
-          value={formData.githubUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, githubUrl: e.target.value })
-          }
-          required
-        />
-
-        <FormInput
-          label="Live URL (선택)"
-          type="url"
-          value={formData.liveUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, liveUrl: e.target.value })
-          }
-        />
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            GitHub URL <span className="text-red-500">*</span>
+          </label>
+          <Input
+            type="url"
+            {...register('githubUrl', {
+              required: 'GitHub URL을 입력해주세요.',
+            })}
+            placeholder="https://github.com/..."
+          />
+          {errors.githubUrl && (
+            <p className="mt-1 text-xs text-red-500">
+              {String(errors.githubUrl?.message)}
+            </p>
+          )}
+        </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium">카테고리</label>
+          <label className="mb-2 block text-sm font-medium">
+            Live URL (선택)
+          </label>
+          <Input
+            type="url"
+            {...register('liveUrl')}
+            placeholder="https://..."
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            카테고리 <span className="text-red-500">*</span>
+          </label>
           <select
-            value={formData.category}
-            onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
-            }
+            {...register('category', { required: '카테고리를 선택해주세요.' })}
             className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
-            required
           >
             <option value="Web Development">Web Development</option>
             <option value="Mobile Development">Mobile Development</option>
             <option value="Desktop Application">Desktop Application</option>
             <option value="Other">Other</option>
           </select>
+          {errors.category && (
+            <p className="mt-1 text-xs text-red-500">
+              {String(errors.category?.message)}
+            </p>
+          )}
+        </div>
+
+        {/* Detail Section */}
+        <div className="mt-8 border-t pt-6">
+          <h3 className="mb-4 text-xl font-semibold">상세 정보</h3>
+
+          <div className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium">Overview</label>
+              <textarea
+                {...register('detail.overview')}
+                rows={3}
+                className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+                placeholder="프로젝트 개요를 입력하세요"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">Timeline</label>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="mb-1 block text-xs text-gray-600">
+                    시작일
+                  </label>
+                  <Input
+                    type="text"
+                    {...register('detail.timeline.startDate')}
+                    placeholder="2024.01"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-gray-600">
+                    종료일
+                  </label>
+                  <Input
+                    type="text"
+                    {...register('detail.timeline.endDate')}
+                    placeholder="2024.12"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-gray-600">
+                    기간
+                  </label>
+                  <Input
+                    type="text"
+                    {...register('detail.timeline.duration')}
+                    placeholder="12개월"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">Team</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-xs text-gray-600">
+                    팀 크기
+                  </label>
+                  <Input
+                    type="number"
+                    {...register('detail.team.size', { valueAsNumber: true })}
+                    placeholder="1"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-gray-600">
+                    역할
+                  </label>
+                  <Input
+                    type="text"
+                    {...register('detail.team.role')}
+                    placeholder="프론트엔드 개발자"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Responsibilities
+              </label>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={responsibilityInput}
+                  onChange={(e) => setResponsibilityInput(e.target.value)}
+                  placeholder="담당 업무 입력 후 Enter"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (responsibilityInput.trim()) {
+                        const current =
+                          formData.detail?.team?.responsibilities || [];
+                        setValue('detail.team.responsibilities', [
+                          ...current,
+                          responsibilityInput.trim(),
+                        ]);
+                        setResponsibilityInput('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (responsibilityInput.trim()) {
+                      const current =
+                        formData.detail?.team?.responsibilities || [];
+                      setValue('detail.team.responsibilities', [
+                        ...current,
+                        responsibilityInput.trim(),
+                      ]);
+                      setResponsibilityInput('');
+                    }
+                  }}
+                >
+                  추가
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.detail?.team?.responsibilities?.map(
+                  (resp: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
+                    >
+                      {resp}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const current =
+                            formData.detail?.team?.responsibilities || [];
+                          setValue(
+                            'detail.team.responsibilities',
+                            current.filter(
+                              (_: string, i: number) => i !== index
+                            )
+                          );
+                        }}
+                        className="ml-1 text-blue-700 hover:text-blue-900"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">Features</label>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={featureInput}
+                  onChange={(e) => setFeatureInput(e.target.value)}
+                  placeholder="기능 입력 후 Enter"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (featureInput.trim()) {
+                        const current = formData.detail?.features || [];
+                        setValue('detail.features', [
+                          ...current,
+                          featureInput.trim(),
+                        ]);
+                        setFeatureInput('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (featureInput.trim()) {
+                      const current = formData.detail?.features || [];
+                      setValue('detail.features', [
+                        ...current,
+                        featureInput.trim(),
+                      ]);
+                      setFeatureInput('');
+                    }
+                  }}
+                >
+                  추가
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.detail?.features?.map(
+                  (feature: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-sm text-green-700"
+                    >
+                      {feature}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const current = formData.detail?.features || [];
+                          setValue(
+                            'detail.features',
+                            current.filter(
+                              (_: string, i: number) => i !== index
+                            )
+                          );
+                        }}
+                        className="ml-1 text-green-700 hover:text-green-900"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Challenges
+              </label>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={challengeInput}
+                  onChange={(e) => setChallengeInput(e.target.value)}
+                  placeholder="도전 과제 입력 후 Enter"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (challengeInput.trim()) {
+                        const current = formData.detail?.challenges || [];
+                        setValue('detail.challenges', [
+                          ...current,
+                          challengeInput.trim(),
+                        ]);
+                        setChallengeInput('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (challengeInput.trim()) {
+                      const current = formData.detail?.challenges || [];
+                      setValue('detail.challenges', [
+                        ...current,
+                        challengeInput.trim(),
+                      ]);
+                      setChallengeInput('');
+                    }
+                  }}
+                >
+                  추가
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.detail?.challenges?.map(
+                  (challenge: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-1 text-sm text-red-700"
+                    >
+                      {challenge}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const current = formData.detail?.challenges || [];
+                          setValue(
+                            'detail.challenges',
+                            current.filter(
+                              (_: string, i: number) => i !== index
+                            )
+                          );
+                        }}
+                        className="ml-1 text-red-700 hover:text-red-900"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">Results</label>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={resultInput}
+                  onChange={(e) => setResultInput(e.target.value)}
+                  placeholder="결과 입력 후 Enter"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (resultInput.trim()) {
+                        const current = formData.detail?.results || [];
+                        setValue('detail.results', [
+                          ...current,
+                          resultInput.trim(),
+                        ]);
+                        setResultInput('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (resultInput.trim()) {
+                      const current = formData.detail?.results || [];
+                      setValue('detail.results', [
+                        ...current,
+                        resultInput.trim(),
+                      ]);
+                      setResultInput('');
+                    }
+                  }}
+                >
+                  추가
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.detail?.results?.map(
+                  (result: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-700"
+                    >
+                      {result}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const current = formData.detail?.results || [];
+                          setValue(
+                            'detail.results',
+                            current.filter(
+                              (_: string, i: number) => i !== index
+                            )
+                          );
+                        }}
+                        className="ml-1 text-purple-700 hover:text-purple-900"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">Images</label>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={imageInput}
+                  onChange={(e) => setImageInput(e.target.value)}
+                  placeholder="이미지 URL 입력 후 Enter"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (imageInput.trim()) {
+                        const current = formData.detail?.images || [];
+                        setValue('detail.images', [
+                          ...current,
+                          imageInput.trim(),
+                        ]);
+                        setImageInput('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (imageInput.trim()) {
+                      const current = formData.detail?.images || [];
+                      setValue('detail.images', [
+                        ...current,
+                        imageInput.trim(),
+                      ]);
+                      setImageInput('');
+                    }
+                  }}
+                >
+                  추가
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.detail?.images?.map((img: string, index: number) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700"
+                  >
+                    {img}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = formData.detail?.images || [];
+                        setValue(
+                          'detail.images',
+                          current.filter((_: string, i: number) => i !== index)
+                        );
+                      }}
+                      className="ml-1 text-yellow-700 hover:text-yellow-900"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Tech Stack
+              </label>
+              <div className="flex gap-2">
+                <select
+                  value={techStackCategory}
+                  onChange={(e) => setTechStackCategory(e.target.value)}
+                  className="focus:border-seagull-500 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+                >
+                  <option value="frontend">Frontend</option>
+                  <option value="styling">Styling</option>
+                  <option value="deployment">Deployment</option>
+                  <option value="tools">Tools</option>
+                  <option value="stateManagement">State Management</option>
+                  <option value="backend">Backend</option>
+                  <option value="realtime">Realtime</option>
+                  <option value="ai">AI</option>
+                  <option value="optimization">Optimization</option>
+                </select>
+                <Input
+                  type="text"
+                  value={techStackInput}
+                  onChange={(e) => setTechStackInput(e.target.value)}
+                  placeholder="기술 입력 후 Enter"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (techStackInput.trim()) {
+                        const current =
+                          formData.detail?.techStack?.[techStackCategory] || [];
+                        setValue(`detail.techStack.${techStackCategory}`, [
+                          ...current,
+                          techStackInput.trim(),
+                        ]);
+                        setTechStackInput('');
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (techStackInput.trim()) {
+                      const current =
+                        formData.detail?.techStack?.[techStackCategory] || [];
+                      setValue(`detail.techStack.${techStackCategory}`, [
+                        ...current,
+                        techStackInput.trim(),
+                      ]);
+                      setTechStackInput('');
+                    }
+                  }}
+                >
+                  추가
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.detail?.techStack?.[techStackCategory]?.map(
+                  (tech: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-700"
+                    >
+                      {tech}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const current =
+                            formData.detail?.techStack?.[techStackCategory] ||
+                            [];
+                          setValue(
+                            `detail.techStack.${techStackCategory}`,
+                            current.filter(
+                              (_: string, i: number) => i !== index
+                            )
+                          );
+                        }}
+                        className="ml-1 text-indigo-700 hover:text-indigo-900"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-4">
           <Button type="submit" disabled={loading}>
             {loading ? '등록 중...' : '등록'}
           </Button>
-          <Button type="button" onClick={onCancel} variant="secondary">
+          <Button
+            type="button"
+            onClick={onCancel}
+            className="bg-gray-500 hover:bg-gray-600"
+          >
             취소
           </Button>
         </div>
