@@ -82,8 +82,14 @@ export default function ProjectForm({
       formDataToSend.append('category', data.category);
       formDataToSend.append('detail', JSON.stringify(data.detail));
 
-      const response = await fetch('/api/projects/create', {
-        method: 'POST',
+      // 수정 모드일 때는 PUT, 생성 모드일 때는 POST
+      const url = editingProject
+        ? `/api/projects/${editingProject.id}`
+        : '/api/projects/create';
+      const method = editingProject ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         body: formDataToSend,
       });
 
@@ -91,11 +97,19 @@ export default function ProjectForm({
         onSuccess();
         router.refresh();
       } else {
-        alert('프로젝트 등록에 실패했습니다.');
+        alert(
+          editingProject
+            ? '프로젝트 수정에 실패했습니다.'
+            : '프로젝트 등록에 실패했습니다.'
+        );
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('프로젝트 등록 중 오류가 발생했습니다.');
+      alert(
+        editingProject
+          ? '프로젝트 수정 중 오류가 발생했습니다.'
+          : '프로젝트 등록 중 오류가 발생했습니다.'
+      );
     } finally {
       setLoading(false);
     }
@@ -768,7 +782,13 @@ export default function ProjectForm({
 
         <div className="flex gap-4">
           <Button type="submit" disabled={loading}>
-            {loading ? '등록 중...' : '등록'}
+            {loading
+              ? editingProject
+                ? '수정 중...'
+                : '등록 중...'
+              : editingProject
+                ? '수정'
+                : '등록'}
           </Button>
           <Button
             type="button"
