@@ -1,4 +1,10 @@
-import { doc, FirestoreError, Timestamp, updateDoc } from 'firebase/firestore';
+import {
+  deleteDoc,
+  doc,
+  FirestoreError,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '../../../../../firebaseConfig';
 
@@ -56,6 +62,24 @@ export async function PUT(
     return NextResponse.json({
       id: params.id,
       message: 'Updated successfully',
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(error as FirestoreError, { status: 400 });
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const projectRef = doc(db, 'projects', params.id);
+    await deleteDoc(projectRef);
+
+    return NextResponse.json({
+      id: params.id,
+      message: 'Deleted successfully',
     });
   } catch (error) {
     console.error('Error:', error);
