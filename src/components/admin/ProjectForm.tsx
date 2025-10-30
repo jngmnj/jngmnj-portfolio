@@ -30,6 +30,12 @@ export default function ProjectForm({
   const [techStackCategory, setTechStackCategory] =
     useState<TechStackCategory>('frontend');
   const [techStackInput, setTechStackInput] = useState('');
+  
+  // 이미지 업로드 방식 선택
+  const [thumbnailUploadType, setThumbnailUploadType] = useState<'upload' | 'url'>('upload');
+  const [galleryUploadType, setGalleryUploadType] = useState<'upload' | 'url'>('upload');
+  const [thumbnailUrlInput, setThumbnailUrlInput] = useState('');
+  const [galleryUrlInput, setGalleryUrlInput] = useState('');
 
   const {
     register,
@@ -186,13 +192,56 @@ export default function ProjectForm({
         </div>
 
         <div>
-          <ImageUploader
-            value={formData.image}
-            onChange={(url) => setValue('image', url as string)}
-            label="썸네일 이미지"
-            required
-            multiple={false}
-          />
+          <label className="mb-2 block text-sm font-medium">
+            썸네일 이미지 <span className="text-red-500">*</span>
+          </label>
+          
+          {/* 업로드 방식 선택 탭 */}
+          <div className="mb-3 flex gap-2 border-b border-gray-200">
+            <button
+              type="button"
+              onClick={() => setThumbnailUploadType('upload')}
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                thumbnailUploadType === 'upload'
+                  ? 'border-b-2 border-seagull-500 text-seagull-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              파일 업로드
+            </button>
+            <button
+              type="button"
+              onClick={() => setThumbnailUploadType('url')}
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                thumbnailUploadType === 'url'
+                  ? 'border-b-2 border-seagull-500 text-seagull-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              URL 입력
+            </button>
+          </div>
+
+          {thumbnailUploadType === 'upload' ? (
+            <ImageUploader
+              value={formData.image}
+              onChange={(url) => setValue('image', url as string)}
+              label=""
+              required
+              multiple={false}
+            />
+          ) : (
+            <Input
+              type="url"
+              value={thumbnailUrlInput}
+              onChange={(e) => {
+                setThumbnailUrlInput(e.target.value);
+                setValue('image', e.target.value);
+              }}
+              placeholder="https://example.com/image.jpg"
+            />
+          )}
+          
           {errors.image && (
             <p className="mt-1 text-xs text-red-500">
               {String(errors.image?.message)}
@@ -643,13 +692,107 @@ export default function ProjectForm({
             </div>
 
             <div>
-              <ImageUploader
-                value={formData.detail?.images || []}
-                onChange={(urls) => setValue('detail.images', urls as string[])}
-                label="상세 이미지 갤러리"
-                multiple
-                maxFiles={10}
-              />
+              <label className="mb-2 block text-sm font-medium">
+                상세 이미지 갤러리
+              </label>
+              
+              {/* 업로드 방식 선택 탭 */}
+              <div className="mb-3 flex gap-2 border-b border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setGalleryUploadType('upload')}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                    galleryUploadType === 'upload'
+                      ? 'border-b-2 border-seagull-500 text-seagull-600'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  파일 업로드
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGalleryUploadType('url')}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                    galleryUploadType === 'url'
+                      ? 'border-b-2 border-seagull-500 text-seagull-600'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  URL 입력
+                </button>
+              </div>
+
+              {galleryUploadType === 'upload' ? (
+                <ImageUploader
+                  value={formData.detail?.images || []}
+                  onChange={(urls) => setValue('detail.images', urls as string[])}
+                  label=""
+                  multiple
+                  maxFiles={10}
+                />
+              ) : (
+                <>
+                  <div className="flex gap-2">
+                    <Input
+                      type="url"
+                      value={galleryUrlInput}
+                      onChange={(e) => setGalleryUrlInput(e.target.value)}
+                      placeholder="이미지 URL 입력 후 Enter"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          if (galleryUrlInput.trim()) {
+                            const current = formData.detail?.images || [];
+                            setValue('detail.images', [
+                              ...current,
+                              galleryUrlInput.trim(),
+                            ]);
+                            setGalleryUrlInput('');
+                          }
+                        }
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        if (galleryUrlInput.trim()) {
+                          const current = formData.detail?.images || [];
+                          setValue('detail.images', [
+                            ...current,
+                            galleryUrlInput.trim(),
+                          ]);
+                          setGalleryUrlInput('');
+                        }
+                      }}
+                    >
+                      추가
+                    </Button>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {formData.detail?.images?.map((img: string, index: number) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700"
+                      >
+                        {img.length > 40 ? `${img.substring(0, 40)}...` : img}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = formData.detail?.images || [];
+                            setValue(
+                              'detail.images',
+                              current.filter((_: string, i: number) => i !== index)
+                            );
+                          }}
+                          className="ml-1 text-yellow-700 hover:text-yellow-900"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             <div>
