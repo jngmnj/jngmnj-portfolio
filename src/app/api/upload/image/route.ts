@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 // 허용된 파일 타입
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
-// 최대 파일 크기 (5MB)
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+// 최대 파일 크기 (100MB)
+const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
 /**
  * POST: 이미지 업로드
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     // 파일 크기 검증
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { error: '파일 크기는 5MB를 초과할 수 없습니다.' },
+        { error: '파일 크기는 100MB를 초과할 수 없습니다.' },
         { status: 400 }
       );
     }

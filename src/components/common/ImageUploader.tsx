@@ -25,7 +25,7 @@ export default function ImageUploader({
   onChange,
   multiple = false,
   maxFiles = 5,
-  maxSizeMB = 5,
+  maxSizeMB = 100,
   acceptedFormats = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
   label = '이미지',
   required = false,

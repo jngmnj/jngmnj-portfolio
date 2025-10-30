@@ -7,9 +7,9 @@ service firebase.storage {
       return request.resource.contentType.matches('image/.*');
     }
     
-    // 파일 크기 검증 함수 (5MB 이하)
+    // 파일 크기 검증 함수 (100MB 이하)
     function isValidSize() {
-      return request.resource.size < 5 * 1024 * 1024;
+      return request.resource.size < 100 * 1024 * 1024;
     }
     
     // 허용된 이미지 형식 검증
