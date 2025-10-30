@@ -2,11 +2,14 @@
 
 import ProjectForm from '@/components/admin/ProjectForm';
 import ProjectList from '@/components/admin/ProjectList';
+import { FirebaseProject } from '@/types';
 import { useState } from 'react';
 
 export default function AdminProjectsPage() {
   const [showForm, setShowForm] = useState(false);
-  const [editingProject, setEditingProject] = useState<any>(null);
+  const [editingProject, setEditingProject] = useState<FirebaseProject | null>(
+    null
+  );
 
   return (
     <div className="p-8">

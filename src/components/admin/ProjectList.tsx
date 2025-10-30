@@ -1,14 +1,15 @@
 'use client';
 
+import { FirebaseProject } from '@/types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface ProjectListProps {
-  onEdit: (project: any) => void;
+  onEdit: (project: FirebaseProject) => void;
 }
 
 export default function ProjectList({ onEdit }: ProjectListProps) {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<FirebaseProject[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -100,7 +101,9 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
               수정
             </button>
             <button
-              onClick={() => handleDelete(project.id, project.title)}
+              onClick={() =>
+                project.id && handleDelete(project.id, project.title)
+              }
               className="rounded-lg bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
             >
               삭제

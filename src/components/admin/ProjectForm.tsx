@@ -2,12 +2,13 @@
 
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
+import { FirebaseProject } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface ProjectFormProps {
-  editingProject?: any;
+  editingProject?: FirebaseProject | null;
   onCancel: () => void;
   onSuccess: () => void;
 }
@@ -25,7 +26,17 @@ export default function ProjectForm({
   const [challengeInput, setChallengeInput] = useState('');
   const [resultInput, setResultInput] = useState('');
   const [imageInput, setImageInput] = useState('');
-  const [techStackCategory, setTechStackCategory] = useState('frontend');
+  const [techStackCategory, setTechStackCategory] = useState<
+    | 'frontend'
+    | 'styling'
+    | 'deployment'
+    | 'tools'
+    | 'stateManagement'
+    | 'backend'
+    | 'realtime'
+    | 'ai'
+    | 'optimization'
+  >('frontend');
   const [techStackInput, setTechStackInput] = useState('');
 
   const {
@@ -697,7 +708,20 @@ export default function ProjectForm({
               <div className="flex gap-2">
                 <select
                   value={techStackCategory}
-                  onChange={(e) => setTechStackCategory(e.target.value)}
+                  onChange={(e) =>
+                    setTechStackCategory(
+                      e.target.value as
+                        | 'frontend'
+                        | 'styling'
+                        | 'deployment'
+                        | 'tools'
+                        | 'stateManagement'
+                        | 'backend'
+                        | 'realtime'
+                        | 'ai'
+                        | 'optimization'
+                    )
+                  }
                   className="focus:border-seagull-500 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
                 >
                   <option value="frontend">Frontend</option>
@@ -720,11 +744,13 @@ export default function ProjectForm({
                       e.preventDefault();
                       if (techStackInput.trim()) {
                         const current =
-                          formData.detail?.techStack?.[techStackCategory] || [];
-                        setValue(`detail.techStack.${techStackCategory}`, [
-                          ...current,
-                          techStackInput.trim(),
-                        ]);
+                          formData.detail?.techStack?.[
+                            techStackCategory as keyof typeof formData.detail.techStack
+                          ] || [];
+                        setValue(
+                          `detail.techStack.${techStackCategory}` as any,
+                          [...current, techStackInput.trim()]
+                        );
                         setTechStackInput('');
                       }
                     }
@@ -735,11 +761,13 @@ export default function ProjectForm({
                   onClick={() => {
                     if (techStackInput.trim()) {
                       const current =
-                        formData.detail?.techStack?.[techStackCategory] || [];
-                      setValue(`detail.techStack.${techStackCategory}`, [
-                        ...current,
-                        techStackInput.trim(),
-                      ]);
+                        formData.detail?.techStack?.[
+                          techStackCategory as keyof typeof formData.detail.techStack
+                        ] || [];
+                      setValue(
+                        `detail.techStack.${techStackCategory}` as any,
+                        [...current, techStackInput.trim()]
+                      );
                       setTechStackInput('');
                     }
                   }}
@@ -748,33 +776,32 @@ export default function ProjectForm({
                 </Button>
               </div>
               <div className="mt-2 flex flex-wrap gap-2">
-                {formData.detail?.techStack?.[techStackCategory]?.map(
-                  (tech: string, index: number) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-700"
+                {formData.detail?.techStack?.[
+                  techStackCategory as keyof typeof formData.detail.techStack
+                ]?.map((tech: string, index: number) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-700"
+                  >
+                    {tech}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current =
+                          formData.detail?.techStack?.[
+                            techStackCategory as keyof typeof formData.detail.techStack
+                          ] || [];
+                        setValue(
+                          `detail.techStack.${techStackCategory}` as any,
+                          current.filter((_: string, i: number) => i !== index)
+                        );
+                      }}
+                      className="ml-1 text-indigo-700 hover:text-indigo-900"
                     >
-                      {tech}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const current =
-                            formData.detail?.techStack?.[techStackCategory] ||
-                            [];
-                          setValue(
-                            `detail.techStack.${techStackCategory}`,
-                            current.filter(
-                              (_: string, i: number) => i !== index
-                            )
-                          );
-                        }}
-                        className="ml-1 text-indigo-700 hover:text-indigo-900"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  )
-                )}
+                      ×
+                    </button>
+                  </span>
+                ))}
               </div>
             </div>
           </div>
