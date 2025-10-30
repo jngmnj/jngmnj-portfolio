@@ -2,6 +2,7 @@
 
 import { PROJECT_CATEGORIES, TECH_STACK_CATEGORIES } from '@/app/lib/constants';
 import Button from '@/components/common/Button';
+import ImageUploader from '@/components/common/ImageUploader';
 import Input from '@/components/common/Input';
 import { FirebaseProject, TechStackCategory } from '@/types';
 import { useRouter } from 'next/navigation';
@@ -26,7 +27,6 @@ export default function ProjectForm({
   const [featureInput, setFeatureInput] = useState('');
   const [challengeInput, setChallengeInput] = useState('');
   const [resultInput, setResultInput] = useState('');
-  const [imageInput, setImageInput] = useState('');
   const [techStackCategory, setTechStackCategory] =
     useState<TechStackCategory>('frontend');
   const [techStackInput, setTechStackInput] = useState('');
@@ -186,13 +186,12 @@ export default function ProjectForm({
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium">
-            이미지 URL <span className="text-red-500">*</span>
-          </label>
-          <Input
-            type="text"
-            {...register('image', { required: '이미지 URL을 입력해주세요.' })}
-            placeholder="이미지 URL을 입력하세요"
+          <ImageUploader
+            value={formData.image}
+            onChange={(url) => setValue('image', url as string)}
+            label="썸네일 이미지"
+            required
+            multiple={false}
           />
           {errors.image && (
             <p className="mt-1 text-xs text-red-500">
@@ -644,66 +643,13 @@ export default function ProjectForm({
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">Images</label>
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  value={imageInput}
-                  onChange={(e) => setImageInput(e.target.value)}
-                  placeholder="이미지 URL 입력 후 Enter"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      if (imageInput.trim()) {
-                        const current = formData.detail?.images || [];
-                        setValue('detail.images', [
-                          ...current,
-                          imageInput.trim(),
-                        ]);
-                        setImageInput('');
-                      }
-                    }
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={() => {
-                    if (imageInput.trim()) {
-                      const current = formData.detail?.images || [];
-                      setValue('detail.images', [
-                        ...current,
-                        imageInput.trim(),
-                      ]);
-                      setImageInput('');
-                    }
-                  }}
-                >
-                  추가
-                </Button>
-              </div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {formData.detail?.images?.map((img: string, index: number) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700"
-                  >
-                    {img}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const current = formData.detail?.images || [];
-                        setValue(
-                          'detail.images',
-                          current.filter((_: string, i: number) => i !== index)
-                        );
-                      }}
-                      className="ml-1 text-yellow-700 hover:text-yellow-900"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
+              <ImageUploader
+                value={formData.detail?.images || []}
+                onChange={(urls) => setValue('detail.images', urls as string[])}
+                label="상세 이미지 갤러리"
+                multiple
+                maxFiles={10}
+              />
             </div>
 
             <div>
