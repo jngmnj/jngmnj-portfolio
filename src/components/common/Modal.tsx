@@ -1,13 +1,13 @@
+import { FirebaseProject } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
-import { Project } from '../../data/projects';
 import { useScrollLock } from '../../utils/hooks';
 
 interface ModalProps {
-  project: Project | null;
+  project: FirebaseProject | null;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
