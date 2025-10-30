@@ -1,17 +1,22 @@
+import { FirebaseProject } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
-import { Project } from '../../data/projects';
 import { useScrollLock } from '../../utils/hooks';
+import ProjectContributions from './ProjectContributions';
+import ProjectTechStack from './ProjectTechStack';
 
-interface ModalProps {
-  project: Project | null;
+interface ProjectDetailModalProps {
+  project: FirebaseProject | null;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal = ({ project, setIsModalOpen }: ModalProps) => {
+export default function ProjectDetailModal({
+  project,
+  setIsModalOpen,
+}: ProjectDetailModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
@@ -227,117 +232,12 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                 )}
 
                 {/* Contributions Section */}
-                {project.detail?.contributions && (
-                  <motion.div
-                    className="mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
-                  >
-                    <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                      주요 기여 내용
-                    </h2>
-                    <div className="space-y-6">
-                      {project.detail.contributions.map(
-                        (contribution, index) => (
-                          <motion.div
-                            key={index}
-                            className="rounded-lg border border-gray-200 bg-gray-50 p-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.7 + index * 0.1 }}
-                          >
-                            <h3 className="mb-3 text-lg font-semibold text-gray-900">
-                              {contribution.title}
-                            </h3>
-                            <div className="space-y-2">
-                              {contribution.details.map(
-                                (detail, detailIndex) => (
-                                  <div
-                                    key={detailIndex}
-                                    className="flex items-start gap-3"
-                                  >
-                                    <div className="bg-seagull-500 mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full" />
-                                    <div className="text-sm text-gray-600">
-                                      <span>{detail.text}</span>
-                                      {detail.link && (
-                                        <a
-                                          href={detail.link}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="bg-seagull-100 text-seagull-700 hover:bg-seagull-200 ml-2 inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium transition-colors"
-                                        >
-                                          <FaExternalLinkAlt className="h-2 w-2" />
-                                          {detail.linkText || '링크'}
-                                        </a>
-                                      )}
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          </motion.div>
-                        )
-                      )}
-                    </div>
-                  </motion.div>
-                )}
+                <ProjectContributions
+                  contributions={project.detail?.contributions}
+                />
 
                 {/* Tech Stack Section */}
-                {project.detail?.techStack && (
-                  <motion.div
-                    className="mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                  >
-                    <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                      기술 스택
-                    </h2>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                      {Object.entries(project.detail.techStack).map(
-                        ([category, techs]) => (
-                          <div
-                            key={category}
-                            className="rounded-lg bg-gray-50 p-4"
-                          >
-                            <h3 className="mb-2 font-semibold text-gray-900 capitalize">
-                              {category === 'stateManagement'
-                                ? '상태 관리'
-                                : category === 'realtime'
-                                  ? '실시간 통신'
-                                  : category === 'ai'
-                                    ? 'AI/ML'
-                                    : category === 'frontend'
-                                      ? '프론트엔드'
-                                      : category === 'styling'
-                                        ? '스타일링'
-                                        : category === 'deployment'
-                                          ? '배포'
-                                          : category === 'backend'
-                                            ? '백엔드'
-                                            : category === 'tools'
-                                              ? '도구'
-                                              : category === 'optimization'
-                                                ? '최적화'
-                                                : category}
-                            </h3>
-                            <div className="flex flex-wrap gap-2">
-                              {techs?.map((tech, index) => (
-                                <span
-                                  key={index}
-                                  className="bg-seagull-100 text-seagull-800 rounded-full px-3 py-1 text-sm font-medium"
-                                >
-                                  {tech}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </motion.div>
-                )}
+                <ProjectTechStack techStack={project.detail?.techStack} />
 
                 {/* Project Info Grid */}
                 {project.detail && (
@@ -360,19 +260,19 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                           <div className="flex justify-between">
                             <span className="text-gray-600">시작일:</span>
                             <span className="font-medium">
-                              {project.detail.timeline.startDate}
+                              {project.detail?.timeline?.startDate || '-'}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">종료일:</span>
                             <span className="font-medium">
-                              {project.detail.timeline.endDate}
+                              {project.detail?.timeline?.endDate || '-'}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">기간:</span>
                             <span className="font-medium">
-                              {project.detail.timeline.duration}
+                              {project.detail?.timeline?.duration || '-'}
                             </span>
                           </div>
                         </div>
@@ -387,17 +287,71 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                           <div className="flex justify-between">
                             <span className="text-gray-600">팀 규모:</span>
                             <span className="font-medium">
-                              {project.detail.team.size}명
+                              {project.detail?.team?.size || 1}명
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">역할:</span>
                             <span className="font-medium">
-                              {project.detail.team.role}
+                              {project.detail?.team?.role || '-'}
                             </span>
                           </div>
                         </div>
+                        {project.detail?.team?.responsibilities &&
+                          project.detail.team.responsibilities.length > 0 && (
+                            <div className="mt-3 border-t border-gray-200 pt-3">
+                              <h4 className="mb-2 text-sm font-semibold text-gray-700">
+                                담당 업무
+                              </h4>
+                              <ul className="space-y-1">
+                                {project.detail.team.responsibilities.map(
+                                  (resp, index) => (
+                                    <li
+                                      key={index}
+                                      className="flex items-start gap-2 text-sm text-gray-600"
+                                    >
+                                      <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
+                                      {resp}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )}
                       </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Project Images Gallery */}
+                {project.detail?.images && project.detail.images.length > 0 && (
+                  <motion.div
+                    className="mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.85 }}
+                  >
+                    <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                      프로젝트 이미지
+                    </h2>
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                      {project.detail.images.map((img, index) => (
+                        <motion.div
+                          key={index}
+                          className="relative h-48 overflow-hidden rounded-lg"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.9 + index * 0.1 }}
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <Image
+                            src={img}
+                            alt={`${project.title} - ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </motion.div>
+                      ))}
                     </div>
                   </motion.div>
                 )}
@@ -492,6 +446,4 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
       </motion.div>
     </AnimatePresence>
   );
-};
-
-export default Modal;
+}
