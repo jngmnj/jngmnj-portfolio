@@ -1,3 +1,4 @@
+import { FirebaseProject } from '@/types';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,16 +7,7 @@ import { FaGithub } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
 
 interface ProjectCardProps {
-  project: {
-    id: string;
-    title: string;
-    description: string;
-    image: string;
-    technologies: string[];
-    githubUrl: string;
-    liveUrl?: string;
-    category: string;
-  };
+  project: FirebaseProject;
   openModal: (id: string) => void;
 }
 
@@ -27,7 +19,7 @@ const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
       className="group cursor-pointer rounded-2xl border border-gray-200 bg-white"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => openModal(project.id)}
+      onClick={() => project.id && openModal(project.id)}
       whileHover={{
         y: -8,
         boxShadow:

@@ -57,3 +57,24 @@ export const LINKS = {
   chatbot: '/chatbot',
   tag: '/blog/tags',
 };
+
+// Project Tech Stack Categories
+export const TECH_STACK_CATEGORIES = [
+  { value: 'frontend', label: 'Frontend' },
+  { value: 'styling', label: 'Styling' },
+  { value: 'deployment', label: 'Deployment' },
+  { value: 'tools', label: 'Tools' },
+  { value: 'stateManagement', label: 'State Management' },
+  { value: 'backend', label: 'Backend' },
+  { value: 'realtime', label: 'Realtime' },
+  { value: 'ai', label: 'AI' },
+  { value: 'optimization', label: 'Optimization' },
+] as const;
+
+// Project Categories
+export const PROJECT_CATEGORIES = [
+  'Web Development',
+  'Mobile Development',
+  'Desktop Application',
+  'Other',
+] as const;
