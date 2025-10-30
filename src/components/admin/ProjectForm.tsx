@@ -80,19 +80,22 @@ export default function ProjectForm({
     });
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Partial<FirebaseProject>) => {
     setLoading(true);
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('title', data.title);
-      formDataToSend.append('description', data.description);
-      formDataToSend.append('image', data.image);
-      formDataToSend.append('technologies', JSON.stringify(data.technologies));
-      formDataToSend.append('githubUrl', data.githubUrl);
+      formDataToSend.append('title', data.title || '');
+      formDataToSend.append('description', data.description || '');
+      formDataToSend.append('image', data.image || '');
+      formDataToSend.append(
+        'technologies',
+        JSON.stringify(data.technologies || [])
+      );
+      formDataToSend.append('githubUrl', data.githubUrl || '');
       formDataToSend.append('liveUrl', data.liveUrl || '');
-      formDataToSend.append('category', data.category);
-      formDataToSend.append('detail', JSON.stringify(data.detail));
+      formDataToSend.append('category', data.category || '');
+      formDataToSend.append('detail', JSON.stringify(data.detail || {}));
 
       // 수정 모드일 때는 PUT, 생성 모드일 때는 POST
       const url = editingProject
