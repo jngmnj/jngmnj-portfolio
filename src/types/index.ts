@@ -1,6 +1,18 @@
 // import { FirebaseFirestore } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 
+// Project Tech Stack Categories
+export type TechStackCategory =
+  | 'frontend'
+  | 'styling'
+  | 'deployment'
+  | 'tools'
+  | 'stateManagement'
+  | 'backend'
+  | 'realtime'
+  | 'ai'
+  | 'optimization';
+
 export type Post = {
   id?: string; // Firestore 문서 ID (자동 생성)
   title: string; // 게시물 제목
@@ -29,6 +41,56 @@ export type Project = {
     github: string;
     demo: string;
   };
+};
+
+// Firebase용 Project 타입 (더 상세한 버전)
+export type FirebaseProject = {
+  id?: string;
+  title: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  githubUrl: string;
+  liveUrl?: string;
+  category: string;
+  detail?: {
+    overview: string;
+    features: string[];
+    images: string[];
+    techStack: {
+      frontend?: string[];
+      styling?: string[];
+      deployment?: string[];
+      tools?: string[];
+      stateManagement?: string[];
+      backend?: string[];
+      realtime?: string[];
+      ai?: string[];
+      optimization?: string[];
+    };
+    timeline: {
+      startDate: string;
+      endDate: string;
+      duration: string;
+    };
+    team: {
+      size: number;
+      role: string;
+      responsibilities: string[];
+    };
+    contributions?: {
+      title: string;
+      details: {
+        text: string;
+        link?: string;
+        linkText?: string;
+      }[];
+    }[];
+    challenges: string[];
+    results: string[];
+  };
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
 };
 
 export type User = {

@@ -9,7 +9,7 @@ import { cn } from '@/utils/style';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 const queryClient = new QueryClient();
 
@@ -57,14 +57,20 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 }
 
 function AdminLayout({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setIsOpen(true);
+  }, []);
 
   return (
     <>
       <AdminSidebar isOpen={isOpen} handleOpen={setIsOpen} />
       <div
         className={cn(
-          isOpen ? 'ml-60' : 'ml-20',
+          mounted && isOpen ? 'ml-60' : 'ml-20',
           'transition-all duration-300 ease-in-out'
         )}
       >
