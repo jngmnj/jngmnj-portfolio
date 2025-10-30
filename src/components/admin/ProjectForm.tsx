@@ -1,8 +1,9 @@
 'use client';
 
+import { PROJECT_CATEGORIES, TECH_STACK_CATEGORIES } from '@/app/lib/constants';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
-import { FirebaseProject } from '@/types';
+import { FirebaseProject, TechStackCategory } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,17 +27,8 @@ export default function ProjectForm({
   const [challengeInput, setChallengeInput] = useState('');
   const [resultInput, setResultInput] = useState('');
   const [imageInput, setImageInput] = useState('');
-  const [techStackCategory, setTechStackCategory] = useState<
-    | 'frontend'
-    | 'styling'
-    | 'deployment'
-    | 'tools'
-    | 'stateManagement'
-    | 'backend'
-    | 'realtime'
-    | 'ai'
-    | 'optimization'
-  >('frontend');
+  const [techStackCategory, setTechStackCategory] =
+    useState<TechStackCategory>('frontend');
   const [techStackInput, setTechStackInput] = useState('');
 
   const {
@@ -78,6 +70,15 @@ export default function ProjectForm({
   });
 
   const formData = watch();
+
+  // Helper function for techStack updates
+  const updateTechStack = (category: TechStackCategory, value: string[]) => {
+    const currentTechStack = formData.detail?.techStack || {};
+    setValue('detail.techStack', {
+      ...currentTechStack,
+      [category]: value,
+    });
+  };
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -274,10 +275,11 @@ export default function ProjectForm({
             {...register('category', { required: '카테고리를 선택해주세요.' })}
             className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
           >
-            <option value="Web Development">Web Development</option>
-            <option value="Mobile Development">Mobile Development</option>
-            <option value="Desktop Application">Desktop Application</option>
-            <option value="Other">Other</option>
+            {PROJECT_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
           </select>
           {errors.category && (
             <p className="mt-1 text-xs text-red-500">
@@ -709,30 +711,15 @@ export default function ProjectForm({
                 <select
                   value={techStackCategory}
                   onChange={(e) =>
-                    setTechStackCategory(
-                      e.target.value as
-                        | 'frontend'
-                        | 'styling'
-                        | 'deployment'
-                        | 'tools'
-                        | 'stateManagement'
-                        | 'backend'
-                        | 'realtime'
-                        | 'ai'
-                        | 'optimization'
-                    )
+                    setTechStackCategory(e.target.value as TechStackCategory)
                   }
                   className="focus:border-seagull-500 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
                 >
-                  <option value="frontend">Frontend</option>
-                  <option value="styling">Styling</option>
-                  <option value="deployment">Deployment</option>
-                  <option value="tools">Tools</option>
-                  <option value="stateManagement">State Management</option>
-                  <option value="backend">Backend</option>
-                  <option value="realtime">Realtime</option>
-                  <option value="ai">AI</option>
-                  <option value="optimization">Optimization</option>
+                  {TECH_STACK_CATEGORIES.map((category) => (
+                    <option key={category.value} value={category.value}>
+                      {category.label}
+                    </option>
+                  ))}
                 </select>
                 <Input
                   type="text"
@@ -744,13 +731,11 @@ export default function ProjectForm({
                       e.preventDefault();
                       if (techStackInput.trim()) {
                         const current =
-                          formData.detail?.techStack?.[
-                            techStackCategory as keyof typeof formData.detail.techStack
-                          ] || [];
-                        setValue(
-                          `detail.techStack.${techStackCategory}` as any,
-                          [...current, techStackInput.trim()]
-                        );
+                          formData.detail?.techStack?.[techStackCategory] || [];
+                        updateTechStack(techStackCategory, [
+                          ...current,
+                          techStackInput.trim(),
+                        ]);
                         setTechStackInput('');
                       }
                     }
@@ -761,13 +746,11 @@ export default function ProjectForm({
                   onClick={() => {
                     if (techStackInput.trim()) {
                       const current =
-                        formData.detail?.techStack?.[
-                          techStackCategory as keyof typeof formData.detail.techStack
-                        ] || [];
-                      setValue(
-                        `detail.techStack.${techStackCategory}` as any,
-                        [...current, techStackInput.trim()]
-                      );
+                        formData.detail?.techStack?.[techStackCategory] || [];
+                      updateTechStack(techStackCategory, [
+                        ...current,
+                        techStackInput.trim(),
+                      ]);
                       setTechStackInput('');
                     }
                   }}
@@ -776,32 +759,33 @@ export default function ProjectForm({
                 </Button>
               </div>
               <div className="mt-2 flex flex-wrap gap-2">
-                {formData.detail?.techStack?.[
-                  techStackCategory as keyof typeof formData.detail.techStack
-                ]?.map((tech: string, index: number) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-700"
-                  >
-                    {tech}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const current =
-                          formData.detail?.techStack?.[
-                            techStackCategory as keyof typeof formData.detail.techStack
-                          ] || [];
-                        setValue(
-                          `detail.techStack.${techStackCategory}` as any,
-                          current.filter((_: string, i: number) => i !== index)
-                        );
-                      }}
-                      className="ml-1 text-indigo-700 hover:text-indigo-900"
+                {formData.detail?.techStack?.[techStackCategory]?.map(
+                  (tech: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-700"
                     >
-                      ×
-                    </button>
-                  </span>
-                ))}
+                      {tech}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const current =
+                            formData.detail?.techStack?.[techStackCategory] ||
+                            [];
+                          updateTechStack(
+                            techStackCategory,
+                            current.filter(
+                              (_: string, i: number) => i !== index
+                            )
+                          );
+                        }}
+                        className="ml-1 text-indigo-700 hover:text-indigo-900"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                )}
               </div>
             </div>
           </div>

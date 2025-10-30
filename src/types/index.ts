@@ -1,6 +1,18 @@
 // import { FirebaseFirestore } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 
+// Project Tech Stack Categories
+export type TechStackCategory =
+  | 'frontend'
+  | 'styling'
+  | 'deployment'
+  | 'tools'
+  | 'stateManagement'
+  | 'backend'
+  | 'realtime'
+  | 'ai'
+  | 'optimization';
+
 export type Post = {
   id?: string; // Firestore 문서 ID (자동 생성)
   title: string; // 게시물 제목
