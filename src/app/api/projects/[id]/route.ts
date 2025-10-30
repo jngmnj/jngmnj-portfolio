@@ -10,9 +10,10 @@ import { db } from '../../../../../firebaseConfig';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const formData = await request.formData();
 
     const title = formData.get('title') as string;
@@ -56,11 +57,11 @@ export async function PUT(
       updatedAt: updatedAtTimestamp,
     };
 
-    const projectRef = doc(db, 'projects', params.id);
+    const projectRef = doc(db, 'projects', id);
     await updateDoc(projectRef, projectUpdate);
 
     return NextResponse.json({
-      id: params.id,
+      id,
       message: 'Updated successfully',
     });
   } catch (error) {
@@ -71,14 +72,15 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectRef = doc(db, 'projects', params.id);
+    const { id } = await params;
+    const projectRef = doc(db, 'projects', id);
     await deleteDoc(projectRef);
 
     return NextResponse.json({
-      id: params.id,
+      id,
       message: 'Deleted successfully',
     });
   } catch (error) {
