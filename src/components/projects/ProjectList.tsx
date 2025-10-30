@@ -2,8 +2,8 @@
 
 import { FirebaseProject } from '@/types';
 import { useEffect, useState } from 'react';
-import Modal from '../common/Modal';
 import ProjectCard from './ProjectCard';
+import ProjectDetailModal from './ProjectDetailModal';
 
 const ProjectList = () => {
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
@@ -103,7 +103,10 @@ const ProjectList = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <Modal project={selectedProject} setIsModalOpen={setIsModalOpen} />
+        <ProjectDetailModal
+          project={selectedProject}
+          setIsModalOpen={setIsModalOpen}
+        />
       )}
     </>
   );
