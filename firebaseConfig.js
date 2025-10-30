@@ -5,34 +5,26 @@ import firebase from 'firebase/compat/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase configuration from environment variables
 const firebaseConfig = {
-  apiKey: 'AIzaSyAr4Sqzp9Vah87TFRVpyW04a8q3kixnDRE',
-  authDomain: 'jngmnj-portfolio.firebaseapp.com',
-  projectId: 'jngmnj-portfolio',
-  storageBucket: 'jngmnj-portfolio.appspot.com',
-  messagingSenderId: '215341067315',
-  appId: '1:215341067315:web:0f22638b2b5dbcfce68746',
-  measurementId: 'G-RZM0H4WBY4',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// let analytics = null;
-// if (app.name && typeof window !== 'undefined') {
-//   analytics = getAnalytics(app);
-// }
 
-// firestore
+// Firestore
 const db = getFirestore(app);
 const Firebase = firebase;
 
-// storage
+// Storage
 const storage = getStorage(app);
 
 export { app, auth, db, Firebase, storage };
