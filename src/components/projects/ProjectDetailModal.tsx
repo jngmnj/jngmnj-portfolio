@@ -299,7 +299,7 @@ export default function ProjectDetailModal({
                         </div>
                         {project.detail?.team?.responsibilities &&
                           project.detail.team.responsibilities.length > 0 && (
-                            <div className="mt-3 pt-3 border-t border-gray-200">
+                            <div className="mt-3 border-t border-gray-200 pt-3">
                               <h4 className="mb-2 text-sm font-semibold text-gray-700">
                                 담당 업무
                               </h4>
@@ -310,7 +310,7 @@ export default function ProjectDetailModal({
                                       key={index}
                                       className="flex items-start gap-2 text-sm text-gray-600"
                                     >
-                                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-seagull-500" />
+                                      <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
                                       {resp}
                                     </li>
                                   )
