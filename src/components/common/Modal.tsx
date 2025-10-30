@@ -360,19 +360,19 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                           <div className="flex justify-between">
                             <span className="text-gray-600">시작일:</span>
                             <span className="font-medium">
-                              {project.detail.timeline.startDate}
+                              {project.detail?.timeline?.startDate || '-'}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">종료일:</span>
                             <span className="font-medium">
-                              {project.detail.timeline.endDate}
+                              {project.detail?.timeline?.endDate || '-'}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">기간:</span>
                             <span className="font-medium">
-                              {project.detail.timeline.duration}
+                              {project.detail?.timeline?.duration || '-'}
                             </span>
                           </div>
                         </div>
@@ -387,17 +387,71 @@ const Modal = ({ project, setIsModalOpen }: ModalProps) => {
                           <div className="flex justify-between">
                             <span className="text-gray-600">팀 규모:</span>
                             <span className="font-medium">
-                              {project.detail.team.size}명
+                              {project.detail?.team?.size || 1}명
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">역할:</span>
                             <span className="font-medium">
-                              {project.detail.team.role}
+                              {project.detail?.team?.role || '-'}
                             </span>
                           </div>
                         </div>
+                        {project.detail?.team?.responsibilities &&
+                          project.detail.team.responsibilities.length > 0 && (
+                            <div className="mt-3 pt-3 border-t border-gray-200">
+                              <h4 className="mb-2 text-sm font-semibold text-gray-700">
+                                담당 업무
+                              </h4>
+                              <ul className="space-y-1">
+                                {project.detail.team.responsibilities.map(
+                                  (resp, index) => (
+                                    <li
+                                      key={index}
+                                      className="flex items-start gap-2 text-sm text-gray-600"
+                                    >
+                                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-seagull-500" />
+                                      {resp}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )}
                       </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Project Images Gallery */}
+                {project.detail?.images && project.detail.images.length > 0 && (
+                  <motion.div
+                    className="mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.85 }}
+                  >
+                    <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                      프로젝트 이미지
+                    </h2>
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                      {project.detail.images.map((img, index) => (
+                        <motion.div
+                          key={index}
+                          className="relative h-48 overflow-hidden rounded-lg"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.9 + index * 0.1 }}
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <Image
+                            src={img}
+                            alt={`${project.title} - ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </motion.div>
+                      ))}
                     </div>
                   </motion.div>
                 )}
