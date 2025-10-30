@@ -1,8 +1,8 @@
 'use client';
 
+import { uploadImage } from '@/utils/imageUpload';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
-import Button from './Button';
 
 interface ImageUploaderProps {
   value?: string | string[];
@@ -36,11 +36,7 @@ export default function ImageUploader({
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
-  const imageUrls = Array.isArray(value)
-    ? value
-    : value
-      ? [value]
-      : [];
+  const imageUrls = Array.isArray(value) ? value : value ? [value] : [];
 
   const validateFile = (file: File): string | null => {
     if (!acceptedFormats.includes(file.type)) {
@@ -55,23 +51,13 @@ export default function ImageUploader({
     return null;
   };
 
-  const uploadImage = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('folder', 'projects');
-
-    const response = await fetch('/api/upload/image', {
-      method: 'POST',
-      body: formData,
+  const uploadImageFile = async (file: File): Promise<string> => {
+    // Firebase Storage에 직접 업로드
+    const result = await uploadImage(file, 'projects', (progress) => {
+      // 진행률 업데이트
+      setUploadProgress((prev) => ({ ...prev, [file.name]: progress }));
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || '이미지 업로드에 실패했습니다.');
-    }
-
-    const data = await response.json();
-    return data.url;
+    return result.url;
   };
 
   const handleFiles = async (files: FileList) => {
@@ -150,7 +136,9 @@ export default function ImageUploader({
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : '이미지 업로드 중 오류가 발생했습니다.'
+        err instanceof Error
+          ? err.message
+          : '이미지 업로드 중 오류가 발생했습니다.'
       );
     } finally {
       setLoading(false);
@@ -201,9 +189,12 @@ export default function ImageUploader({
       // Firebase Storage에서 이미지 삭제
       const fileName = urlToRemove.split('/').pop()?.split('?')[0];
       if (fileName) {
-        await fetch(`/api/upload/image?filename=${encodeURIComponent(fileName)}`, {
-          method: 'DELETE',
-        });
+        await fetch(
+          `/api/upload/image?filename=${encodeURIComponent(fileName)}`,
+          {
+            method: 'DELETE',
+          }
+        );
       }
     } catch (err) {
       console.error('이미지 삭제 중 오류:', err);
@@ -270,17 +261,19 @@ export default function ImageUploader({
           </div>
 
           <p className="mb-2 text-sm text-gray-700">
-            <span className="font-semibold text-seagull-600">클릭하여 업로드</span>{' '}
+            <span className="text-seagull-600 font-semibold">
+              클릭하여 업로드
+            </span>{' '}
             또는 드래그 앤 드롭
           </p>
           <p className="text-xs text-gray-500">
-            {acceptedFormats.map((f) => f.split('/')[1].toUpperCase()).join(', ')} (최대{' '}
-            {maxSizeMB}MB)
+            {acceptedFormats
+              .map((f) => f.split('/')[1].toUpperCase())
+              .join(', ')}{' '}
+            (최대 {maxSizeMB}MB)
           </p>
           {multiple && (
-            <p className="mt-1 text-xs text-gray-500">
-              최대 {maxFiles}개 파일
-            </p>
+            <p className="mt-1 text-xs text-gray-500">최대 {maxFiles}개 파일</p>
           )}
         </label>
       </div>
@@ -303,7 +296,7 @@ export default function ImageUploader({
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-gray-200">
                 <div
-                  className="h-full bg-seagull-500 transition-all duration-300"
+                  className="bg-seagull-500 h-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -329,7 +322,7 @@ export default function ImageUploader({
               />
 
               {/* Overlay Actions */}
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black bg-opacity-0 opacity-0 transition-all group-hover:bg-opacity-50 group-hover:opacity-100">
+              <div className="bg-opacity-0 group-hover:bg-opacity-50 absolute inset-0 flex items-center justify-center gap-2 bg-black opacity-0 transition-all group-hover:opacity-100">
                 {multiple && index > 0 && (
                   <button
                     type="button"
@@ -400,7 +393,7 @@ export default function ImageUploader({
 
               {/* Index Badge */}
               {multiple && (
-                <div className="absolute left-2 top-2 rounded-full bg-black bg-opacity-60 px-2 py-1 text-xs text-white">
+                <div className="bg-opacity-60 absolute top-2 left-2 rounded-full bg-black px-2 py-1 text-xs text-white">
                   {index + 1}
                 </div>
               )}
@@ -411,4 +404,3 @@ export default function ImageUploader({
     </div>
   );
 }
-
