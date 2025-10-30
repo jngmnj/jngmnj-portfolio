@@ -36,7 +36,12 @@ export default function ImageUploader({
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
-  const imageUrls = Array.isArray(value) ? value : value ? [value] : [];
+  // 빈 문자열 필터링
+  const imageUrls = Array.isArray(value) 
+    ? value.filter((url) => url && url.trim() !== '') 
+    : value && value.trim() !== '' 
+      ? [value] 
+      : [];
 
   const validateFile = (file: File): string | null => {
     if (!acceptedFormats.includes(file.type)) {
@@ -49,15 +54,6 @@ export default function ImageUploader({
     }
 
     return null;
-  };
-
-  const uploadImageFile = async (file: File): Promise<string> => {
-    // Firebase Storage에 직접 업로드
-    const result = await uploadImage(file, 'projects', (progress) => {
-      // 진행률 업데이트
-      setUploadProgress((prev) => ({ ...prev, [file.name]: progress }));
-    });
-    return result.url;
   };
 
   const handleFiles = async (files: FileList) => {
@@ -105,7 +101,9 @@ export default function ImageUploader({
         }, 100);
 
         try {
-          const url = await uploadImage(file);
+          const result = await uploadImage(file, 'projects', (progress) => {
+            setUploadProgress((prev) => ({ ...prev, [file.name]: progress }));
+          });
 
           // 업로드 완료
           setUploadProgress((prev) => ({ ...prev, [file.name]: 100 }));
@@ -120,7 +118,7 @@ export default function ImageUploader({
             });
           }, 1000);
 
-          return url;
+          return result.url;
         } catch (error) {
           clearInterval(progressInterval);
           throw error;
@@ -308,18 +306,21 @@ export default function ImageUploader({
       {/* Preview Images */}
       {imageUrls.length > 0 && (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {imageUrls.map((url, index) => (
-            <div
-              key={url}
-              className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
-            >
-              <Image
-                src={url}
-                alt={`Preview ${index + 1}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-              />
+          {imageUrls.map((url, index) => {
+            if (!url || url.trim() === '') return null;
+            
+            return (
+              <div
+                key={`${url}-${index}`}
+                className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
+              >
+                <Image
+                  src={url}
+                  alt={`Preview ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                />
 
               {/* Overlay Actions */}
               <div className="bg-opacity-0 group-hover:bg-opacity-50 absolute inset-0 flex items-center justify-center gap-2 bg-black opacity-0 transition-all group-hover:opacity-100">
@@ -393,12 +394,13 @@ export default function ImageUploader({
 
               {/* Index Badge */}
               {multiple && (
-                <div className="bg-opacity-60 absolute top-2 left-2 rounded-full bg-black px-2 py-1 text-xs text-white">
+                <div className="absolute left-2 top-2 rounded-full bg-black bg-opacity-60 px-2 py-1 text-xs text-white">
                   {index + 1}
                 </div>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
