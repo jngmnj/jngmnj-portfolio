@@ -51,8 +51,30 @@ export default function RecentProjectsSection() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-48 animate-pulse rounded-lg bg-gray-200"
-            />
+              className="animate-pulse overflow-hidden rounded-lg border border-gray-200"
+            >
+              {/* Image skeleton */}
+              <div className="aspect-video bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
+
+              {/* Content skeleton */}
+              <div className="space-y-3 p-6">
+                {/* Title skeleton */}
+                <div className="h-6 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
+
+                {/* Description skeleton */}
+                <div className="space-y-2">
+                  <div className="h-4 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
+                  <div className="h-4 w-5/6 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
+                </div>
+
+                {/* Tags skeleton */}
+                <div className="flex gap-2 pt-2">
+                  <div className="h-6 w-16 rounded bg-gray-200" />
+                  <div className="h-6 w-20 rounded bg-gray-200" />
+                  <div className="h-6 w-24 rounded bg-gray-200" />
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </section>
