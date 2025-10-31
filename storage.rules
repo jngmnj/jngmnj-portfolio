@@ -1,0 +1,61 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // 이미지 파일 검증 함수
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    // 파일 크기 검증 함수 (100MB 이하)
+    function isValidSize() {
+      return request.resource.size < 100 * 1024 * 1024;
+    }
+    
+    // 허용된 이미지 형식 검증
+    function isValidImageType() {
+      return request.resource.contentType in [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/gif'
+      ];
+    }
+    
+    // images 폴더: 모든 사용자가 읽기 가능, 인증된 사용자만 업로드 가능
+    match /images/{allPaths=**} {
+      allow read: if true;
+      // 개발 중: 임시로 모든 사용자 업로드 허용 (프로덕션에서는 request.auth != null 사용)
+      allow write: if isImage() 
+                   && isValidSize() 
+                   && isValidImageType();
+      allow delete: if true;
+    }
+    
+    // projects 폴더: 프로젝트 관련 이미지
+    match /projects/{allPaths=**} {
+      allow read: if true;
+      // 개발 중: 임시로 모든 사용자 업로드 허용 (프로덕션에서는 request.auth != null 사용)
+      allow write: if isImage() 
+                   && isValidSize() 
+                   && isValidImageType();
+      allow delete: if true;
+    }
+    
+    // blog 폴더: 블로그 관련 이미지
+    match /blog/{allPaths=**} {
+      allow read: if true;
+      // 개발 중: 임시로 모든 사용자 업로드 허용 (프로덕션에서는 request.auth != null 사용)
+      allow write: if isImage() 
+                   && isValidSize() 
+                   && isValidImageType();
+      allow delete: if true;
+    }
+    
+    // 기본적으로 다른 모든 경로는 접근 불가
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
