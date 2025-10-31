@@ -1,8 +1,12 @@
 'use client';
 
 import ProjectList from '@/components/projects/ProjectList';
+import { useSearchParams } from 'next/navigation';
 
 export default function ProjectsPage() {
+  const searchParams = useSearchParams();
+  const projectId = searchParams.get('id');
+
   return (
     <div className="container">
       {/* Header Section */}
@@ -16,7 +20,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Projects Grid */}
-      <ProjectList />
+      <ProjectList initialProjectId={projectId} />
     </div>
   );
 }
