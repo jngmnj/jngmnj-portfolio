@@ -8,7 +8,7 @@ export default function ProjectsPage() {
   const projectId = searchParams.get('id');
 
   return (
-    <div className="container">
+    <div className="content container flex flex-col">
       {/* Header Section */}
       <div className="mb-16">
         <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">

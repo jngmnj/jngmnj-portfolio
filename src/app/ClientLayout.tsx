@@ -88,7 +88,7 @@ function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="mx-auto w-full flex-1">{children}</div>
+      <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>
       <Footer />
     </div>
   );

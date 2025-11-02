@@ -2,7 +2,9 @@
 
 import Button from '@/components/common/Button';
 import FormInput from '@/components/common/FormInput';
+import Toast from '@/components/common/Toast';
 import { cn } from '@/utils/style';
+import { useToast } from '@/utils/useToast';
 import axios from 'axios';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -19,13 +21,14 @@ export default function ContactPage() {
     formState: { errors },
   } = useForm<FieldValues>();
   const [isLoading, setIsLoading] = useState(false);
+  const { toast, showToast, hideToast } = useToast();
 
   const handleSubmitContact: SubmitHandler<FieldValues> = async (
     data: FieldValues
   ) => {
     const { name, company, email, title, content } = data;
     setIsLoading(true);
-    // await createContact({ name, company, email, title, content });
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('company', company);
@@ -37,19 +40,22 @@ export default function ContactPage() {
     try {
       const res = await axios.post('/api/contact', formData);
       if (res.status === 200) {
+        showToast('성공적으로 전송되었습니다.', 'success');
         reset();
       }
-      alert('성공적으로 전송되었습니다.');
     } catch (error) {
       console.error('Failed to send contact:', error);
-      alert('전송에 실패했습니다.');
+      showToast('전송에 실패했습니다.', 'error');
+    } finally {
+      setIsLoading(false);
     }
-
-    reset();
   };
 
   return (
-    <div className="container">
+    <div className="container flex flex-1 justify-center">
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
+      )}
       <div className="flex flex-col items-end gap-20 lg:flex-row">
         <div className="w-full rounded-lg border border-gray-300 bg-gray-50 px-6 py-8 lg:w-1/2">
           <form
@@ -59,7 +65,7 @@ export default function ContactPage() {
           >
             <div className="mb-4">
               <FormInput
-                label="이름"
+                label="Name"
                 id="name"
                 register={register}
                 errors={errors}
@@ -69,7 +75,7 @@ export default function ContactPage() {
             </div>
             <div className="mb-4">
               <FormInput
-                label="회사"
+                label="Company"
                 id="company"
                 register={register}
                 required={false}
@@ -80,7 +86,7 @@ export default function ContactPage() {
             </div>
             <div className="mb-4">
               <FormInput
-                label="이메일"
+                label="Email"
                 id="email"
                 type="email"
                 register={register}
@@ -91,7 +97,7 @@ export default function ContactPage() {
             </div>
             <div className="mb-4">
               <FormInput
-                label="제목"
+                label="Title"
                 id="title"
                 disabled={isLoading}
                 register={register}
@@ -100,11 +106,13 @@ export default function ContactPage() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="content">Content</label>
+              <label htmlFor="content">
+                Message<span className="ml-1 text-red-500">*</span>
+              </label>
               <textarea
                 id="content"
                 disabled={isLoading}
-                {...register('content', { required: '내용을 입력해주세요.' })}
+                {...register('content', { required: 'Message is required.' })}
                 placeholder=""
                 className={cn(
                   `w-full resize-none border-b bg-transparent p-2 outline-none`,
@@ -135,7 +143,7 @@ export default function ContactPage() {
             <div>
               <h3>Kakao</h3>
               <Link className="link-text" href="">
-                오픈채팅 바로가기
+                Open Chat
               </Link>
             </div>
           </div>
@@ -144,7 +152,7 @@ export default function ContactPage() {
               <MdEmail size={40} />
             </div>
             <div>
-              <h3>E-mail</h3>
+              <h3>Email</h3>
               <Link className="link-text" href="mailTo:jngmnj4@gmail.com">
                 jngmnj4@gmail.com
               </Link>

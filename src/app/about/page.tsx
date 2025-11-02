@@ -5,7 +5,7 @@ import StatsSection from '@/components/about/StatsSection';
 
 export default function AboutPage() {
   return (
-    <div className="container">
+    <div className="content container">
       {/* introduction */}
       {/* 추후 페이지단위 스크롤로 수정 */}
       <IntroductionSection />

@@ -37,7 +37,7 @@ const Header = () => {
     <>
       <TopBanner />
       <header className="sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white">
-        <div className="inner flex items-center justify-between">
+        <div className="container flex items-center justify-between">
           <Link href="/">
             <h1 className="hidden text-2xl font-bold">jngmnj</h1>
             <Image

@@ -57,13 +57,23 @@ body {
 }
 
 .container {
-  padding: 5rem 1.5rem 10rem;
+  width: 100%;
+  max-width: 1344px;
   margin: 0 auto;
+}
+
+.content {
+  padding: 5rem 1.5rem 10rem;
 }
 
 .container.narrow {
   max-width: 768px;
 }
+
+.bg-login {
+  background: url(/images/bg/img_bg_login.png) center / cover no-repeat;
+}
+
 .link-text {
   @apply text-seagull-600;
   transition: 0.3s ease-in-out;
