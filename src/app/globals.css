@@ -57,13 +57,11 @@ body {
 }
 
 .container {
-  width: 100%;
-  max-width: 1344px;
-  margin: 0 auto;
+  @apply mx-auto w-full max-w-7xl md:px-6;
 }
 
 .content {
-  padding: 5rem 1.5rem 10rem;
+  @apply pt-20 pb-40;
 }
 
 .container.narrow {

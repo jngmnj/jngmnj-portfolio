@@ -1,88 +1,234 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload } from 'react-icons/md';
 
+interface SocialLink {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
 export default function IntroductionSection() {
+  const socialLinks: SocialLink[] = [
+    { href: 'https://github.com/jngmnj', icon: IoLogoGithub },
+    {
+      href: 'https://instagram.com/jngmnj',
+      icon: IoLogoInstagram,
+    },
+    {
+      href: 'https://www.linkedin.com/in/%EC%A0%95%EB%AF%BC-%EC%A7%80-705288245/',
+      icon: FaLinkedinIn,
+    },
+  ];
+
   return (
-    <section className="mb-16 h-full">
-      <div className="mb-16 flex flex-col items-center gap-6 lg:flex-row">
-        <div className="order-last w-full lg:order-first lg:w-3/5">
-          <div className="mb-6">
-            <div className="mb-8">
-              <p className="mb-2 text-2xl text-gray-500">Frontend Engineer</p>
-              <h1 className="text-4xl leading-tight md:text-5xl lg:text-6xl">
-                <span>안녕하세요,</span>
-                <br />
-                <span>
-                  <strong className="font-extrabold">지정민</strong>입니다.
-                </span>
-              </h1>
-            </div>
-            <div>
-              <div className="mb-2 text-lg font-semibold">
-                사용자 경험이 더 좋은 프로덕트를 구현하기위해 끊임없이
-                고민합니다.
-              </div>
-              <div className="leading-relaxed text-gray-600">
-                <p className="mb-2">
-                  프론트엔드, 백엔드 개발과정 수료와 UI/UX 디자인·퍼블리싱·기획
-                  경험을 결합하여, <br />
-                  개발–디자인–기획 간의 유연한 협업 역량을 가지고있습니다.
-                </p>
-                <p>
-                  이를 통해 서비스의 기획부터 배포까지 전 과정을 주도적으로
-                  이끌며,
-                  <br />
-                  단순 구현을 넘어 프로덕트 완성도를 높이는 데 기여하고
-                  있습니다.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center justify-start gap-8">
-            <Link
-              href="https://drive.google.com/file/d/1opn0TUVKUemECGX0Na7KUPyrDVm8hnB6/view?usp=drive_link"
-              target="_blank"
-              className="btn group flex items-center gap-2 rounded-xl border border-gray-600 px-6 py-3"
-            >
-              <MdFileDownload className="transition-transform group-hover:translate-y-1" />
-              이력서 다운로드
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="https://github.com/jngmnj" target="_blank">
-                <div className="p-4">
-                  <IoLogoGithub className="size-6" />
-                </div>
-              </Link>
-              <Link href="https://instagram.com/jngmnj" target="_blank">
-                <div className="p-4">
-                  <IoLogoInstagram className="size-6" />
-                </div>
-              </Link>
-              <Link
-                href="https://www.linkedin.com/in/%EC%A0%95%EB%AF%BC-%EC%A7%80-705288245/"
-                target="_blank"
+    <section className="relative mb-24 overflow-hidden py-24">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Gradient orbs */}
+        <motion.div
+          className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
+          animate={{
+            x: [0, 30, -30, 0],
+            y: [0, -30, 30, 0],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+        <motion.div
+          className="from-waikawa-gray-400/15 to-seagull-400/5 absolute bottom-0 -left-32 h-80 w-80 rounded-full bg-linear-to-tr blur-3xl"
+          animate={{
+            x: [0, -30, 30, 0],
+            y: [0, 30, -30, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+      </div>
+
+      <div className="relative container flex flex-col items-center gap-12 px-6 lg:flex-row lg:gap-16">
+        {/* Left Content */}
+        <div className="flex w-full flex-col justify-center lg:w-3/5">
+          {/* Tag */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="border-seagull-200 bg-seagull-50 mb-6 inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2"
+          >
+            <div className="bg-seagull-500 h-2 w-2 rounded-full" />
+            <span className="text-seagull-700 text-sm font-medium">
+              Frontend Engineer
+            </span>
+          </motion.div>
+
+          {/* Main Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-6"
+          >
+            <h1 className="text-5xl leading-tight font-bold md:text-6xl lg:text-7xl">
+              <motion.span
+                className="block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <div className="p-4">
-                  <FaLinkedinIn className="size-6" />
-                </div>
+                안녕하세요,
+              </motion.span>
+              <motion.span
+                className="from-seagull-500 to-seagull-700 block bg-linear-to-r bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                지정민입니다.
+              </motion.span>
+            </h1>
+          </motion.div>
+
+          {/* Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mb-8 max-w-2xl space-y-4"
+          >
+            <p className="text-xl font-semibold text-gray-900">
+              사용자 경험이 더 좋은 프로덕트를 구현하기위해 끊임없이 고민합니다.
+            </p>
+            <p className="leading-relaxed text-gray-600">
+              프론트엔드, 백엔드 개발과정 수료와 UI/UX 디자인·퍼블리싱·기획
+              경험을 결합하여, 개발–디자인–기획 간의 유연한 협업 역량을
+              가지고있습니다.
+            </p>
+            <p className="leading-relaxed text-gray-600">
+              이를 통해 서비스의 기획부터 배포까지 전 과정을 주도적으로 이끌며,
+              단순 구현을 넘어 프로덕트 완성도를 높이는 데 기여하고 있습니다.
+            </p>
+          </motion.div>
+
+          {/* CTA Buttons and Social Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-wrap items-center gap-6"
+          >
+            {/* Resume Download Button */}
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link
+                href="https://drive.google.com/file/d/1opn0TUVKUemECGX0Na7KUPyrDVm8hnB6/view?usp=drive_link"
+                target="_blank"
+                className="from-seagull-400 to-seagull-500 shadow-seagull-400/30 hover:shadow-seagull-400/40 inline-flex items-center gap-2 rounded-xl bg-linear-to-r px-7 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+              >
+                <MdFileDownload className="size-5" />
+                이력서 다운로드
               </Link>
+            </motion.div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social, index) => {
+                const IconComponent = social.icon;
+                return (
+                  <motion.div
+                    key={social.href}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6 + index * 0.1 }}
+                  >
+                    <motion.div
+                      whileHover={{
+                        scale: 1.15,
+                        rotate: 10,
+                        y: -4,
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Link href={social.href} target="_blank">
+                        <div className="hover:from-seagull-50 hover:to-seagull-100 flex items-center justify-center rounded-xl bg-linear-to-br from-gray-50 to-gray-100 p-3 transition-all">
+                          <IconComponent className="hover:text-seagull-500 size-6 text-gray-700 transition-colors" />
+                        </div>
+                      </Link>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right Profile Image */}
+        <motion.div
+          className="relative w-full lg:w-2/5"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {/* Profile Image Container */}
+          <div className="relative mx-auto aspect-square max-w-sm">
+            {/* Profile Image */}
+            <div className="relative h-full w-full overflow-hidden rounded-full">
+              <Image
+                src="/images/about/img_profile.png"
+                alt="Profile Photo"
+                width={500}
+                height={500}
+                className="size-full object-cover"
+                priority
+              />
             </div>
           </div>
-        </div>
-        <div className="order-first aspect-square w-1/2 overflow-hidden rounded-full lg:order-last lg:w-2/5">
-          <Image
-            src="/images/about/img_profile.png"
-            alt="Profile Photo"
-            width={500}
-            height={500}
-            className="size-full object-cover"
-          />
-        </div>
+
+          {/* Floating badge */}
+          <motion.div
+            className="border-seagull-200 absolute -right-4 -bottom-4 flex items-center gap-2 rounded-full border bg-white px-4 py-2 shadow-lg"
+            animate={{
+              y: [0, -10, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          >
+            <div className="flex gap-1">
+              {[1, 2, 3].map((i) => (
+                <motion.div
+                  key={i}
+                  className="bg-seagull-500 h-2 w-2 rounded-full"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                />
+              ))}
+            </div>
+            <span className="text-sm font-semibold text-gray-700">
+              Open to Work
+            </span>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
