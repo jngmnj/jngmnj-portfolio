@@ -1,7 +1,6 @@
 import ExperienceSection from '@/components/about/ExperienceSection';
 import IntroductionSection from '@/components/about/IntroductionSection';
 import PortfolioLinksSection from '@/components/about/PortfolioLinksSection';
-import StatsSection from '@/components/about/StatsSection';
 
 export default function AboutPage() {
   return (
@@ -10,7 +9,7 @@ export default function AboutPage() {
       {/* 추후 페이지단위 스크롤로 수정 */}
       <IntroductionSection />
       <div className="container">
-        <StatsSection />
+        {/* <StatsSection /> */}
         {/* portfolio link */}
         <PortfolioLinksSection />
         {/* experience */}

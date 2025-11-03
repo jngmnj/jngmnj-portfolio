@@ -26,7 +26,7 @@ export default function IntroductionSection() {
   ];
 
   return (
-    <section className="relative mb-24 overflow-hidden py-24">
+    <section className="relative overflow-hidden py-24">
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         {/* Gradient orbs */}
