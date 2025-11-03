@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
-import { MdFileDownload } from 'react-icons/md';
+import { MdFileDownload, MdKeyboardArrowDown } from 'react-icons/md';
 
 const CAPABILITIES = [
   '프론트엔드 엔지니어링? 됩니다.',
@@ -207,6 +207,24 @@ export default function HeroSection() {
           </div>
         </motion.div>
       </div>
+
+      {/* Scroll Hint */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 z-2 -translate-x-1/2 transform"
+        animate={{ y: [0, 12, 0] }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      >
+        <div className="flex flex-col items-center gap-2">
+          {/* <p className="text-sm font-medium text-black">Scroll</p> */}
+          <div className="rounded-full border-2 border-black p-2">
+            <MdKeyboardArrowDown className="size-5 text-black" />
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

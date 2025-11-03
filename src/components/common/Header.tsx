@@ -1,3 +1,4 @@
+'use client';
 import Button from '@/components/common/Button';
 import { useAuth } from '@/utils/hooks';
 import storage from '@/utils/storage';
