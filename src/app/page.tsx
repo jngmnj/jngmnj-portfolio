@@ -6,17 +6,10 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
       <HeroSection />
-
-      {/* Skills Section */}
-      <div className="container pb-24">
+      <div className="container py-24">
         <SkillsSection />
-
-        {/* Recent Projects Preview */}
         <RecentProjectsSection />
-
-        {/* Contact CTA */}
         <section className="rounded-lg bg-gray-50 p-8 text-center">
           <h2 className="mb-4 text-3xl font-bold">Let&apos;s Work Together</h2>
           <p className="mb-6 text-gray-600">

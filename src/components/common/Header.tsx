@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LINKS } from '../../app/lib/constants';
 import Sidebar from './Sidebar';
-import TopBanner from './TopBanner';
 
 const Header = () => {
   const pathname = usePathname();
@@ -35,7 +34,6 @@ const Header = () => {
   const { logOut } = useAuth();
   return (
     <>
-      <TopBanner />
       <header className="sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white">
         <div className="container flex items-center justify-between">
           <Link href="/">
