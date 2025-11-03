@@ -56,7 +56,7 @@ export default function SkillsSection() {
   return (
     <section className="mb-16">
       <h2 className="mb-8 text-3xl font-bold">Skills</h2>
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
         {skills.map((skill) => (
           <motion.div
             key={skill.title}

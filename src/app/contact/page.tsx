@@ -52,7 +52,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="container flex flex-1 flex-col justify-center">
+    <div className="content container flex flex-1 flex-col justify-center">
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
