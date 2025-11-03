@@ -90,7 +90,7 @@ export default function HeroSection() {
       </video>
 
       {/* Dark Overlay for Content Visibility */}
-      <div className="absolute inset-0 z-1 backdrop-blur-sm backdrop-hue-rotate-[-110deg]" />
+      <div className="absolute inset-0 z-1 bg-[#cee8ff] mix-blend-multiply backdrop-blur-sm backdrop-hue-rotate-[-30deg]" />
 
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
