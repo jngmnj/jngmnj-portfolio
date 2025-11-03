@@ -22,7 +22,7 @@ const CAPABILITIES = [
   '피드백? 감사합니다.',
   '고객 관점 고민? 늘 됩니다.',
   '성장? 매일 됩니다.',
-  '다~~~ 됩니다. (해보겠습니다!!!)',
+  '해보겠습니다!!!',
 ];
 
 const TYPING_SPEED = 50; // 타이핑 속도 (밀리초)
@@ -76,7 +76,22 @@ export default function HeroSection() {
   ];
 
   return (
-    <section className="relative flex min-h-[calc(100vh-5rem)] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[calc(100vh-40px)] items-center justify-center overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ zIndex: 0 }}
+      >
+        <source src="/images/bg/video_bg_hero.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark Overlay for Content Visibility */}
+      <div className="absolute inset-0 z-1 backdrop-blur-sm backdrop-hue-rotate-[-110deg]" />
+
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <motion.div
@@ -105,11 +120,14 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="relative container flex flex-col items-center justify-center px-6 text-center">
+      <div
+        className="relative container flex flex-col items-center justify-center px-6 text-center"
+        style={{ zIndex: 2 }}
+      >
         {/* Main typing text */}
         <div className="mb-12 flex min-h-40 items-center justify-center">
-          <h1 className="text-5xl leading-tight font-black md:text-6xl lg:text-7xl">
-            <span className="from-seagull-500 to-seagull-700 bg-linear-to-r bg-clip-text text-transparent">
+          <h1 className="text-5xl leading-tight md:text-6xl lg:text-7xl">
+            <span className="font-extrabold text-black">
               {displayText}
               <motion.span
                 animate={{ opacity: [1, 0] }}
@@ -150,7 +168,7 @@ export default function HeroSection() {
             <Link
               href="https://drive.google.com/file/d/1opn0TUVKUemECGX0Na7KUPyrDVm8hnB6/view?usp=drive_link"
               target="_blank"
-              className="from-seagull-400 to-seagull-500 shadow-seagull-400/30 hover:shadow-seagull-400/40 inline-flex items-center gap-2 rounded-xl bg-linear-to-r px-7 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+              className="inline-flex items-center gap-2 rounded-xl bg-black px-7 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
             >
               <MdFileDownload className="size-5" />
               이력서 다운로드
@@ -177,9 +195,9 @@ export default function HeroSection() {
                     whileTap={{ scale: 0.9 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Link href={social.href} target="_blank">
-                      <div className="hover:from-seagull-50 hover:to-seagull-100 flex items-center justify-center rounded-xl bg-linear-to-br from-gray-50 to-gray-100 p-3 transition-all">
-                        <IconComponent className="hover:text-seagull-500 size-6 text-gray-700 transition-colors" />
+                    <Link href={social.href} target="_blank" className="group">
+                      <div className="flex items-center justify-center rounded-xl bg-gray-50 p-3 transition-all group-hover:bg-gray-100">
+                        <IconComponent className="size-6 text-gray-700 transition-colors" />
                       </div>
                     </Link>
                   </motion.div>
