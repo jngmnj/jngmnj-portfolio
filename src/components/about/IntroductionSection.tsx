@@ -27,35 +27,6 @@ export default function IntroductionSection() {
 
   return (
     <section className="relative overflow-hidden py-24">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        {/* Gradient orbs */}
-        <motion.div
-          className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
-          animate={{
-            x: [0, 30, -30, 0],
-            y: [0, -30, 30, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-        <motion.div
-          className="from-waikawa-gray-400/15 to-seagull-400/5 absolute bottom-0 -left-32 h-80 w-80 rounded-full bg-linear-to-tr blur-3xl"
-          animate={{
-            x: [0, -30, 30, 0],
-            y: [0, 30, -30, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </div>
-
       <div className="relative container flex flex-col items-center gap-12 px-6 lg:flex-row lg:gap-16">
         {/* Left Content */}
         <div className="flex w-full flex-col justify-center lg:w-3/5">
@@ -89,7 +60,7 @@ export default function IntroductionSection() {
                 안녕하세요,
               </motion.span>
               <motion.span
-                className="from-seagull-500 to-seagull-700 block bg-linear-to-r bg-clip-text text-transparent"
+                className="block text-gray-900"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -136,7 +107,7 @@ export default function IntroductionSection() {
               <Link
                 href="https://drive.google.com/file/d/1opn0TUVKUemECGX0Na7KUPyrDVm8hnB6/view?usp=drive_link"
                 target="_blank"
-                className="from-seagull-400 to-seagull-500 shadow-seagull-400/30 hover:shadow-seagull-400/40 inline-flex items-center gap-2 rounded-xl bg-linear-to-r px-7 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+                className="bg-seagull-500 hover:bg-seagull-600 inline-flex items-center gap-2 rounded-xl px-7 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
               >
                 <MdFileDownload className="size-5" />
                 이력서 다운로드
@@ -163,9 +134,13 @@ export default function IntroductionSection() {
                       whileTap={{ scale: 0.9 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <Link href={social.href} target="_blank">
-                        <div className="hover:from-seagull-50 hover:to-seagull-100 flex items-center justify-center rounded-xl bg-linear-to-br from-gray-50 to-gray-100 p-3 transition-all">
-                          <IconComponent className="hover:text-seagull-500 size-6 text-gray-700 transition-colors" />
+                      <Link
+                        href={social.href}
+                        target="_blank"
+                        className="group"
+                      >
+                        <div className="flex items-center justify-center rounded-xl bg-gray-50 p-3 transition-all hover:bg-gray-100">
+                          <IconComponent className="group-hover:text-seagull-500 size-6 text-gray-700 transition-colors" />
                         </div>
                       </Link>
                     </motion.div>
