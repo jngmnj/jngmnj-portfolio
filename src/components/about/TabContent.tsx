@@ -25,7 +25,7 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
                       ? `${content.startDate} - ${content.endDate}`
                       : ''}
                   </div>
-                  <div className="mb-4 text-3xl">
+                  <div className="mb-4 text-3xl font-bold">
                     {'title' in content && content.title}
                   </div>
                   <div className="flex items-center gap-3">
@@ -68,23 +68,28 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
 
       case 3:
         return (
-          <div className="-mx-2 flex flex-wrap">
+          <div className="flex flex-wrap gap-4">
             {data.content.map((content, index) => (
-              <div className="w-1/2 p-2" key={index}>
-                <div className="flex items-center gap-4">
-                  <div className="w-20 shrink-0 text-base text-gray-500">
-                    {'label' in content && content.label}
-                  </div>
-                  <div className="text-xl font-medium text-gray-700">
-                    {'value' in content && Array.isArray(content.value)
-                      ? content.value.map((value, valueIndex) => (
-                          <div key={valueIndex} className="flex gap-2">
-                            <div className="bg-seagull-500 relative top-2 size-[12px] shrink-0 rounded-full"></div>
-                            {value}
-                          </div>
-                        ))
-                      : 'value' in content && content.value}
-                  </div>
+              <div
+                className="h-fit w-[calc(50%-0.5rem)] rounded-lg"
+                key={index}
+              >
+                <div className="text-seagull-600 mb-2 text-sm font-semibold tracking-wide uppercase">
+                  {'label' in content && content.label}
+                </div>
+                <div className="text-sm leading-relaxed text-gray-800">
+                  {'value' in content && Array.isArray(content.value) ? (
+                    <ul className="space-y-1.5">
+                      {content.value.map((value, valueIndex) => (
+                        <li key={valueIndex} className="flex gap-2">
+                          <div className="bg-seagull-500 mt-1.5 size-1.5 shrink-0 rounded-full"></div>
+                          <span>{value}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    'value' in content && content.value
+                  )}
                 </div>
               </div>
             ))}
