@@ -4,6 +4,7 @@ import AdminHeader from '@/components/admin/AdminHeader';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
+import TopBanner from '@/components/common/TopBanner';
 import { fadeInLeft, getMotionVariants } from '@/utils/motion';
 import { cn } from '@/utils/style';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -39,9 +40,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           <motion.div
             key="main"
             variants={getMotionVariants({
-              initial: { opacity: 0, y: 20 },
-              animate: { opacity: 1, y: 0 },
-              exit: { opacity: 0, y: -20 },
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+              exit: { opacity: 0 },
             })}
             initial="initial"
             animate="animate"
@@ -85,10 +86,15 @@ function AdminLayout({ children }: { children: ReactNode }) {
 }
 
 function MainLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
+  if (isHomePage) return <>{children}</>;
   return (
     <div className="flex min-h-screen flex-col">
+      <TopBanner />
       <Header />
-      <div className="mx-auto w-full flex-1">{children}</div>
+      <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>
       <Footer />
     </div>
   );

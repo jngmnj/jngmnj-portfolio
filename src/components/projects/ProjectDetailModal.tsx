@@ -10,12 +10,12 @@ import ProjectTechStack from './ProjectTechStack';
 
 interface ProjectDetailModalProps {
   project: FirebaseProject | null;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  closeModal: () => void;
 }
 
 export default function ProjectDetailModal({
   project,
-  setIsModalOpen,
+  closeModal,
 }: ProjectDetailModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -45,13 +45,13 @@ export default function ProjectDetailModal({
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setIsModalOpen(false);
+        closeModal();
       }
     };
 
     document.addEventListener('keydown', handleEscKey);
     return () => document.removeEventListener('keydown', handleEscKey);
-  }, [setIsModalOpen]);
+  }, [closeModal]);
 
   // 포커스 트랩: Tab 키로 모달 내부만 순환
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function ProjectDetailModal({
       >
         <motion.div
           className="fixed top-0 left-0 z-60 size-full cursor-pointer bg-black/50"
-          onClick={() => setIsModalOpen(false)}
+          onClick={closeModal}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -122,7 +122,7 @@ export default function ProjectDetailModal({
             <motion.button
               ref={closeButtonRef}
               className="absolute top-4 right-4 z-10 rounded-full bg-white/90 p-2 shadow-md transition-colors hover:bg-gray-100"
-              onClick={() => setIsModalOpen(false)}
+              onClick={closeModal}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               aria-label="모달 닫기"

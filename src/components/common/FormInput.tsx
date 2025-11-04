@@ -29,7 +29,10 @@ const FormInput: React.FC<FormInputProps> = ({
   required = required ? `${label}을 입력해주세요.` : required;
   return (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </label>
       <input
         id={id}
         disabled={isLoading}

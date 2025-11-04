@@ -1,10 +1,10 @@
-'use client';
-
-import ProjectList from '@/components/projects/ProjectList';
+import ProjectsSkeleton from '@/components/projects/ProjectsSkeleton';
+import { Suspense } from 'react';
+import ProjectsContent from './ProjectsContent';
 
 export default function ProjectsPage() {
   return (
-    <div className="container">
+    <div className="content container flex flex-col">
       {/* Header Section */}
       <div className="mb-16">
         <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
@@ -16,7 +16,9 @@ export default function ProjectsPage() {
       </div>
 
       {/* Projects Grid */}
-      <ProjectList />
+      <Suspense fallback={<ProjectsSkeleton />}>
+        <ProjectsContent />
+      </Suspense>
     </div>
   );
 }

@@ -60,7 +60,7 @@ export default function NewPostPage() {
   };
 
   return (
-    <div className="container flex flex-col pb-20 pt-12">
+    <div className="content container flex flex-col pt-12 pb-20">
       <h1 className="mb-8 text-center text-2xl font-medium">글쓰기</h1>
       <form onSubmit={handleSubmitForm}>
         <div className="flex flex-col gap-3">
@@ -69,7 +69,7 @@ export default function NewPostPage() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="focus:ring-primary-500 w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2"
+            className="focus:ring-primary-500 w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:outline-none"
           >
             <option value="">카테고리를 선택하세요</option>
             {(existingCategories ?? []).map((cat) => (
@@ -82,7 +82,7 @@ export default function NewPostPage() {
             multiple
             value={tags}
             onChange={handleTagChange}
-            className="focus:ring-primary-500 w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2"
+            className="focus:ring-primary-500 w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:outline-none"
             size={4}
           >
             {(existingTags ?? []).map((tag) => (

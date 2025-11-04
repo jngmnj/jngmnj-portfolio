@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 export default function LoginPage() {
   return (
-    <div className="bg-bg-login h-full min-h-full">
-      <div className="container py-6 md:py-12">
+    <div className="bg-login flex flex-1 flex-col justify-center">
+      <div className="content container flex w-full flex-1 flex-col items-center justify-center">
         <div className="flex w-full flex-col items-center gap-6 md:flex-row md:gap-12">
           <div className="hidden w-full md:block md:w-1/2">
             <Image

@@ -4,7 +4,7 @@ import PostList from '@/components/blog/PostList';
 
 export default function BlogPage() {
   return (
-    <div className="container">
+    <div className="content container">
       <div className="mb-8">
         <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">Blog</h1>
         <p className="mt-2 text-gray-600">
