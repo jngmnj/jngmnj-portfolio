@@ -1,12 +1,8 @@
-'use client';
-
-import ProjectList from '@/components/projects/ProjectList';
-import { useSearchParams } from 'next/navigation';
+import ProjectsSkeleton from '@/components/projects/ProjectsSkeleton';
+import { Suspense } from 'react';
+import ProjectsContent from './ProjectsContent';
 
 export default function ProjectsPage() {
-  const searchParams = useSearchParams();
-  const projectId = searchParams.get('id');
-
   return (
     <div className="content container flex flex-col">
       {/* Header Section */}
@@ -20,7 +16,9 @@ export default function ProjectsPage() {
       </div>
 
       {/* Projects Grid */}
-      <ProjectList initialProjectId={projectId} />
+      <Suspense fallback={<ProjectsSkeleton />}>
+        <ProjectsContent />
+      </Suspense>
     </div>
   );
 }
