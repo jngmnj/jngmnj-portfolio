@@ -8,17 +8,16 @@ export default function ExperienceSection() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   return (
-    <section className="mb-16">
-      <div className="flex max-h-[80vh] gap-8">
+    <section className="pb-40">
+      <div className="flex gap-8">
         {/* Left Sidebar */}
         <div className="w-1/3 shrink-0">
           <div className="mb-6 text-6xl leading-snug font-bold">
-            저를
-            <br />
-            뽑아야 하는 이유
+            Experience
+            <br />& Strengths
           </div>
           <div className="mb-16 text-gray-600">
-            👇🏻 다음을 클릭하여 확인하세요.👇🏻
+            다양한 경험을 통해 성장해왔습니다.
           </div>
           <TabMenu
             activeTabIndex={activeTabIndex}

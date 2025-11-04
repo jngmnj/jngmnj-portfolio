@@ -5,7 +5,11 @@ import { useEffect, useState } from 'react';
 import ProjectCard from './ProjectCard';
 import ProjectDetailModal from './ProjectDetailModal';
 
-const ProjectList = () => {
+const ProjectList = ({
+  initialProjectId,
+}: {
+  initialProjectId: string | null;
+}) => {
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,6 +20,13 @@ const ProjectList = () => {
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    // initialProjectId가 있고 projects가 로드되면 모달 자동 열기
+    if (initialProjectId && projects.length > 0) {
+      openModal(initialProjectId);
+    }
+  }, [initialProjectId, projects]);
 
   const fetchProjects = async () => {
     try {
@@ -49,6 +60,8 @@ const ProjectList = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProject(null);
+    // URL에서 query parameter 제거
+    window.history.replaceState({}, '', '/projects');
   };
 
   // Loading State
@@ -103,10 +116,7 @@ const ProjectList = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <ProjectDetailModal
-          project={selectedProject}
-          setIsModalOpen={setIsModalOpen}
-        />
+        <ProjectDetailModal project={selectedProject} closeModal={closeModal} />
       )}
     </>
   );

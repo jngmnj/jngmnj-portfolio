@@ -8,7 +8,7 @@ export default async function ProjectDetailPage({ params }: PostProps) {
   const { id } = await params;
 
   return (
-    <div className="container">
+    <div className="content container">
       <div className="grid grid-flow-col grid-cols-3 grid-rows-2 gap-4 lg:grid-rows-1">
         <div className="col-span-3 border lg:col-span-2">
           {/* <Image src={preview_img_url} alt="preview" width={800} height={400} /> */}

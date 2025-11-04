@@ -27,8 +27,8 @@ const myData = [
         list: ['코어소프트'],
       },
       {
-        startDate: '2022.12',
-        endDate: '2021.10',
+        startDate: '2021.10',
+        endDate: '2022.12',
         title: 'UIUX Designer / Publisher',
         list: ['KNL정보시스템'],
       },
@@ -128,8 +128,11 @@ const myData = [
       },
       {
         label: 'Experience',
-        value:
-          '2015.06 ~ 2015.07 FISEP 장학생 하계연수(미국 캘리포니아 UC Irvine)',
+        value: [
+          '2025.09 AWS Developer Q Hackathon',
+          '2025.06 ~ 2025.08 모던 자바스크립트 딥다이브 스터디',
+          '2015.06 ~ 2015.07 FISEP 장학생 하계연수 (미국 캘리포니아 UC Irvine)',
+        ],
       },
       {
         label: 'Awards',

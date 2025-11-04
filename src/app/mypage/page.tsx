@@ -16,7 +16,7 @@ export default function MypagePage() {
   }, []);
 
   return (
-    <div className="container">
+    <div className="content container">
       <div className="flex flex-1 gap-8">
         <aside className="h-full w-1/4 border-r border-r-gray-100">
           <div className="flex flex-col gap-4">

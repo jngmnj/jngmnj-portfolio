@@ -13,7 +13,7 @@ const TabMenu = ({ activeTabIndex, onTabChange }: TabMenuProps) => {
         <motion.button
           type="button"
           key={data.name}
-          className={`w-full rounded-xl border px-6 py-3 text-center transition-colors ${
+          className={`w-full cursor-pointer rounded-xl border px-6 py-3 text-center transition-colors ${
             activeTabIndex === index
               ? 'border-seagull-500 bg-seagull-50 text-seagull-700'
               : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
