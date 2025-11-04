@@ -132,3 +132,19 @@ export async function uploadMultipleImages(
 
   return Promise.all(uploadPromises);
 }
+
+/**
+ * Firebase Storage에서 이미지 URL을 가져옵니다.
+ * @param filePath - Firebase Storage에 저장된 파일 경로
+ * @returns 이미지의 다운로드 URL
+ */
+export async function getImageUrl(filePath: string): Promise<string> {
+  try {
+    const fileRef = ref(storage, filePath);
+    const url = await getDownloadURL(fileRef);
+    return url;
+  } catch (error) {
+    console.error('Failed to get image URL:', error);
+    throw new Error('Failed to get image URL');
+  }
+}

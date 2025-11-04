@@ -1,8 +1,10 @@
 'use client';
 
+import { getImageUrl } from '@/utils/imageUpload';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload } from 'react-icons/md';
@@ -13,6 +15,25 @@ interface SocialLink {
 }
 
 export default function IntroductionSection() {
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Firebase Storage에서 프로필 이미지 URL 가져오기
+    getImageUrl('images/img_profile.jpg')
+      .then((url) => {
+        setProfileImageUrl(url);
+      })
+      .catch((error) => {
+        console.error('Failed to load profile image:', error);
+        // 실패 시 기본 이미지 사용
+        setProfileImageUrl('/images/about/img_profile.png');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
   const socialLinks: SocialLink[] = [
     { href: 'https://github.com/jngmnj', icon: IoLogoGithub },
     {
@@ -162,14 +183,18 @@ export default function IntroductionSection() {
           <div className="relative mx-auto aspect-square max-w-sm">
             {/* Profile Image */}
             <div className="relative h-full w-full overflow-hidden rounded-full">
-              <Image
-                src="/images/about/img_profile.png"
-                alt="Profile Photo"
-                width={500}
-                height={500}
-                className="size-full object-cover"
-                priority
-              />
+              {isLoading ? (
+                <div className="size-full animate-pulse rounded-full bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200" />
+              ) : profileImageUrl ? (
+                <Image
+                  src={profileImageUrl}
+                  alt="Profile Photo"
+                  width={500}
+                  height={500}
+                  className="size-full object-cover"
+                  priority
+                />
+              ) : null}
             </div>
           </div>
 
