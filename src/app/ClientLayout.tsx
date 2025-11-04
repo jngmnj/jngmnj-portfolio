@@ -40,9 +40,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           <motion.div
             key="main"
             variants={getMotionVariants({
-              initial: { opacity: 0, y: 20 },
-              animate: { opacity: 1, y: 0 },
-              exit: { opacity: 0, y: -20 },
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+              exit: { opacity: 0 },
             })}
             initial="initial"
             animate="animate"
