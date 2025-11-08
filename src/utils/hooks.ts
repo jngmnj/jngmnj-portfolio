@@ -180,3 +180,43 @@ export const useScrollLock = (isLocked: boolean) => {
     }
   }, [isLocked]);
 };
+
+/**
+ * 모달 닫기 기능을 제공하는 hook (ESC 키, 배경 클릭)
+ * @param isOpen - 모달이 열려있는지 여부
+ * @param onClose - 모달을 닫는 함수
+ * @param options - 옵션 설정
+ * @param options.closeOnEsc - ESC 키로 닫기 여부 (기본값: true)
+ * @param options.closeOnBackdrop - 배경 클릭으로 닫기 여부 (기본값: true)
+ * @returns handleBackdropClick - 배경 클릭 핸들러 함수
+ */
+export const useModalClose = (
+  isOpen: boolean,
+  onClose: () => void,
+  options?: { closeOnEsc?: boolean; closeOnBackdrop?: boolean }
+) => {
+  const { closeOnEsc = true, closeOnBackdrop = true } = options || {};
+
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    if (!isOpen || !closeOnEsc) return;
+
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [isOpen, onClose, closeOnEsc]);
+
+  // 배경 클릭 핸들러
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (closeOnBackdrop && e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return { handleBackdropClick };
+};
