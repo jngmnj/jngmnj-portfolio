@@ -1,11 +1,13 @@
 import { FirebaseProject } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
 import { useScrollLock } from '../../utils/hooks';
+import ImageViewerModal from './ImageViewerModal';
 import ProjectContributions from './ProjectContributions';
+import ProjectImageSlider from './ProjectImageSlider';
 import ProjectTechStack from './ProjectTechStack';
 
 interface ProjectDetailModalProps {
@@ -20,6 +22,8 @@ export default function ProjectDetailModal({
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const [imageViewerOpen, setImageViewerOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // 모달이 열릴 때 body 스크롤 막기
   useScrollLock(true);
@@ -334,25 +338,14 @@ export default function ProjectDetailModal({
                     <h2 className="mb-4 text-2xl font-bold text-gray-900">
                       프로젝트 이미지
                     </h2>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                      {project.detail.images.map((img, index) => (
-                        <motion.div
-                          key={index}
-                          className="relative h-48 overflow-hidden rounded-lg"
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.9 + index * 0.1 }}
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <Image
-                            src={img}
-                            alt={`${project.title} - ${index + 1}`}
-                            fill
-                            className="object-cover"
-                          />
-                        </motion.div>
-                      ))}
-                    </div>
+                    <ProjectImageSlider
+                      images={project.detail.images}
+                      projectTitle={project.title}
+                      onImageClick={(index) => {
+                        setSelectedImageIndex(index);
+                        setImageViewerOpen(true);
+                      }}
+                    />
                   </motion.div>
                 )}
 
@@ -444,6 +437,17 @@ export default function ProjectDetailModal({
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Image Viewer Modal */}
+      {project.detail?.images && project.detail.images.length > 0 && (
+        <ImageViewerModal
+          images={project.detail.images}
+          initialIndex={selectedImageIndex}
+          projectTitle={project.title}
+          isOpen={imageViewerOpen}
+          onClose={() => setImageViewerOpen(false)}
+        />
+      )}
     </AnimatePresence>
   );
 }
