@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
+import type { Swiper as SwiperType } from 'swiper';
 import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -27,7 +28,7 @@ export default function ImageViewerModal({
   isOpen,
   onClose,
 }: ImageViewerModalProps) {
-  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 모달이 열릴 때 body 스크롤 막기
@@ -40,20 +41,6 @@ export default function ImageViewerModal({
       swiperInstance.slideTo(initialIndex);
     }
   }, [isOpen, swiperInstance, initialIndex]);
-
-  // ESC 키로 모달 닫기
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscKey);
-    return () => document.removeEventListener('keydown', handleEscKey);
-  }, [isOpen, onClose]);
 
   // 좌우 화살표 키로 이미지 이동
   useEffect(() => {

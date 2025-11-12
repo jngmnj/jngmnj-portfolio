@@ -219,7 +219,7 @@ export default function ProjectDetailModal({
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.6 + index * 0.1 }}
                         >
-                          <div className="bg-seagull-500 mt-2 h-2 w-2 flex-shrink-0 rounded-full" />
+                          <div className="bg-seagull-500 mt-2 h-2 w-2 shrink-0 rounded-full" />
                           <span
                             className="text-gray-600"
                             dangerouslySetInnerHTML={{
@@ -370,7 +370,7 @@ export default function ProjectDetailModal({
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 1.0 + index * 0.1 }}
                           >
-                            <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-orange-500" />
+                            <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-orange-500" />
                             <span className="text-gray-600">{challenge}</span>
                           </motion.div>
                         ))}
@@ -395,7 +395,7 @@ export default function ProjectDetailModal({
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 1.2 + index * 0.1 }}
                           >
-                            <div className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-green-500" />
+                            <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-green-500" />
                             <span className="text-gray-600">{result}</span>
                           </motion.div>
                         ))}

@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 import Image from 'next/image';
 import { useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import type { Swiper as SwiperType } from 'swiper';
 import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -21,7 +22,7 @@ export default function ProjectImageSlider({
   projectTitle,
   onImageClick,
 }: ProjectImageSliderProps) {
-  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
 
   if (!images || images.length === 0) {
     return null;
