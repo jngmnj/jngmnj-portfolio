@@ -108,21 +108,21 @@ export default function ProjectDetailModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         />
-        <div className="fixed top-1/2 left-1/2 z-70 max-h-[95vh] w-[95vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 overflow-hidden">
+        <div className="fixed top-1/2 left-1/2 z-70 max-h-[95vh] w-[95vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl">
           <motion.div
             ref={modalRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
-            className="relative rounded-xl bg-white shadow-2xl"
+            className="relative bg-white shadow-2xl"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
+            {/* Close Button - 고정 */}
             <motion.button
               ref={closeButtonRef}
               className="absolute top-4 right-4 z-10 rounded-full bg-white/90 p-2 shadow-md transition-colors hover:bg-gray-100"
@@ -134,53 +134,54 @@ export default function ProjectDetailModal({
               <RiCloseLine className="text-2xl" />
             </motion.button>
 
-            {/* Project Header */}
-            <div className="relative h-80 w-full overflow-hidden rounded-t-xl">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            {/* Project Content - 전체 스크롤 */}
+            <div className="max-h-[95vh] overflow-y-auto">
+              {/* Project Header */}
+              <div className="relative h-80 w-full overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
 
-              {/* Category Badge */}
-              <motion.div
-                className="absolute top-4 left-4"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <span className="rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-gray-700">
-                  {project.category}
-                </span>
-              </motion.div>
-
-              {/* Project Title */}
-              <motion.div
-                className="absolute right-6 bottom-6 left-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <h1
-                  id="modal-title"
-                  className="mb-2 text-3xl font-bold text-white"
+                {/* Category Badge */}
+                <motion.div
+                  className="absolute top-4 left-4"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
                 >
-                  {project.title}
-                </h1>
-                <p
-                  id="modal-description"
-                  className="text-lg leading-relaxed text-white/90"
-                >
-                  {project.description}
-                </p>
-              </motion.div>
-            </div>
+                  <span className="rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-gray-700">
+                    {project.category}
+                  </span>
+                </motion.div>
 
-            {/* Project Content */}
-            <div className="max-h-[calc(95vh-20rem)] overflow-y-auto">
+                {/* Project Title */}
+                <motion.div
+                  className="absolute right-6 bottom-6 left-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <h1
+                    id="modal-title"
+                    className="mb-2 text-3xl font-bold text-white"
+                  >
+                    {project.title}
+                  </h1>
+                  <p
+                    id="modal-description"
+                    className="text-lg leading-relaxed text-white/90"
+                  >
+                    {project.description}
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Project Content */}
               <div className="p-8">
                 {/* Overview Section */}
                 {project.detail?.overview && (
