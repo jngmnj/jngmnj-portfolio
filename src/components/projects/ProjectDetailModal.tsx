@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
-import { useScrollLock } from '../../utils/hooks';
+import { useModalClose, useScrollLock } from '../../utils/hooks';
 import ImageViewerModal from './ImageViewerModal';
 import ProjectContributions from './ProjectContributions';
 import ProjectImageSlider from './ProjectImageSlider';
@@ -28,6 +28,9 @@ export default function ProjectDetailModal({
   // 모달이 열릴 때 body 스크롤 막기
   useScrollLock(true);
 
+  // ESC 키 및 배경 클릭으로 모달 닫기
+  const { handleBackdropClick } = useModalClose(true, closeModal);
+
   // 포커스 관리: 모달 열릴 때 닫기 버튼에 포커스, 닫힐 때 원래 포커스로 복원
   useEffect(() => {
     // 모달이 열릴 때 현재 포커스 저장
@@ -44,18 +47,6 @@ export default function ProjectDetailModal({
       previousFocusRef.current?.focus();
     };
   }, []);
-
-  // ESC 키로 모달 닫기
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        closeModal();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscKey);
-    return () => document.removeEventListener('keydown', handleEscKey);
-  }, [closeModal]);
 
   // 포커스 트랩: Tab 키로 모달 내부만 순환
   useEffect(() => {
@@ -105,7 +96,7 @@ export default function ProjectDetailModal({
         >
           <motion.div
             className="fixed top-0 left-0 z-60 size-full cursor-pointer bg-black/50"
-            onClick={closeModal}
+            onClick={handleBackdropClick}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
