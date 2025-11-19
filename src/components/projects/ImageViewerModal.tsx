@@ -6,12 +6,12 @@ import 'swiper/css/pagination';
 
 import { useModalClose, useScrollLock } from '@/utils/hooks';
 import { AnimatePresence, motion } from 'framer-motion';
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import type { Swiper as SwiperType } from 'swiper';
-import { A11y, Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import ImageSwiper from './swiper/ImageSwiper';
+import SwiperNavigationButtons from './swiper/SwiperNavigationButtons';
+import { useSwiperKeyboard } from './swiper/useSwiperKeyboard';
 
 interface ImageViewerModalProps {
   images: string[];
@@ -35,28 +35,8 @@ export default function ImageViewerModal({
   useScrollLock(isOpen);
   const { handleBackdropClick } = useModalClose(isOpen, onClose);
 
-  // 초기 인덱스로 슬라이더 이동
-  useEffect(() => {
-    if (isOpen && swiperInstance && initialIndex !== undefined) {
-      swiperInstance.slideTo(initialIndex);
-    }
-  }, [isOpen, swiperInstance, initialIndex]);
-
   // 좌우 화살표 키로 이미지 이동
-  useEffect(() => {
-    if (!isOpen || !swiperInstance) return;
-
-    const handleArrowKey = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') {
-        swiperInstance.slidePrev();
-      } else if (event.key === 'ArrowRight') {
-        swiperInstance.slideNext();
-      }
-    };
-
-    document.addEventListener('keydown', handleArrowKey);
-    return () => document.removeEventListener('keydown', handleArrowKey);
-  }, [isOpen, swiperInstance]);
+  useSwiperKeyboard(swiperInstance, isOpen);
 
   if (!isOpen || !images || images.length === 0) {
     return null;
@@ -111,95 +91,29 @@ export default function ImageViewerModal({
 
           {/* Image Slider */}
           <div className="flex h-full items-center justify-center">
-            {images.length === 1 ? (
-              <div className="relative h-full max-h-[90vh] w-full max-w-5xl">
-                <Image
-                  src={images[0]}
-                  alt={`${projectTitle} - 1`}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1280px"
-                />
-              </div>
-            ) : (
-              <Swiper
-                modules={[Navigation, Pagination, A11y]}
-                slidesPerView={1}
-                spaceBetween={20}
-                navigation={{
-                  prevEl: '#viewer-prev',
-                  nextEl: '#viewer-next',
-                }}
-                pagination={{
-                  clickable: true,
-                  dynamicBullets: true,
-                }}
-                onSwiper={setSwiperInstance}
-                className="h-full w-full max-w-5xl"
-                a11y={{
-                  prevSlideMessage: '이전 이미지',
-                  nextSlideMessage: '다음 이미지',
-                }}
-              >
-                {images.map((img, index) => (
-                  <SwiperSlide key={index}>
-                    <div className="relative h-full max-h-[90vh] w-full">
-                      <Image
-                        src={img}
-                        alt={`${projectTitle} - ${index + 1}`}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1280px"
-                        priority={index === initialIndex}
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
+            <ImageSwiper
+              images={images}
+              projectTitle={projectTitle}
+              initialIndex={initialIndex}
+              onSwiper={setSwiperInstance}
+              navigation={{
+                prevEl: '#viewer-prev',
+                nextEl: '#viewer-next',
+              }}
+              slidesPerView={1}
+              spaceBetween={20}
+              imageClassName="object-contain"
+              mode="viewer"
+              singleImageHeight="h-full max-h-[90vh]"
+            />
 
             {/* Navigation Buttons (only for multiple images) */}
             {images.length > 1 && (
-              <>
-                <button
-                  id="viewer-prev"
-                  className="absolute top-1/2 left-4 z-20 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:shadow-xl"
-                  aria-label="이전 이미지"
-                >
-                  <svg
-                    className="h-6 w-6 text-gray-700"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  id="viewer-next"
-                  className="absolute top-1/2 right-4 z-20 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:shadow-xl"
-                  aria-label="다음 이미지"
-                >
-                  <svg
-                    className="h-6 w-6 text-gray-700"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </>
+              <SwiperNavigationButtons
+                prevButtonId="viewer-prev"
+                nextButtonId="viewer-next"
+                variant="viewer"
+              />
             )}
           </div>
 
