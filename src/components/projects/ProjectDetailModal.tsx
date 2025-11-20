@@ -1,10 +1,15 @@
 import { FirebaseProject } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
-import { useModalClose, useScrollLock } from '../../utils/hooks';
+import {
+  useFocusTrap,
+  useModalClose,
+  useModalFocus,
+  useScrollLock,
+} from '../../utils/hooks';
 import ImageViewerModal from './ImageViewerModal';
 import ProjectContributions from './ProjectContributions';
 import ProjectImageSlider from './ProjectImageSlider';
@@ -21,7 +26,6 @@ export default function ProjectDetailModal({
 }: ProjectDetailModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
   const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -32,56 +36,10 @@ export default function ProjectDetailModal({
   const { handleBackdropClick } = useModalClose(true, closeModal);
 
   // 포커스 관리: 모달 열릴 때 닫기 버튼에 포커스, 닫힐 때 원래 포커스로 복원
-  useEffect(() => {
-    // 모달이 열릴 때 현재 포커스 저장
-    previousFocusRef.current = document.activeElement as HTMLElement;
-
-    // 애니메이션 후 닫기 버튼에 포커스
-    const timer = setTimeout(() => {
-      closeButtonRef.current?.focus();
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      // 모달이 닫힐 때 원래 포커스로 복원
-      previousFocusRef.current?.focus();
-    };
-  }, []);
+  useModalFocus(closeButtonRef, true);
 
   // 포커스 트랩: Tab 키로 모달 내부만 순환
-  useEffect(() => {
-    const handleTabKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab') return;
-
-      const modal = modalRef.current;
-      if (!modal) return;
-
-      // 포커스 가능한 요소들 선택
-      const focusableElements = modal.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (event.shiftKey) {
-        // Shift + Tab
-        if (document.activeElement === firstElement) {
-          event.preventDefault();
-          lastElement?.focus();
-        }
-      } else {
-        // Tab
-        if (document.activeElement === lastElement) {
-          event.preventDefault();
-          firstElement?.focus();
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleTabKey);
-    return () => document.removeEventListener('keydown', handleTabKey);
-  }, []);
+  useFocusTrap(modalRef, true);
 
   if (!project) return null;
   return (
