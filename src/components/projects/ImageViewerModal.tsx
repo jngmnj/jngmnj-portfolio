@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import type { Swiper as SwiperType } from 'swiper';
+import ImageCounter from './swiper/ImageCounter';
 import ImageSwiper from './swiper/ImageSwiper';
 import SwiperNavigationButtons from './swiper/SwiperNavigationButtons';
 import { useSwiperKeyboard } from './swiper/useSwiperKeyboard';
@@ -57,7 +58,7 @@ export default function ImageViewerModal({
       >
         {/* Backdrop */}
         <motion.div
-          className="absolute inset-0 bg-black/90"
+          className="absolute inset-0 cursor-pointer bg-black/90"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -80,7 +81,7 @@ export default function ImageViewerModal({
           </h2>
           {/* Close Button */}
           <motion.button
-            className="absolute top-4 right-4 z-20 rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:shadow-xl"
+            className="absolute top-4 right-4 z-20 cursor-pointer rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:shadow-xl"
             onClick={onClose}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -90,41 +91,42 @@ export default function ImageViewerModal({
           </motion.button>
 
           {/* Image Slider */}
-          <div className="flex h-full items-center justify-center">
-            <ImageSwiper
-              images={images}
-              projectTitle={projectTitle}
-              initialIndex={initialIndex}
-              onSwiper={setSwiperInstance}
-              navigation={{
-                prevEl: '#viewer-prev',
-                nextEl: '#viewer-next',
-              }}
-              slidesPerView={1}
-              spaceBetween={20}
-              imageClassName="object-contain"
-              mode="viewer"
-              singleImageHeight="h-full max-h-[90vh]"
-            />
-
-            {/* Navigation Buttons (only for multiple images) */}
-            {images.length > 1 && (
-              <SwiperNavigationButtons
-                prevButtonId="viewer-prev"
-                nextButtonId="viewer-next"
-                variant="viewer"
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="relative h-full w-full max-w-5xl">
+              <ImageSwiper
+                images={images}
+                projectTitle={projectTitle}
+                initialIndex={initialIndex}
+                onSwiper={setSwiperInstance}
+                navigation={{
+                  prevEl: '#viewer-prev',
+                  nextEl: '#viewer-next',
+                }}
+                slidesPerView={1}
+                spaceBetween={20}
+                imageClassName="object-contain"
+                mode="viewer"
+                singleImageHeight="h-full max-h-[90vh]"
+                containerClassName="h-full w-full"
               />
-            )}
+
+              {/* Navigation Buttons (only for multiple images) */}
+              {images.length > 1 && (
+                <SwiperNavigationButtons
+                  prevButtonId="viewer-prev"
+                  nextButtonId="viewer-next"
+                  variant="viewer"
+                />
+              )}
+            </div>
           </div>
 
           {/* Image Counter */}
-          {images.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-4 py-2 text-sm text-white">
-              {swiperInstance
-                ? `${swiperInstance.activeIndex + 1} / ${images.length}`
-                : `${initialIndex + 1} / ${images.length}`}
-            </div>
-          )}
+          <ImageCounter
+            swiperInstance={swiperInstance}
+            currentIndex={initialIndex}
+            totalImages={images.length}
+          />
         </motion.div>
       </motion.div>
     </AnimatePresence>
