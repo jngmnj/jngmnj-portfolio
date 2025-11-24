@@ -16,7 +16,7 @@ export default function SwiperNavigationButtons({
   className = '',
 }: SwiperNavigationButtonsProps) {
   const baseClasses =
-    'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white hover:shadow-xl';
+    'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white hover:shadow-xl cursor-pointer';
   const viewerClasses = variant === 'viewer' ? 'p-3 z-20' : '';
 
   return (

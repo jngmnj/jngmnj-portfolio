@@ -76,7 +76,7 @@ export default function ProjectDetailModal({
               {/* Close Button - 고정 */}
               <motion.button
                 ref={closeButtonRef}
-                className="absolute top-4 right-4 z-10 rounded-full bg-white/90 p-2 shadow-md transition-colors hover:bg-gray-100"
+                className="absolute top-4 right-4 z-10 cursor-pointer rounded-full bg-white/90 p-2 shadow-md transition-colors hover:bg-gray-100"
                 onClick={closeModal}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
