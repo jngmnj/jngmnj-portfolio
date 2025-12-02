@@ -1,5 +1,6 @@
 'use client';
 
+import { SOCIAL_LINKS, type SocialIconKey } from '@/app/lib/constants';
 import { getImageUrl } from '@/utils/imageUpload';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -34,17 +35,17 @@ export default function IntroductionSection() {
       });
   }, []);
 
-  const socialLinks: SocialLink[] = [
-    { href: 'https://github.com/jngmnj', icon: IoLogoGithub },
-    {
-      href: 'https://instagram.com/jngmnj',
-      icon: IoLogoInstagram,
-    },
-    {
-      href: 'https://www.linkedin.com/in/%EC%A0%95%EB%AF%BC-%EC%A7%80-705288245/',
-      icon: FaLinkedinIn,
-    },
-  ];
+  // Map icons to social links
+  const iconMap: Record<SocialIconKey, React.ComponentType<{ className?: string }>> = {
+    github: IoLogoGithub,
+    instagram: IoLogoInstagram,
+    linkedin: FaLinkedinIn,
+  };
+
+  const socialLinks: SocialLink[] = Object.entries(SOCIAL_LINKS).map(([key, href]) => ({
+    href,
+    icon: iconMap[key as SocialIconKey],
+  }));
 
   return (
     <section className="relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
