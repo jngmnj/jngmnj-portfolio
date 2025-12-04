@@ -1,41 +1,28 @@
 import { LINKS } from '@/app/lib/constants';
-import { useAuth } from '@/utils/hooks';
 import { cn } from '@/utils/style';
-import { User } from 'firebase/auth';
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { CgClose } from 'react-icons/cg';
-import {
-  IoDocumentTextOutline,
-  IoFolderOutline,
-  IoHomeOutline,
-  IoLogInOutline,
-  IoLogOutOutline,
-  IoMailOutline,
-  IoPersonOutline,
-} from 'react-icons/io5';
 import { RiMenu3Line } from 'react-icons/ri';
 
 type SidebarProps = {
-  userData: User | null;
   className?: string;
 };
 
-const Sidebar = ({ userData, className }: SidebarProps) => {
+const Sidebar = ({ className }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { logOut } = useAuth();
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
   const navigationItems = [
-    { href: '/', label: 'Home', icon: IoHomeOutline },
-    { href: '/about', label: 'About', icon: IoPersonOutline },
-    { href: '/projects', label: 'Projects', icon: IoFolderOutline },
-    { href: LINKS.github_blog, label: 'Blog', icon: IoDocumentTextOutline },
-    { href: '/contact', label: 'Contact', icon: IoMailOutline },
+    { href: '/about', label: 'About' },
+    { href: '/projects', label: 'Projects' },
+    { href: LINKS.github_blog, label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -45,12 +32,35 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
         <motion.button
           type="button"
           onClick={handleToggle}
-          className="cursor-pointer rounded-lg p-3 transition-colors hover:bg-gray-100"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-gray-100"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.2 }}
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isOpen}
         >
-          <RiMenu3Line className="text-xl" />
+          <motion.div
+            className="absolute"
+            initial={false}
+            animate={{
+              rotate: isOpen ? 180 : 0,
+              opacity: isOpen ? 0 : 1,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            <RiMenu3Line className="text-xl" />
+          </motion.div>
+          <motion.div
+            className="absolute"
+            initial={false}
+            animate={{
+              rotate: isOpen ? 0 : -180,
+              opacity: isOpen ? 1 : 0,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            <CgClose className="text-xl" />
+          </motion.div>
         </motion.button>
       </div>
 
@@ -59,7 +69,7 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
         {isOpen && (
           <motion.div
             onClick={handleToggle}
-            className="fixed inset-0 z-40 bg-black/50"
+            className="fixed inset-0 z-100 bg-black/50 cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -72,22 +82,30 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed top-0 right-0 z-50 h-full w-80 bg-white shadow-2xl"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="fixed top-0 left-0 right-0 z-101 w-full max-h-[90vh] overflow-y-auto bg-white shadow-2xl"
+            initial={{ y: '-100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-200 p-6">
-              <motion.h2
+              <motion.div
                 className="text-xl font-bold text-gray-900"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                Menu
-              </motion.h2>
+                <Link href="/" className="shrink-0">
+                  <Image
+                    src="/images/common/logo_black.svg"
+                    width={100}
+                    height={27}
+                    alt="logo"
+                    className="transition-opacity hover:opacity-80"
+                  />
+                </Link>
+              </motion.div>
               <motion.button
                 type="button"
                 onClick={handleToggle}
@@ -104,7 +122,6 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
             <nav className="p-6">
               <div className="space-y-2">
                 {navigationItems.map((item, index) => {
-                  const IconComponent = item.icon;
                   return (
                     <motion.div
                       key={item.href}
@@ -115,10 +132,9 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
                       <Link
                         href={item.href}
                         onClick={() => setIsOpen(false)}
-                        className="group hover:bg-seagull-50 hover:text-seagull-700 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition-colors"
+                        className="group text-2xl hover:text-gray-900 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-400 transition-colors"
                       >
-                        <IconComponent className="text-xl" />
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-bold">{item.label}</span>
                       </Link>
                     </motion.div>
                   );
@@ -126,37 +142,6 @@ const Sidebar = ({ userData, className }: SidebarProps) => {
               </div>
             </nav>
 
-            {/* Footer */}
-            <div className="absolute right-0 bottom-0 left-0 border-t border-gray-200 p-6">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                {!userData ? (
-                  <Link
-                    href="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="group hover:bg-seagull-50 hover:text-seagull-700 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition-colors"
-                  >
-                    <IoLogInOutline className="text-xl" />
-                    <span className="font-medium">Login</span>
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsOpen(false);
-                      logOut();
-                    }}
-                    className="group flex w-full items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-700"
-                  >
-                    <IoLogOutOutline className="text-xl" />
-                    <span className="font-medium">Logout</span>
-                  </button>
-                )}
-              </motion.div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
