@@ -3,7 +3,7 @@ import { cn } from '@/utils/style';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CgClose } from 'react-icons/cg';
 import { RiMenu3Line } from 'react-icons/ri';
 
@@ -13,17 +13,21 @@ type SidebarProps = {
 
 const Sidebar = ({ className }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  const navigationItems = [
-    { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects' },
-    { href: LINKS.github_blog, label: 'Blog' },
-    { href: '/contact', label: 'Contact' },
-  ];
+  const navigationItems = useMemo(
+    () => [
+      { href: '/about', label: 'About' },
+      { href: '/projects', label: 'Projects' },
+      { href: LINKS.github_blog, label: 'Blog' },
+      { href: '/contact', label: 'Contact' },
+    ],
+    []
+  );
 
   return (
     <>
@@ -122,6 +126,8 @@ const Sidebar = ({ className }: SidebarProps) => {
             <nav className="p-6">
               <div className="space-y-2">
                 {navigationItems.map((item, index) => {
+                  const letters = item.label.split('');
+                  const isHovered = hoveredItem === item.href;
                   return (
                     <motion.div
                       key={item.href}
@@ -132,9 +138,76 @@ const Sidebar = ({ className }: SidebarProps) => {
                       <Link
                         href={item.href}
                         onClick={() => setIsOpen(false)}
-                        className="group text-2xl hover:text-gray-900 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-400 transition-colors"
+                        onMouseEnter={() => setHoveredItem(item.href)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                        className="group text-2xl hover:text-gray-900 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-400 transition-colors overflow-hidden"
                       >
-                        <span className="font-bold">{item.label}</span>
+                        <span className="font-bold inline-block relative h-[1.2em] overflow-hidden">
+                          {letters.map((letter, letterIndex) => (
+                            <span
+                              key={letterIndex}
+                              className="inline-block relative overflow-hidden"
+                              style={{ 
+                                display: 'inline-block',
+                                height: '1.2em',
+                                lineHeight: '1.2em',
+                                verticalAlign: 'top',
+                                willChange: isHovered ? 'transform' : 'auto',
+                              }}
+                            >
+                              {/* 기본 텍스트 (호버 시 위로 올라가서 숨김) */}
+                              <motion.span
+                                className="inline-block"
+                                animate={
+                                  isHovered
+                                    ? {
+                                        y: '-100%',
+                                      }
+                                    : {
+                                        y: 0,
+                                      }
+                                }
+                                transition={{
+                                  delay: isHovered ? letterIndex * 0.05 : 0,
+                                  duration: 0.4,
+                                  ease: [0.4, 0, 0.2, 1],
+                                }}
+                                style={{ 
+                                  display: 'inline-block',
+                                  willChange: isHovered ? 'transform' : 'auto',
+                                }}
+                              >
+                                {letter === ' ' ? '\u00A0' : letter}
+                              </motion.span>
+                              {/* 애니메이션 텍스트 (호버 시 아래에서 올라옴) */}
+                              <motion.span
+                                className="inline-block absolute top-0 left-0 text-gray-900"
+                                animate={
+                                  isHovered
+                                    ? {
+                                        y: 0,
+                                        opacity: 1,
+                                      }
+                                    : {
+                                        y: '100%',
+                                        opacity: 0,
+                                      }
+                                }
+                                transition={{
+                                  delay: isHovered ? letterIndex * 0.05 : 0,
+                                  duration: 0.4,
+                                  ease: [0.4, 0, 0.2, 1],
+                                }}
+                                style={{ 
+                                  display: 'inline-block',
+                                  willChange: isHovered ? 'transform, opacity' : 'auto',
+                                }}
+                              >
+                                {letter === ' ' ? '\u00A0' : letter}
+                              </motion.span>
+                            </span>
+                          ))}
+                        </span>
                       </Link>
                     </motion.div>
                   );
