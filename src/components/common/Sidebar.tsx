@@ -1,4 +1,5 @@
 import { LINKS } from '@/app/lib/constants';
+import { useScrollLock } from '@/utils/hooks';
 import { cn } from '@/utils/style';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -15,6 +16,9 @@ const Sidebar = ({ className }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
+  // 스크롤 잠금
+  useScrollLock(isOpen);
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -23,7 +27,7 @@ const Sidebar = ({ className }: SidebarProps) => {
     () => [
       { href: '/about', label: 'About' },
       { href: '/projects', label: 'Projects' },
-      { href: LINKS.github_blog, label: 'Blog' },
+      { href: LINKS.github_blog, label: 'Blog', external: true },
       { href: '/contact', label: 'Contact' },
     ],
     []
@@ -36,35 +40,14 @@ const Sidebar = ({ className }: SidebarProps) => {
         <motion.button
           type="button"
           onClick={handleToggle}
-          className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-gray-100"
+          className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors "
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-label="Open menu"
           aria-expanded={isOpen}
         >
-          <motion.div
-            className="absolute"
-            initial={false}
-            animate={{
-              rotate: isOpen ? 180 : 0,
-              opacity: isOpen ? 0 : 1,
-            }}
-            transition={{ duration: 0.2 }}
-          >
-            <RiMenu3Line className="text-xl" />
-          </motion.div>
-          <motion.div
-            className="absolute"
-            initial={false}
-            animate={{
-              rotate: isOpen ? 0 : -180,
-              opacity: isOpen ? 1 : 0,
-            }}
-            transition={{ duration: 0.2 }}
-          >
-            <CgClose className="text-xl" />
-          </motion.div>
+          <RiMenu3Line className="text-xl" />
         </motion.button>
       </div>
 
@@ -113,10 +96,11 @@ const Sidebar = ({ className }: SidebarProps) => {
               <motion.button
                 type="button"
                 onClick={handleToggle}
-                className="rounded-lg p-2 transition-colors hover:bg-gray-100"
+                className="rounded-lg p-2 transition-colors cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.2 }}
+                aria-label="Close sidebar"
               >
                 <CgClose className="text-xl text-gray-600" />
               </motion.button>
@@ -140,6 +124,8 @@ const Sidebar = ({ className }: SidebarProps) => {
                         onClick={() => setIsOpen(false)}
                         onMouseEnter={() => setHoveredItem(item.href)}
                         onMouseLeave={() => setHoveredItem(null)}
+                        target={item.external ? '_blank' : undefined}
+                        rel={item.external ? 'noopener noreferrer' : undefined}
                         className="group text-2xl hover:text-gray-900 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-400 transition-colors overflow-hidden"
                       >
                         <span className="font-bold inline-block relative h-[1.2em] overflow-hidden">
