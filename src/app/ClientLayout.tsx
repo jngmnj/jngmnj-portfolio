@@ -65,7 +65,7 @@ function AdminLayout({ children }: { children: ReactNode }) {
       <AdminSidebar isOpen={isOpen} handleOpen={setIsOpen} />
       <div
         className={cn(
-          isOpen ? 'ml-60' : 'ml-20',
+          isOpen ? 'lg:ml-60' : 'lg:ml-20',
           'transition-all duration-300 ease-in-out'
         )}
       >
