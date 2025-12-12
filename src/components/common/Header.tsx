@@ -1,12 +1,13 @@
+import { cn } from '@/utils/style';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LINKS } from '../../app/lib/constants';
 import Sidebar from './Sidebar';
 
-const Header = () => {
+const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
   return (
     <>
-      <header className="sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white">
+      <header className={cn("sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white", isTransparent ? "bg-transparent" : "bg-white")}>
         <div className="container flex items-center justify-between py-3 lg:py-4" style={{ overflow: 'visible' }}>
           <Link href="/" className="shrink-0">
             <h1 className="hidden text-2xl font-bold">jngmnj</h1>
@@ -15,7 +16,7 @@ const Header = () => {
               width={100}
               height={27}
               alt="logo"
-              className="transition-opacity hover:opacity-80"
+              className={cn("transition-opacity hover:opacity-80", isTransparent ? "brightness-0 invert" : "")} 
             />
           </Link>
           <nav className="hidden items-center justify-center lg:flex">
@@ -41,7 +42,7 @@ const Header = () => {
             </Link>
           </nav>
           <div className="flex items-center justify-center lg:hidden">
-            <Sidebar />
+            <Sidebar isTransparent={isTransparent} />
           </div>
         </div>
       </header>

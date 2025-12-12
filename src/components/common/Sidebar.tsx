@@ -10,9 +10,10 @@ import { RiMenu3Line } from 'react-icons/ri';
 
 type SidebarProps = {
   className?: string;
+  isTransparent?: boolean;
 };
 
-const Sidebar = ({ className }: SidebarProps) => {
+const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
@@ -36,7 +37,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   return (
     <>
       {/* Menu Button */}
-      <div className={cn('md:block', className)}>
+      <div className={cn('md:block', className, isTransparent ? "brightness-0 invert" : "")}>
         <motion.button
           type="button"
           onClick={handleToggle}

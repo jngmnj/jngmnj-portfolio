@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function ScrollSnapWrapper() {
-  const [showHeader, setShowHeader] = useState(false);
+  const [isTransparent, setIsTransparent] = useState(true);
   const [showTopBanner, setShowTopBanner] = useState(true);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function ScrollSnapWrapper() {
 
     const handleScroll = () => {
       setShowTopBanner(scrollContainer.scrollTop < 100);
-      setShowHeader(scrollContainer.scrollTop > 100);
+      setIsTransparent(scrollContainer.scrollTop < 100);
     };
 
     scrollContainer.addEventListener('scroll', handleScroll);
@@ -38,8 +38,8 @@ export default function ScrollSnapWrapper() {
         ref={scrollRef}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {showHeader && <Header />}
-        <div className="snap-center snap-always">
+        <Header isTransparent={isTransparent} />
+        <div className="snap-center snap-always -scroll-mt-10">
           <HeroSection />
         </div>
         <div className="container py-24">
