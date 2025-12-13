@@ -33,30 +33,46 @@ export default function ScrollSnapWrapper() {
   return (
     <>
       {showTopBanner && <TopBanner />}
+
       <div
-        className="scrollbar-hide h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth"
         ref={scrollRef}
+        className="
+          scrollbar-hide
+          h-screen
+          overflow-y-auto
+          md:scroll-smooth
+          md:snap-y md:snap-mandatory
+        "
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         <Header isTransparent={isTransparent} />
-        <div className="snap-center snap-always -scroll-mt-10">
+
+        {/* Hero */}
+        <div className="md:snap-center md:snap-always md:-scroll-mt-10 -mt-16.5 md:mt-0">
           <HeroSection />
         </div>
+
         <div className="container py-24">
-          <div className="snap-center snap-always">
+          {/* Skills */}
+          <div className="md:snap-center md:snap-always">
             <SkillsSection />
           </div>
-          <div className="snap-center snap-always">
+
+          {/* Recent Projects */}
+          <div className="md:snap-center md:snap-always">
             <RecentProjectsSection />
           </div>
-          <div className="snap-center snap-always">
+
+          {/* CTA */}
+          <div className="md:snap-center md:snap-always">
             <section className="rounded-lg bg-gray-50 p-8 text-center">
               <h2 className="mb-4 text-3xl font-bold">
                 Let&apos;s Work Together
               </h2>
               <p className="mb-6 text-gray-600">
                 I&apos;m open to new opportunities!
-                <br /> 귀사의 연락을 기다립니다.
+                <br />
+                귀사의 연락을 기다립니다.
               </p>
               <Link
                 href="/contact"
@@ -67,6 +83,7 @@ export default function ScrollSnapWrapper() {
             </section>
           </div>
         </div>
+
         <Footer />
       </div>
     </>
