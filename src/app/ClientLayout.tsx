@@ -37,20 +37,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <AdminLayout>{children}</AdminLayout>
           </motion.div>
         ) : (
-          <motion.div
-            key="main"
-            variants={getMotionVariants({
-              initial: { opacity: 0 },
-              animate: { opacity: 1 },
-              exit: { opacity: 0 },
-            })}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-          >
-            <MainLayout>{children}</MainLayout>
-          </motion.div>
+          <MainLayout>{children}</MainLayout>
         )}
       </AnimatePresence>
     </QueryClientProvider>
