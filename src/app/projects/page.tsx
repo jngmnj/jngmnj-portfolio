@@ -2,11 +2,13 @@ import ProjectsSkeleton from '@/components/projects/ProjectsSkeleton';
 import { Suspense } from 'react';
 import ProjectsContent from './ProjectsContent';
 
-export default function ProjectsPage({
+export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: { id?: string };
+  searchParams: Promise<{ id?: string }>;
 }) {
+  const { id } = await searchParams;
+  
   return (
     <div className="content container flex flex-col">
       <div className="mb-16">
@@ -17,7 +19,7 @@ export default function ProjectsPage({
       </div>
 
       <Suspense fallback={<ProjectsSkeleton />}>
-        <ProjectsContent projectId={searchParams.id ?? null} />
+        <ProjectsContent projectId={id ?? null} />
       </Suspense>
     </div>
   );
