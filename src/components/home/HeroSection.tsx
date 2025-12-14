@@ -1,10 +1,12 @@
 'use client';
 
 import { SOCIAL_LINKS, type SocialIconKey } from '@/app/lib/constants';
+import Loading from '@/app/loading';
 import { getImageUrl } from '@/utils/imageUpload';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload, MdKeyboardArrowDown } from 'react-icons/md';
@@ -36,13 +38,15 @@ export default function HeroSection() {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hasMeasured, setHasMeasured] = useState(false);
   const [mobileBgImageUrl, setMobileBgImageUrl] = useState<string | null>(null);
   const [isLoadingBg, setIsLoadingBg] = useState(true);
 
   // 모바일 감지
-  useEffect(() => {
+  useLayoutEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
+      setHasMeasured(true);
     };
 
     checkMobile();
@@ -65,9 +69,7 @@ export default function HeroSection() {
         .finally(() => {
           setIsLoadingBg(false);
         });
-    } else {
-      setIsLoadingBg(false);
-    }
+    } 
   }, [isMobile]);
 
   useEffect(() => {
@@ -116,70 +118,91 @@ export default function HeroSection() {
     icon: iconMap[key as SocialIconKey],
   }));
 
+
+  if (isMobile && isLoadingBg) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
     <section className="relative flex min-h-[calc(100vh-40px)] items-center justify-center overflow-hidden">
-      {/* Video Background - Desktop only */}
-      {!isMobile && (
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ zIndex: 0 }}
-        >
-          <source src="/images/bg/video_bg_hero.mp4" type="video/mp4" />
-        </video>
-      )}
-
       {/* Image Background - Mobile only */}
-      {isMobile && (
-        <div
-          className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat"
-          style={{
-            zIndex: 0,
-            backgroundImage: mobileBgImageUrl
-              ? `url(${mobileBgImageUrl})`
-              : 'linear-gradient(135deg, #cee8ff 0%, #a8d5ff 100%)',
-            transition: 'background-image 0.3s ease-in-out',
-          }}
-        >
-          {isLoadingBg && (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#cee8ff] to-[#a8d5ff]" />
+      {isMobile && !isLoadingBg && (
+          <>
+          <div
+            className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat"
+            style={{
+              zIndex: 0,
+              backgroundImage: 'linear-gradient(135deg, #57c076 0%, #00512a 100%)',
+            }}
+          />
+          {mobileBgImageUrl && (
+            <Image
+              src={mobileBgImageUrl}
+              alt=""
+              fill
+              fetchPriority="high"
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+              style={{
+                zIndex: 1,
+                opacity: !isLoadingBg ? 1 : 0,
+              }}
+            />
           )}
-        </div>
+        </>
       )}
 
-      {/* Dark Overlay for Content Visibility */}
-      <div className="absolute inset-0 z-1 bg-[#cee8ff] mix-blend-multiply md:backdrop-blur-sm backdrop-hue-rotate-[-30deg]" />
+      {/* Video Background - Desktop only */}
+      {!isMobile && hasMeasured && (
+        <>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover hidden md:block"
+            style={{ zIndex: 0 }}
+          >
+            <source src="/images/bg/video_bg_hero.mp4" type="video/mp4" />
+          </video>
+  
+          {/* Dark Overlay for Content Visibility */}
+          <div className="hidden md:block absolute inset-0 z-1 bg-[#cee8ff] mix-blend-multiply md:backdrop-blur-sm backdrop-hue-rotate-[-30deg]" />
+  
+          {/* Background decorative elements */}
+          <div className="hidden md:blockabsolute inset-0 -z-10 overflow-hidden">
+            <motion.div
+              className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
+              animate={{
+                x: [0, 30, -30, 0],
+                y: [0, -30, 30, 0],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+            <motion.div
+              className="from-waikawa-gray-400/15 to-seagull-400/5 absolute bottom-0 -left-32 h-80 w-80 rounded-full bg-linear-to-tr blur-3xl"
+              animate={{
+                x: [0, -30, 30, 0],
+                y: [0, 30, -30, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          </div>
+        </>
+      )}
 
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <motion.div
-          className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
-          animate={{
-            x: [0, 30, -30, 0],
-            y: [0, -30, 30, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-        <motion.div
-          className="from-waikawa-gray-400/15 to-seagull-400/5 absolute bottom-0 -left-32 h-80 w-80 rounded-full bg-linear-to-tr blur-3xl"
-          animate={{
-            x: [0, -30, 30, 0],
-            y: [0, 30, -30, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </div>
+      
+
+      
 
       <div
         className="relative container flex flex-col px-6 md:items-center md:justify-center md:text-center"
@@ -211,7 +234,7 @@ export default function HeroSection() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
           className="mb-8 max-w-2xl text-left text-gray-100 sm:mb-10 sm:text-lg sm:text-gray-200 md:mb-12 md:text-center md:text-gray-600 md:text-2xl"
         >
           프론트엔드 엔지니어, UI/UX 디자이너, 기획자로서
