@@ -1,6 +1,6 @@
 import { useCategories } from '@/utils/hooks';
 import { DocumentData } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import PostCategoryTab from './PostCategoryTab';
 
 export type Category = {
@@ -17,18 +17,15 @@ const CategoryFilter = ({
   onCategoryChange,
   activeCategoryId,
 }: CategoryFilterProps) => {
-  const [categories, setCategories] = useState<Category[]>([]);
   const { data, error, isLoading } = useCategories();
 
-  // 카테고리 데이터가 로드되면 카테고리 목록을 설정
-  useEffect(() => {
-    if (data) {
-      const categoriesData = data.map((doc: DocumentData) => ({
-        id: doc.category_id as number,
-        name: doc.category_name as string,
-      }));
-      setCategories(categoriesData);
-    }
+  // useMemo로 카테고리 데이터 변환 (derived state)
+  const categories = useMemo(() => {
+    if (!data) return [];
+    return data.map((doc: DocumentData) => ({
+      id: doc.category_id as number,
+      name: doc.category_name as string,
+    }));
   }, [data]);
 
   if (isLoading) {
