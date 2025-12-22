@@ -204,6 +204,7 @@ export const useModalClose = (
 
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        event.stopImmediatePropagation(); // 다른 모달의 ESC 핸들러 실행 방지
         onClose();
       }
     };
