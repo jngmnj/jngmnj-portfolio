@@ -13,12 +13,13 @@ import Sidebar from './Sidebar';
 const Header = () => {
   const pathname = usePathname();
 
-  const [userData, setUserData] = useState<User | null>(null);
-  useEffect(() => {
+  const [userData, setUserData] = useState<User | null>(() => {
     if (typeof window !== 'undefined') {
-      setUserData(storage.get<User>('userData'));
+      return storage.get<User>('userData');
     }
-
+    return null;
+  });
+  useEffect(() => {
     // 로컬스토리지 이벤트 핸들러
     const handleUserDataChange = () => {
       setUserData(storage.get<User>('userData'));
@@ -30,7 +31,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('storageUserDataChange', handleUserDataChange);
     };
-  }, [pathname]);
+  }, []);
 
   const { logOut } = useAuth();
   return (

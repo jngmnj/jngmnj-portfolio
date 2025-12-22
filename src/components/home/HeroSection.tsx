@@ -58,8 +58,10 @@ export default function HeroSection() {
         }, DELETE_SPEED);
       } else {
         // 삭제 완료, 다음 문장으로
-        setIsDeleting(false);
-        setCurrentIndex((prev) => (prev + 1) % CAPABILITIES.length);
+        timeout = setTimeout(() => {
+          setIsDeleting(false);
+          setCurrentIndex((prev) => (prev + 1) % CAPABILITIES.length);
+        }, 0); // setTimeout으로 감싸서 비동기 콜백으로
       }
     }
 
