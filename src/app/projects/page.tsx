@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { db } from '../../../firebaseConfig';
 import ProjectsContent from './ProjectsContent';
 
-async function getProjects() {
+async function getProjects(): Promise<FirebaseProject[]> {
   try {
     const querySnapshot = await getDocs(collection(db, 'projects'));
     const projects = querySnapshot.docs.map((doc) => {
@@ -14,12 +14,13 @@ async function getProjects() {
         id: doc.id,
         ...data,
         // Timestamp를 일반 객체로 변환 (서버 -> 클라이언트 전달을 위해)
-        createdAt: data.createdAt instanceof Timestamp
-          ? {
-              seconds: data.createdAt.seconds,
-              nanoseconds: data.createdAt.nanoseconds,
-            }
-          : data.createdAt,
+        createdAt:
+          data.createdAt instanceof Timestamp
+            ? {
+                seconds: data.createdAt.seconds,
+                nanoseconds: data.createdAt.nanoseconds,
+              }
+            : data.createdAt,
         updatedAt:
           data.updatedAt instanceof Timestamp
             ? {
@@ -27,7 +28,7 @@ async function getProjects() {
                 nanoseconds: data.updatedAt.nanoseconds,
               }
             : data.updatedAt,
-      };
+      } as FirebaseProject;
     });
 
     return projects;
