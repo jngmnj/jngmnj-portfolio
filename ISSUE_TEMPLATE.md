@@ -1,9 +1,0 @@
-## Description
-
-## To-do
-
-- [ ]
-
-## References
-
-## Note

@@ -4,16 +4,15 @@ import storage from '@/utils/storage';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function MypagePage() {
-  const [userData, setUserData] = useState<User | null>();
-
-  useEffect(() => {
+  const [userData] = useState<User | null>(() => {
     if (typeof window !== 'undefined') {
-      setUserData(storage.get<User>('userData'));
+      return storage.get<User>('userData');
     }
-  }, []);
+    return null;
+  });
 
   return (
     <div className="content container">

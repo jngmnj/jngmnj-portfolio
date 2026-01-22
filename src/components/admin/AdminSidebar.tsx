@@ -21,14 +21,15 @@ type AdminSidebarProps = {
 };
 
 const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      return storage.get<User>('userData');
+    }
+    return null;
+  });
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // setUserData(storage.get<User>('userData'));
-      setUserData(storage.get<User>('userData') ?? null);
-    }
     // 로컬스토리지 이벤트 핸들러
     const handleUserDataChange = () => {
       // setUserData(storage.get<User>('userData'));
@@ -40,7 +41,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
     return () => {
       window.removeEventListener('storageUserDataChange', handleUserDataChange);
     };
-  }, [router]);
+  }, []);
 
   // setUserData 직후에 useData 읽으면 null임 -> useEffect로 처리
   useEffect(() => {

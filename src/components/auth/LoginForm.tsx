@@ -10,13 +10,19 @@ import { useToast } from '@/utils/useToast';
 import { validateEmail, validatePassword } from '@/utils/validation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function LoginForm() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
-  const [rememberEmail, setRememberEmail] = useState(false);
+  const [rememberEmail, setRememberEmail] = useState(() => {
+    // localStorage에 저장된 이메일이 있으면 true로 초기화
+    if (typeof window !== 'undefined') {
+      return !!storage.get<string>('savedEmail');
+    }
+    return false;
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -24,15 +30,6 @@ export default function LoginForm() {
 
   const router = useRouter();
   const { signInWithGoogle, signIn } = useAuth();
-
-  // 저장된 이메일 불러오기
-  useEffect(() => {
-    const savedEmail = storage.get<string>('savedEmail');
-    if (savedEmail && emailRef.current) {
-      emailRef.current.value = savedEmail;
-      setRememberEmail(true);
-    }
-  }, []);
 
   // 실시간 이메일 검증
   const handleEmailChange = () => {
@@ -123,10 +120,7 @@ export default function LoginForm() {
       )}
       <div className="w-full rounded-xl border border-gray-300 bg-white px-4 py-8 md:w-1/2 md:px-6 md:py-10">
         <h1 className="text-xl font-semibold md:text-2xl">로그인</h1>
-        <form
-          className="mt-6 mb-4 flex flex-col gap-4"
-          onSubmit={handleSubmit}
-        >
+        <form className="mt-6 mb-4 flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
             <Input
               type="email"
@@ -179,9 +173,7 @@ export default function LoginForm() {
           </Button>
         </div>
         <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-4">
-          <span className="text-sm sm:text-base">
-            아직 회원이 아니신가요?
-          </span>
+          <span className="text-sm sm:text-base">아직 회원이 아니신가요?</span>
           <Link href="/register" className="link-text text-sm sm:text-base">
             회원가입
           </Link>
@@ -190,4 +182,3 @@ export default function LoginForm() {
     </>
   );
 }
-
