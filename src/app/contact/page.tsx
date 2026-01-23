@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { HiLocationMarker } from 'react-icons/hi';
+import { ImSpinner2 } from 'react-icons/im';
 import { MdEmail } from 'react-icons/md';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
@@ -57,23 +58,23 @@ export default function ContactPage() {
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
       <div className="flex flex-col items-end gap-20 lg:flex-row">
-        <div className="w-full rounded-lg border border-gray-300 bg-gray-50 px-6 py-8 lg:w-1/2">
+        <div className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-6 sm:px-6 sm:py-8 lg:w-1/2">
           <form
             onSubmit={handleSubmit(handleSubmitContact)}
             method="post"
-            className=""
+            className="space-y-5"
           >
-            <div className="mb-4">
+            <div>
               <FormInput
                 label="Name"
                 id="name"
                 register={register}
                 errors={errors}
                 disabled={isLoading}
-                isLoading={false}
+                isLoading={isLoading}
               />
             </div>
-            <div className="mb-4">
+            <div>
               <FormInput
                 label="Company"
                 id="company"
@@ -81,10 +82,10 @@ export default function ContactPage() {
                 required={false}
                 errors={errors}
                 disabled={isLoading}
-                isLoading={false}
+                isLoading={isLoading}
               />
             </div>
-            <div className="mb-4">
+            <div>
               <FormInput
                 label="Email"
                 id="email"
@@ -92,35 +93,38 @@ export default function ContactPage() {
                 register={register}
                 errors={errors}
                 disabled={isLoading}
-                isLoading={false}
+                isLoading={isLoading}
               />
             </div>
-            <div className="mb-4">
+            <div>
               <FormInput
                 label="Title"
                 id="title"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
-                isLoading={false}
+                isLoading={isLoading}
               />
             </div>
-            <div className="mb-4">
-              <label htmlFor="content">
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium">
                 Message<span className="ml-1 text-red-500">*</span>
               </label>
               <textarea
                 id="content"
                 disabled={isLoading}
                 {...register('content', { required: 'Message is required.' })}
-                placeholder=""
+                placeholder="Enter your message"
+                rows={6}
                 className={cn(
-                  `w-full resize-none border-b bg-transparent p-2 outline-none`,
-                  errors.content ? 'border-red-500' : 'border-gray-300'
+                  `w-full resize-none border-b bg-transparent p-2 outline-none rounded-none transition-colors`,
+                  errors.content
+                    ? 'border-red-500 focus:border-red-500'
+                    : 'border-gray-300 focus:border-gray-300'
                 )}
               />
               {errors.content && (
-                <p className="text-xs text-red-500">
+                <p className="mt-1.5 text-xs font-medium text-red-600">
                   {errors.content.message as string}
                 </p>
               )}
@@ -130,8 +134,16 @@ export default function ContactPage() {
               color="primary"
               size="large"
               className="w-full"
+              disabled={isLoading}
             >
-              Submit
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <ImSpinner2 className="animate-spin" />
+                  <span>Sending...</span>
+                </span>
+              ) : (
+                'Submit'
+              )}
             </Button>
           </form>
         </div>

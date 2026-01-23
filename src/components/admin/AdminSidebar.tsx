@@ -1,6 +1,8 @@
 'use client';
+import { useScrollLock } from '@/utils/hooks';
 import storage from '@/utils/storage';
 import { cn } from '@/utils/style';
+import { AnimatePresence, motion } from 'framer-motion';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,7 +29,22 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
     }
     return null;
   });
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // 모바일에서 사이드바 열릴 때 스크롤 잠금
+  useScrollLock(isMobile && isOpen);
 
   useEffect(() => {
     // 로컬스토리지 이벤트 핸들러
@@ -59,12 +76,41 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
 
   return (
     <>
-      <div
+      {/* 모바일 오버레이 */}
+      <AnimatePresence>
+        {isMobile && isOpen && (
+          <motion.div
+            onClick={() => handleOpen(false)}
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* 사이드바 */}
+      <motion.div
         className={cn(
-          `fixed top-0 left-0 z-10 h-full max-h-screen border-r border-r-gray-200 bg-white p-4 transition-all duration-300`,
+          `fixed top-0 left-0 z-50 h-full max-h-screen border-r border-r-gray-200 bg-white p-4 transition-all duration-300`,
           isOpen ? 'w-60' : 'w-20'
         )}
-        onClick={() => handleOpen(true)}
+        initial={false}
+        animate={{
+          x: isMobile && !isOpen ? '-100%' : 0,
+        }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        onClick={(e) => {
+          // 모바일이 아니고 사이드바가 닫혀있을 때만 열기
+          if (!isMobile && !isOpen) {
+            handleOpen(true);
+          }
+          // 모바일에서는 사이드바 내부 클릭 시 이벤트 전파 방지
+          if (isMobile) {
+            e.stopPropagation();
+          }
+        }}
       >
         <div className="mt-4 overflow-hidden text-center">
           <Link href="/" className="flex items-center justify-center gap-2">
@@ -108,7 +154,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
         <div className="mt-8 flex flex-col gap-2">
           <Link href="/admin" title="관리자 홈">
             <div
-              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoHome className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">HOME</span>
@@ -116,7 +162,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </Link>
           <Link href="/admin/projects" title="프로젝트 관리">
             <div
-              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoStack className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -126,7 +172,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </Link>
           <Link href="/admin/offers" title="메인페이지 관리">
             <div
-              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoNorthStar className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -136,7 +182,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </Link>
           <Link href="/admin/users" title="회원 관리">
             <div
-              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoPeople className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -146,7 +192,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </Link>
           <Link href="/admin/contact" title="문의/방명록">
             <div
-              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoHeart className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -156,7 +202,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </Link>
           <Link href="/admin/setting" title="사이트 관리">
             <div
-              className={`hover:text-seagull-500 flex items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoTools className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -165,7 +211,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
             </div>
           </Link>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

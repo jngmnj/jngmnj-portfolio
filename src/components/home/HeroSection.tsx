@@ -1,8 +1,12 @@
 'use client';
 
+import { SOCIAL_LINKS, type SocialIconKey } from '@/app/lib/constants';
+import Loading from '@/app/loading';
+import { getImageUrl } from '@/utils/imageUpload';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload, MdKeyboardArrowDown } from 'react-icons/md';
@@ -33,6 +37,40 @@ export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [hasMeasured, setHasMeasured] = useState(false);
+  const [mobileBgImageUrl, setMobileBgImageUrl] = useState<string | null>(null);
+  const [isLoadingBg, setIsLoadingBg] = useState(true);
+
+  // 모바일 감지
+  useLayoutEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+      setHasMeasured(true);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // 모바일 배경 이미지 로드
+  useEffect(() => {
+    if (isMobile) {
+      getImageUrl('images/IMG_7606.JPG')
+        .then((url) => {
+          setMobileBgImageUrl(url);
+        })
+        .catch((error) => {
+          console.error('Failed to load mobile background image:', error);
+          // 실패 시 그라데이션 사용
+          setMobileBgImageUrl(null);
+        })
+        .finally(() => {
+          setIsLoadingBg(false);
+        });
+    } 
+  }, [isMobile]);
 
   useEffect(() => {
     const currentCapability = CAPABILITIES[currentIndex];
@@ -68,68 +106,118 @@ export default function HeroSection() {
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, currentIndex]);
 
-  const socialLinks = [
-    { href: 'https://github.com/jngmnj', icon: IoLogoGithub },
-    { href: 'https://instagram.com/jngmnj', icon: IoLogoInstagram },
-    {
-      href: 'https://www.linkedin.com/in/%EC%A0%95%EB%AF%BC-%EC%A7%80-705288245/',
-      icon: FaLinkedinIn,
-    },
-  ];
+  // Map icons to social links
+  const iconMap: Record<SocialIconKey, React.ComponentType<{ className?: string }>> = {
+    github: IoLogoGithub,
+    instagram: IoLogoInstagram,
+    linkedin: FaLinkedinIn,
+  };
+
+  const socialLinks = Object.entries(SOCIAL_LINKS).map(([key, href]) => ({
+    href,
+    icon: iconMap[key as SocialIconKey],
+  }));
+
+
+  if (isMobile && isLoadingBg) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <section className="relative flex min-h-[calc(100vh-40px)] items-center justify-center overflow-hidden">
-      {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover"
-        style={{ zIndex: 0 }}
-      >
-        <source src="/images/bg/video_bg_hero.mp4" type="video/mp4" />
-      </video>
+      {/* Image Background - Mobile only */}
+      {isMobile && !isLoadingBg && (
+          <>
+          <div
+            className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat"
+            style={{
+              zIndex: 0,
+              backgroundImage: 'linear-gradient(135deg, #57c076 0%, #00512a 100%)',
+            }}
+          />
+          {mobileBgImageUrl && (
+            <Image
+              src={mobileBgImageUrl}
+              alt=""
+              fill
+              fetchPriority="high"
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+              style={{
+                zIndex: 1,
+                opacity: !isLoadingBg ? 1 : 0,
+              }}
+            />
+          )}
+        </>
+      )}
 
-      {/* Dark Overlay for Content Visibility */}
-      <div className="absolute inset-0 z-1 bg-[#cee8ff] mix-blend-multiply backdrop-blur-sm backdrop-hue-rotate-[-30deg]" />
+      {/* Video Background - Desktop only */}
+      {!isMobile && hasMeasured && (
+        <>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover hidden md:block"
+            style={{ zIndex: 0 }}
+          >
+            <source src="/images/bg/video_bg_hero.mp4" type="video/mp4" />
+          </video>
+  
+          {/* Dark Overlay for Content Visibility */}
+          <div className="hidden md:block absolute inset-0 z-1 bg-[#cee8ff] mix-blend-multiply md:backdrop-blur-sm backdrop-hue-rotate-[-30deg]" />
+  
+          {/* Background decorative elements */}
+          <div className="hidden md:blockabsolute inset-0 -z-10 overflow-hidden">
+            <motion.div
+              className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
+              animate={{
+                x: [0, 30, -30, 0],
+                y: [0, -30, 30, 0],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+            <motion.div
+              className="from-waikawa-gray-400/15 to-seagull-400/5 absolute bottom-0 -left-32 h-80 w-80 rounded-full bg-linear-to-tr blur-3xl"
+              animate={{
+                x: [0, -30, 30, 0],
+                y: [0, 30, -30, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          </div>
+        </>
+      )}
 
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <motion.div
-          className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
-          animate={{
-            x: [0, 30, -30, 0],
-            y: [0, -30, 30, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-        <motion.div
-          className="from-waikawa-gray-400/15 to-seagull-400/5 absolute bottom-0 -left-32 h-80 w-80 rounded-full bg-linear-to-tr blur-3xl"
-          animate={{
-            x: [0, -30, 30, 0],
-            y: [0, 30, -30, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </div>
+      
+
+      
 
       <div
-        className="relative container flex flex-col items-center justify-center px-6 text-center"
-        style={{ zIndex: 2 }}
+        className="relative container flex flex-col px-6 md:items-center md:justify-center md:text-center"
+        style={{ 
+          zIndex: 2,
+          ...(isMobile && {
+            justifyContent: 'flex-start',
+            paddingTop: '66.666%', // 2/3 지점
+          })
+        }}
       >
         {/* Main typing text */}
-        <div className="mb-12 flex min-h-40 items-center justify-center">
-          <h1 className="text-5xl leading-tight md:text-6xl lg:text-7xl">
-            <span className="font-extrabold text-black">
+        <div className="mb-8 flex items-start md:items-center md:justify-center sm:mb-10 md:mb-12">
+          <h1 className="text-left text-4xl leading-tight text-white sm:text-5xl md:text-center md:text-black md:text-6xl lg:text-7xl xl:text-8xl">
+            <span className="font-extrabold">
               {displayText}
               <motion.span
                 animate={{ opacity: [1, 0] }}
@@ -146,11 +234,12 @@ export default function HeroSection() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-12 max-w-2xl text-lg text-gray-600 md:text-xl"
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="mb-8 max-w-2xl text-left text-gray-100 sm:mb-10 sm:text-lg sm:text-gray-200 md:mb-12 md:text-center md:text-gray-600 md:text-2xl"
         >
           프론트엔드 엔지니어, UI/UX 디자이너, 기획자로서
-          <br />
+          <br className="hidden sm:block" />
+          <span className="sm:hidden"> </span>
           사용자 경험이 더 좋은 프로덕트를 구현하기 위해 끊임없이 고민합니다.
         </motion.p>
 
@@ -159,7 +248,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-6"
+          className="flex flex-wrap items-start justify-start gap-6 md:items-center md:justify-center"
         >
           {/* Resume Download Button */}
           <motion.div
@@ -170,7 +259,7 @@ export default function HeroSection() {
             <Link
               href="https://drive.google.com/file/d/1opn0TUVKUemECGX0Na7KUPyrDVm8hnB6/view?usp=drive_link"
               target="_blank"
-              className="inline-flex items-center gap-2 rounded-xl bg-black px-7 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl sm:px-7 sm:text-base"
             >
               <MdFileDownload className="size-5" />
               이력서 다운로드
@@ -198,7 +287,7 @@ export default function HeroSection() {
                     transition={{ duration: 0.2 }}
                   >
                     <Link href={social.href} target="_blank" className="group">
-                      <div className="flex items-center justify-center rounded-xl bg-gray-50 p-3 transition-all group-hover:bg-gray-100">
+                      <div className="flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-gray-50 p-3 transition-all group-hover:bg-gray-100">
                         <IconComponent className="size-6 text-gray-700 transition-colors" />
                       </div>
                     </Link>
@@ -212,7 +301,7 @@ export default function HeroSection() {
 
       {/* Scroll Hint */}
       <motion.div
-        className="absolute bottom-8 left-1/2 z-2 -translate-x-1/2 transform"
+        className="absolute bottom-8 left-1/2 z-2 -translate-x-1/2 transform md:left-1/2"
         animate={{ y: [0, 12, 0] }}
         transition={{
           duration: 2,
@@ -222,8 +311,8 @@ export default function HeroSection() {
       >
         <div className="flex flex-col items-center gap-2">
           {/* <p className="text-sm font-medium text-black">Scroll</p> */}
-          <div className="rounded-full border-2 border-black p-2">
-            <MdKeyboardArrowDown className="size-5 text-black" />
+          <div className={`rounded-full border-2 p-2 ${isMobile ? 'border-white' : 'border-black'}`}>
+            <MdKeyboardArrowDown className={`size-5 ${isMobile ? 'text-white' : 'text-black'}`} />
           </div>
         </div>
       </motion.div>

@@ -63,7 +63,7 @@ export default function PortfolioLinksSection() {
     }
   };
   return (
-    <section className="mb-16 h-full">
+    <section className="mb-12 h-full sm:mb-16">
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
@@ -72,20 +72,20 @@ export default function PortfolioLinksSection() {
           <Link
             key={link.id}
             href={link.href || '#'}
-            className="group w-1/2 px-2 py-3"
+            className="group w-full px-2 py-3 md:w-1/2 flex flex-col md:flex-row"
             onClick={(e) => handleClick(link, e)}
           >
-            <div className="hover:border-seagull-400 h-full rounded-xl border border-gray-200 px-6 py-8 transition-all">
-              <div className="group-hover:text-seagull-600 mb-3 text-4xl font-bold transition">
+            <div className="hover:border-seagull-400 h-full rounded-xl border border-gray-200 px-4 py-6 transition-all sm:px-6 sm:py-8">
+              <div className="group-hover:text-seagull-600 mb-3 text-2xl font-bold transition sm:text-3xl md:text-4xl">
                 {link.id}
               </div>
-              <div className="group-hover:text-seagull-600 mb-6 flex items-end gap-4 text-6xl font-bold transition md:text-4xl">
+              <div className="group-hover:text-seagull-600 mb-4 flex items-end gap-3 text-2xl font-bold transition sm:mb-6 sm:gap-4 sm:text-3xl md:text-4xl lg:text-5xl">
                 {link.title}
-                <div className="border-seagull-600 hidden rounded-full border p-4 opacity-0 transition group-hover:opacity-100 lg:block">
-                  <GoArrowUpRight className="text-seagull-600 text-3xl" />
+                <div className="border-seagull-600 hidden rounded-full border p-2 opacity-0 transition group-hover:opacity-100 sm:p-3 lg:block lg:p-4">
+                  <GoArrowUpRight className="text-seagull-600 text-xl sm:text-2xl lg:text-3xl" />
                 </div>
               </div>
-              <div className="leading-6">{link.description}</div>
+              <div className="text-sm leading-6 sm:text-base">{link.description}</div>
             </div>
           </Link>
         ))}

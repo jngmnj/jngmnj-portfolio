@@ -37,20 +37,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <AdminLayout>{children}</AdminLayout>
           </motion.div>
         ) : (
-          <motion.div
-            key="main"
-            variants={getMotionVariants({
-              initial: { opacity: 0 },
-              animate: { opacity: 1 },
-              exit: { opacity: 0 },
-            })}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-          >
-            <MainLayout>{children}</MainLayout>
-          </motion.div>
+          <MainLayout>{children}</MainLayout>
         )}
       </AnimatePresence>
     </QueryClientProvider>
@@ -65,7 +52,7 @@ function AdminLayout({ children }: { children: ReactNode }) {
       <AdminSidebar isOpen={isOpen} handleOpen={setIsOpen} />
       <div
         className={cn(
-          isOpen ? 'ml-60' : 'ml-20',
+          isOpen ? 'lg:ml-60' : 'lg:ml-20',
           'transition-all duration-300 ease-in-out'
         )}
       >

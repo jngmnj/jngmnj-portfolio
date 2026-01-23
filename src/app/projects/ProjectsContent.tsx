@@ -1,21 +1,16 @@
-'use client';
-
-import { FirebaseProject } from '@/types';
 import ProjectList from '@/components/projects/ProjectList';
-import { useSearchParams } from 'next/navigation';
+import getProjects from '../lib/getProjects';
 
-interface ProjectsContentProps {
-  initialProjects: FirebaseProject[];
+interface Props {
+  projectId: string | null;
 }
 
-export default function ProjectsContent({
-  initialProjects,
-}: ProjectsContentProps) {
-  const searchParams = useSearchParams();
-  const projectId = searchParams.get('id');
-
+export default async function ProjectsContent({ projectId }: Props) {
+  const projects = await getProjects(); 
   return (
-    <ProjectList initialProjects={initialProjects} initialProjectId={projectId} />
+    <ProjectList
+      initialProjects={projects}
+      initialProjectId={projectId}
+    />
   );
 }
-

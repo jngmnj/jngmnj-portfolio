@@ -8,7 +8,7 @@ type TabMenuProps = {
 
 const TabMenu = ({ activeTabIndex, onTabChange }: TabMenuProps) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-row gap-2 md:gap-4 md:flex-col">
       {myData.map((data, index) => (
         <motion.button
           type="button"

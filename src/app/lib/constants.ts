@@ -58,6 +58,15 @@ export const LINKS = {
   tag: '/blog/tags',
 };
 
+// Social Links
+export const SOCIAL_LINKS = {
+  github: 'https://github.com/jngmnj',
+  instagram: 'https://instagram.com/jngmnj',
+  linkedin: 'https://www.linkedin.com/in/%EC%A0%95%EB%AF%BC-%EC%A7%80-705288245/',
+} as const;
+
+export type SocialIconKey = keyof typeof SOCIAL_LINKS;
+
 // Project Tech Stack Categories
 export const TECH_STACK_CATEGORIES = [
   { value: 'frontend', label: 'Frontend' },
