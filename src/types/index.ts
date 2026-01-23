@@ -44,6 +44,12 @@ export type Project = {
 };
 
 // Firebase용 Project 타입 (더 상세한 버전)
+// createdAt과 updatedAt은 서버에서 클라이언트로 전달 시 직렬화된 형태로 변환됨
+export type SerializedTimestamp = {
+  seconds: number;
+  nanoseconds: number;
+};
+
 export type FirebaseProject = {
   id?: string;
   title: string;

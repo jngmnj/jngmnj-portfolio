@@ -197,11 +197,11 @@ export default function ProjectForm({
           </label>
           
           {/* 업로드 방식 선택 탭 */}
-          <div className="mb-3 flex gap-2 border-b border-gray-200">
+          <div className="mb-3 flex gap-2 border-b border-gray-200 overflow-x-auto">
             <button
               type="button"
               onClick={() => setThumbnailUploadType('upload')}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                 thumbnailUploadType === 'upload'
                   ? 'border-b-2 border-seagull-500 text-seagull-600'
                   : 'text-gray-500 hover:text-gray-700'
@@ -212,7 +212,7 @@ export default function ProjectForm({
             <button
               type="button"
               onClick={() => setThumbnailUploadType('url')}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                 thumbnailUploadType === 'url'
                   ? 'border-b-2 border-seagull-500 text-seagull-600'
                   : 'text-gray-500 hover:text-gray-700'
@@ -253,7 +253,7 @@ export default function ProjectForm({
           <label className="mb-2 block text-sm font-medium">
             기술 스택 <span className="text-red-500">*</span>
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <Input
               type="text"
               value={techInput}
@@ -265,8 +265,9 @@ export default function ProjectForm({
                 }
               }}
               placeholder="기술 스택 입력 후 Enter"
+              className="flex-1"
             />
-            <Button type="button" onClick={addTechnology}>
+            <Button type="button" onClick={addTechnology} className="sm:w-auto w-full">
               추가
             </Button>
           </div>
@@ -356,7 +357,7 @@ export default function ProjectForm({
 
             <div>
               <label className="mb-2 block text-sm font-medium">Timeline</label>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <div>
                   <label className="mb-1 block text-xs text-gray-600">
                     시작일
@@ -392,7 +393,7 @@ export default function ProjectForm({
 
             <div>
               <label className="mb-2 block text-sm font-medium">Team</label>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-1 block text-xs text-gray-600">
                     팀 크기
@@ -420,12 +421,13 @@ export default function ProjectForm({
               <label className="mb-2 block text-sm font-medium">
                 Responsibilities
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   type="text"
                   value={responsibilityInput}
                   onChange={(e) => setResponsibilityInput(e.target.value)}
                   placeholder="담당 업무 입력 후 Enter"
+                  className="flex-1"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -454,6 +456,7 @@ export default function ProjectForm({
                       setResponsibilityInput('');
                     }
                   }}
+                  className="sm:w-auto w-full"
                 >
                   추가
                 </Button>
@@ -490,12 +493,13 @@ export default function ProjectForm({
 
             <div>
               <label className="mb-2 block text-sm font-medium">Features</label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   type="text"
                   value={featureInput}
                   onChange={(e) => setFeatureInput(e.target.value)}
                   placeholder="기능 입력 후 Enter"
+                  className="flex-1"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -522,6 +526,7 @@ export default function ProjectForm({
                       setFeatureInput('');
                     }
                   }}
+                  className="sm:w-auto w-full"
                 >
                   추가
                 </Button>
@@ -559,12 +564,13 @@ export default function ProjectForm({
               <label className="mb-2 block text-sm font-medium">
                 Challenges
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   type="text"
                   value={challengeInput}
                   onChange={(e) => setChallengeInput(e.target.value)}
                   placeholder="도전 과제 입력 후 Enter"
+                  className="flex-1"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -591,6 +597,7 @@ export default function ProjectForm({
                       setChallengeInput('');
                     }
                   }}
+                  className="sm:w-auto w-full"
                 >
                   추가
                 </Button>
@@ -626,12 +633,13 @@ export default function ProjectForm({
 
             <div>
               <label className="mb-2 block text-sm font-medium">Results</label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   type="text"
                   value={resultInput}
                   onChange={(e) => setResultInput(e.target.value)}
                   placeholder="결과 입력 후 Enter"
+                  className="flex-1"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -658,6 +666,7 @@ export default function ProjectForm({
                       setResultInput('');
                     }
                   }}
+                  className="sm:w-auto w-full"
                 >
                   추가
                 </Button>
@@ -697,11 +706,11 @@ export default function ProjectForm({
               </label>
               
               {/* 업로드 방식 선택 탭 */}
-              <div className="mb-3 flex gap-2 border-b border-gray-200">
+              <div className="mb-3 flex gap-2 border-b border-gray-200 overflow-x-auto">
                 <button
                   type="button"
                   onClick={() => setGalleryUploadType('upload')}
-                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                     galleryUploadType === 'upload'
                       ? 'border-b-2 border-seagull-500 text-seagull-600'
                       : 'text-gray-500 hover:text-gray-700'
@@ -712,7 +721,7 @@ export default function ProjectForm({
                 <button
                   type="button"
                   onClick={() => setGalleryUploadType('url')}
-                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                     galleryUploadType === 'url'
                       ? 'border-b-2 border-seagull-500 text-seagull-600'
                       : 'text-gray-500 hover:text-gray-700'
@@ -732,12 +741,13 @@ export default function ProjectForm({
                 />
               ) : (
                 <>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2 sm:flex-row">
                     <Input
                       type="url"
                       value={galleryUrlInput}
                       onChange={(e) => setGalleryUrlInput(e.target.value)}
                       placeholder="이미지 URL 입력 후 Enter"
+                      className="flex-1"
                       onKeyPress={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
@@ -764,6 +774,7 @@ export default function ProjectForm({
                           setGalleryUrlInput('');
                         }
                       }}
+                      className="sm:w-auto w-full"
                     >
                       추가
                     </Button>
@@ -799,13 +810,13 @@ export default function ProjectForm({
               <label className="mb-2 block text-sm font-medium">
                 Tech Stack
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <select
                   value={techStackCategory}
                   onChange={(e) =>
                     setTechStackCategory(e.target.value as TechStackCategory)
                   }
-                  className="focus:border-seagull-500 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+                  className="focus:border-seagull-500 rounded-lg border border-gray-300 px-3 py-2 focus:outline-none sm:w-auto w-full"
                 >
                   {TECH_STACK_CATEGORIES.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -818,6 +829,7 @@ export default function ProjectForm({
                   value={techStackInput}
                   onChange={(e) => setTechStackInput(e.target.value)}
                   placeholder="기술 입력 후 Enter"
+                  className="flex-1"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -846,6 +858,7 @@ export default function ProjectForm({
                       setTechStackInput('');
                     }
                   }}
+                  className="sm:w-auto w-full"
                 >
                   추가
                 </Button>
@@ -883,8 +896,8 @@ export default function ProjectForm({
           </div>
         </div>
 
-        <div className="flex gap-4">
-          <Button type="submit" disabled={loading}>
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <Button type="submit" disabled={loading} className="sm:w-auto w-full">
             {loading
               ? editingProject
                 ? '수정 중...'
@@ -896,7 +909,7 @@ export default function ProjectForm({
           <Button
             type="button"
             onClick={onCancel}
-            className="bg-gray-500 hover:bg-gray-600"
+            className="bg-gray-500 hover:bg-gray-600 sm:w-auto w-full"
           >
             취소
           </Button>
