@@ -95,8 +95,8 @@ export type FirebaseProject = {
     challenges: string[];
     results: string[];
   };
-  createdAt: Timestamp | SerializedTimestamp;
-  updatedAt?: Timestamp | SerializedTimestamp;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
 };
 
 export type User = {
