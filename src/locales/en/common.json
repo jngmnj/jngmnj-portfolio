@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "language": {
+    "select": "Select language"
+  },
+  "home": {
+    "title": "Frontend Engineer",
+    "subtitle": "As a frontend engineer, UI/UX designer, and planner, I constantly strive to build products that deliver a better user experience."
+  }
+}

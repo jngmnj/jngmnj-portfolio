@@ -1,5 +1,6 @@
 'use client';
 
+import '@/i18n';
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import Footer from '@/components/common/Footer';
