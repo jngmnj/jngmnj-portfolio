@@ -5,8 +5,11 @@
     "blog": "Blog",
     "contact": "Contact"
   },
-  "language": {
-    "select": "Select language"
+  "language": { "select": "Select language" },
+  "metadata": {
+    "title": "Jungmin Ji | Frontend Engineer",
+    "description": "Portfolio of Jungmin Ji, frontend engineer.",
+    "siteName": "Jungmin Ji Portfolio"
   },
   "home": {
     "title": "Frontend Engineer",

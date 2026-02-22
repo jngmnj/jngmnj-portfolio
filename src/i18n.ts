@@ -8,12 +8,10 @@ const resources = {
   en: { common: en },
 } as const;
 
-const getInitialLng = () =>
-  typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') || 'ko' : 'ko';
-
+// Locale is driven by URL ([lang]); ClientLayout syncs via changeLanguage(lang).
 i18n.use(initReactI18next).init({
   resources,
-  lng: getInitialLng(),
+  lng: 'ko',
   fallbackLng: 'en',
   defaultNS: 'common',
   interpolation: {

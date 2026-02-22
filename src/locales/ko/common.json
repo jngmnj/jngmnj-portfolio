@@ -5,8 +5,11 @@
     "blog": "블로그",
     "contact": "제안"
   },
-  "language": {
-    "select": "언어 선택"
+  "language": { "select": "언어 선택" },
+  "metadata": {
+    "title": "지정민 | Frontend Engineer",
+    "description": "프론트엔드 엔지니어 지정민의 포트폴리오입니다.",
+    "siteName": "지정민 Portfolio"
   },
   "home": {
     "title": "Frontend Engineer",
