@@ -1,11 +1,12 @@
 'use client';
 
+import { LINKS } from '@/app/lib/constants';
 import { cn } from '@/utils/style';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { GrLanguage } from 'react-icons/gr';
-import { LINKS } from '../../app/lib/constants';
 import Dropdown from './Dropdown';
 
 const LANG_OPTIONS = [
@@ -13,15 +14,24 @@ const LANG_OPTIONS = [
   { value: 'en', label: 'English' },
 ];
 
+function getLangFromPathname(pathname: string): string {
+  const seg = pathname.split('/')[1];
+  return seg === 'en' || seg === 'ko' ? seg : 'ko';
+}
+
 const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
   const { t, i18n } = useTranslation('common');
+  const pathname = usePathname();
+  const router = useRouter();
+  const lang = getLangFromPathname(pathname);
   const currentLang =
-    LANG_OPTIONS.find((o) => o.value === i18n.language) ?? LANG_OPTIONS[0];
+    LANG_OPTIONS.find((o) => o.value === lang) ?? LANG_OPTIONS[0];
 
   const handleLanguageChange = (lng: string) => {
-    if (lng === i18n.language) return;
-    localStorage.setItem('i18nextLng', lng);
+    if (lng === lang) return;
     i18n.changeLanguage(lng);
+    const rest = pathname.slice(lang.length + 1) || '';
+    router.push(`/${lng}${rest ? `${rest}` : ''}`);
   };
 
   return (
@@ -33,7 +43,7 @@ const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
         )}
       >
         <div className="container flex items-center justify-between py-3 lg:py-4">
-          <Link href="/" className="shrink-0">
+          <Link href={`/${lang}`} className="shrink-0">
             <h1 className="hidden text-2xl font-bold">jngmnj</h1>
             <Image
               src="/images/common/logo.svg"
@@ -52,12 +62,12 @@ const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
               isTransparent ? 'font-semibold text-white' : 'text-black'
             )}
           >
-            <Link href="/about">
+            <Link href={`/${lang}/about`}>
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
                 {t('nav.about')}
               </div>
             </Link>
-            <Link href="/projects">
+            <Link href={`/${lang}/projects`}>
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
                 {t('nav.projects')}
               </div>
@@ -67,7 +77,7 @@ const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
                 {t('nav.blog')}
               </div>
             </Link>
-            <Link href="/contact">
+            <Link href={`/${lang}/contact`}>
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
                 {t('nav.contact')}
               </div>
