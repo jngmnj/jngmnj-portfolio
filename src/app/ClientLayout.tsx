@@ -1,27 +1,44 @@
 'use client';
 
-import '@/i18n';
+import { LOCALE_COOKIE_NAME } from '@/app/lib/metadata-i18n';
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
 import TopBanner from '@/components/common/TopBanner';
+import '@/i18n';
 import { fadeInLeft, getMotionVariants } from '@/utils/motion';
 import { cn } from '@/utils/style';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 const queryClient = new QueryClient();
 
 interface ClientLayoutProps {
   children: ReactNode;
+  lang: string;
+  dictionary: Record<string, unknown>;
 }
 
-export default function ClientLayout({ children }: ClientLayoutProps) {
+export default function ClientLayout({
+  children,
+  lang,
+  dictionary,
+}: ClientLayoutProps) {
   const pathname = usePathname();
-  const isAdmin = pathname.startsWith('/admin');
+  const isAdmin = pathname.includes('/admin');
+  const isHomePage =
+    pathname === `/${lang}` || pathname === '/ko' || pathname === '/en';
+
+  useEffect(() => {
+    if (!lang) return;
+    document.cookie = `${LOCALE_COOKIE_NAME}=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+    import('@/i18n').then((m) => {
+      if (m.default) m.default.changeLanguage(lang);
+    });
+  }, [lang]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -38,7 +55,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <AdminLayout>{children}</AdminLayout>
           </motion.div>
         ) : (
-          <MainLayout>{children}</MainLayout>
+          <MainLayout isHomePage={isHomePage}>{children}</MainLayout>
         )}
       </AnimatePresence>
     </QueryClientProvider>
@@ -67,10 +84,13 @@ function AdminLayout({ children }: { children: ReactNode }) {
   );
 }
 
-function MainLayout({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
-  const isHomePage = pathname === '/';
-
+function MainLayout({
+  children,
+  isHomePage,
+}: {
+  children: ReactNode;
+  isHomePage: boolean;
+}) {
   if (isHomePage) return <>{children}</>;
   return (
     <div className="flex min-h-screen flex-col">
