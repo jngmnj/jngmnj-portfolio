@@ -10,7 +10,10 @@ const Tags = () => {
   return (
     <div className="flex flex-wrap gap-6">
       {(data ?? []).map((tag) => (
-        <Link href={`/${lang}/blog/tags/${tag.tag_name}`} key={tag.tag_id}>
+        <Link
+          href={`/${lang}/blog/tags/${encodeURIComponent(tag.tag_name)}`}
+          key={tag.tag_id}
+        >
           <span className="rounded-lg bg-gray-100 px-2 py-1 text-sm transition hover:bg-gray-200">
             # {tag.tag_name}
           </span>
