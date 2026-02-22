@@ -29,8 +29,7 @@ export default function ClientLayout({
 }: ClientLayoutProps) {
   const pathname = usePathname();
   const isAdmin = pathname.includes('/admin');
-  const isHomePage =
-    pathname === `/${lang}` || pathname === '/ko' || pathname === '/en';
+  const isHomePage = pathname === `/${lang}`;
 
   useEffect(() => {
     if (!lang) return;
