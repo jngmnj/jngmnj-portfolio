@@ -5,14 +5,9 @@ import PortfolioLinksSection from '@/components/about/PortfolioLinksSection';
 export default function AboutPage() {
   return (
     <>
-      {/* introduction */}
-      {/* 추후 페이지단위 스크롤로 수정 */}
       <IntroductionSection />
       <div className="container">
-        {/* <StatsSection /> */}
-        {/* portfolio link */}
         <PortfolioLinksSection />
-        {/* experience */}
         <ExperienceSection />
       </div>
     </>

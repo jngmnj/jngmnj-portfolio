@@ -8,7 +8,7 @@ export default async function ProjectsPage({
   searchParams: Promise<{ id?: string }>;
 }) {
   const { id } = await searchParams;
-  
+
   return (
     <div className="content container flex flex-col">
       <div className="mb-16">

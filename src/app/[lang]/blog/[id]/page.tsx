@@ -6,15 +6,13 @@ import { Post } from '@/types';
 import { doc, getDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { db } from '../../../../firebaseConfig';
-import { LINKS } from '../../lib/constants';
+import { db } from '../../../../../firebaseConfig';
+import { LINKS } from '../../../../lib/constants';
 
 type PostProps = {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ lang: string; id: string }>;
 };
 
 type PostData = Partial<Post> & {
@@ -22,6 +20,9 @@ type PostData = Partial<Post> & {
 };
 
 export default function BlogDetailPage({ params }: PostProps) {
+  const router = useRouter();
+  const urlLang = useParams()?.lang as string | undefined;
+  const lang = urlLang ?? 'ko';
   const [id, setId] = useState<string>('');
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function BlogDetailPage({ params }: PostProps) {
       setId(paramId);
     });
   }, [params]);
-  const router = useRouter();
+
   const [postData, setPostData] = useState<PostData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,7 +43,7 @@ export default function BlogDetailPage({ params }: PostProps) {
         const docSnap = await getDoc(docRef);
 
         if (!docSnap.exists()) {
-          router.push('/404');
+          router.push(`/${lang}/404`);
           return;
         }
 
@@ -57,14 +58,14 @@ export default function BlogDetailPage({ params }: PostProps) {
         });
       } catch (error) {
         console.error('Error fetching post:', error);
-        router.push('/404');
+        router.push(`/${lang}/404`);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPost();
-  }, [id, router]);
+  }, [id, lang, router]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -85,6 +86,7 @@ export default function BlogDetailPage({ params }: PostProps) {
   } = postData;
 
   const created = createdAt ? new Date(createdAt) : null;
+  const blogBase = `/${lang}${LINKS.blog}`;
 
   return (
     <div className="narrow container">
@@ -92,7 +94,7 @@ export default function BlogDetailPage({ params }: PostProps) {
         <div className="">
           <p>
             <Link
-              href={`${LINKS.blog}/category/${category}`}
+              href={`${blogBase}/category/${category}`}
               className="text-seagull-500 text-base font-semibold"
             >
               {category}
@@ -105,15 +107,11 @@ export default function BlogDetailPage({ params }: PostProps) {
             <Button
               color="linePrimary"
               size="small"
-              onClick={() => router.push(`${LINKS.blog}/edit/${id}`)}
+              onClick={() => router.push(`${blogBase}/edit/${id}`)}
             >
               수정
             </Button>
-            <Button
-              color="linePrimary"
-              size="small"
-              // onClick={() => handleDeletePost(id as string)}
-            >
+            <Button color="linePrimary" size="small">
               삭제
             </Button>
           </div>
@@ -133,7 +131,7 @@ export default function BlogDetailPage({ params }: PostProps) {
               tags.map((tag, index) => (
                 <Link
                   key={index}
-                  href={`${LINKS.tag}/${tag}`}
+                  href={`/${lang}${LINKS.tag}/${tag}`}
                   className="rounded-lg bg-gray-100 px-2 py-1 text-sm transition hover:bg-gray-200"
                 >
                   # {tag}
@@ -141,7 +139,12 @@ export default function BlogDetailPage({ params }: PostProps) {
               ))}
           </div>
           <div className="mt-12 text-center">
-            <Button type="submit" color="primary" size="large" href="/blog">
+            <Button
+              type="submit"
+              color="primary"
+              size="large"
+              href={`/${lang}/blog`}
+            >
               목록으로
             </Button>
           </div>

@@ -13,15 +13,12 @@ export default function BlogPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
-        {/* 메인 콘텐츠 영역 */}
         <div className="lg:col-span-2">
           <PostList />
         </div>
 
-        {/* 사이드바 영역 */}
         <div className="lg:col-span-1">
           <div className="sticky top-24 flex flex-col gap-6">
-            {/* 태그 섹션 */}
             <div className="rounded-lg border border-gray-200 p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-semibold">태그</h3>
@@ -49,7 +46,6 @@ export default function BlogPage() {
               </div>
             </div>
 
-            {/* 최근 포스트 섹션 */}
             <div className="rounded-lg border border-gray-200 p-6">
               <h3 className="mb-4 text-lg font-semibold">최근 포스트</h3>
               <div className="space-y-3">

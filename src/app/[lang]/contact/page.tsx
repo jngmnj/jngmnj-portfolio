@@ -117,7 +117,7 @@ export default function ContactPage() {
                 placeholder="Enter your message"
                 rows={6}
                 className={cn(
-                  `w-full resize-none border-b bg-transparent p-2 outline-none rounded-none transition-colors`,
+                  `w-full resize-none rounded-none border-b bg-transparent p-2 transition-colors outline-none`,
                   errors.content
                     ? 'border-red-500 focus:border-red-500'
                     : 'border-gray-300 focus:border-gray-300'
