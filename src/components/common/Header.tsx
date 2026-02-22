@@ -1,6 +1,7 @@
 'use client';
 
 import { LINKS } from '@/app/lib/constants';
+import { useLocale } from '@/utils/useLocale';
 import { cn } from '@/utils/style';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,24 +15,20 @@ const LANG_OPTIONS = [
   { value: 'en', label: 'English' },
 ];
 
-function getLangFromPathname(pathname: string): string {
-  const seg = pathname.split('/')[1];
-  return seg === 'en' || seg === 'ko' ? seg : 'ko';
-}
-
 const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
   const { t, i18n } = useTranslation('common');
   const pathname = usePathname();
   const router = useRouter();
-  const lang = getLangFromPathname(pathname);
+  const lang = useLocale();
   const currentLang =
     LANG_OPTIONS.find((o) => o.value === lang) ?? LANG_OPTIONS[0];
 
   const handleLanguageChange = (lng: string) => {
     if (lng === lang) return;
     i18n.changeLanguage(lng);
-    const rest = pathname.slice(lang.length + 1) || '';
-    router.push(`/${lng}${rest ? `${rest}` : ''}`);
+    const segments = pathname.split('/').filter(Boolean);
+    const rest = segments.slice(1).join('/');
+    router.push(rest ? `/${lng}/${rest}` : `/${lng}`);
   };
 
   return (
