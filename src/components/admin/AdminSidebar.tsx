@@ -2,19 +2,20 @@
 import { useScrollLock } from '@/utils/hooks';
 import storage from '@/utils/storage';
 import { cn } from '@/utils/style';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useLocale } from '@/utils/useLocale';
 import { User } from 'firebase/auth';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
-  GoHeart,
-  GoHome,
-  GoNorthStar,
-  GoPeople,
-  GoStack,
-  GoTools,
+    GoHeart,
+    GoHome,
+    GoNorthStar,
+    GoPeople,
+    GoStack,
+    GoTools,
 } from 'react-icons/go';
 
 type AdminSidebarProps = {
@@ -23,6 +24,7 @@ type AdminSidebarProps = {
 };
 
 const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
+  const lang = useLocale();
   const [userData, setUserData] = useState<User | null>(() => {
     if (typeof window !== 'undefined') {
       return storage.get<User>('userData');
@@ -66,13 +68,13 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
       // 나중에 role이 admin인지 확인하기
       if (userData === null) {
         alert('로그인이 필요합니다.');
-        router.push('/login');
+        router.push(`/${lang}/login`);
       }
     }, 2000);
 
     // 클린업 함수: 컴포넌트가 언마운트될 때 타이머 해제
     return () => clearTimeout(timer);
-  }, [router, userData]);
+  }, [lang, router, userData]);
 
   return (
     <>
@@ -113,7 +115,10 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
         }}
       >
         <div className="mt-4 overflow-hidden text-center">
-          <Link href="/" className="flex items-center justify-center gap-2">
+          <Link
+            href={`/${lang}`}
+            className="flex items-center justify-center gap-2"
+          >
             <div className="bg-seagull-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white">
               <Image
                 src="/favicon/android-chrome-192x192.png"
@@ -152,7 +157,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-2">
-          <Link href="/admin" title="관리자 홈">
+          <Link href={`/${lang}/admin`} title="관리자 홈">
             <div
               className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
@@ -160,7 +165,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               <span className="overflow-hidden whitespace-nowrap">HOME</span>
             </div>
           </Link>
-          <Link href="/admin/projects" title="프로젝트 관리">
+          <Link href={`/${lang}/admin/projects`} title="프로젝트 관리">
             <div
               className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
@@ -170,7 +175,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/offers" title="메인페이지 관리">
+          <Link href={`/${lang}/admin/offers`} title="메인페이지 관리">
             <div
               className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
@@ -180,7 +185,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/users" title="회원 관리">
+          <Link href={`/${lang}/admin/users`} title="회원 관리">
             <div
               className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
@@ -190,7 +195,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/contact" title="문의/방명록">
+          <Link href={`/${lang}/admin/contact`} title="문의/방명록">
             <div
               className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
@@ -200,7 +205,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/setting" title="사이트 관리">
+          <Link href={`/${lang}/admin/setting`} title="사이트 관리">
             <div
               className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >

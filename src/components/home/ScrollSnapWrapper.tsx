@@ -6,10 +6,12 @@ import TopBanner from '@/components/common/TopBanner';
 import HeroSection from '@/components/home/HeroSection';
 import RecentProjectsSection from '@/components/home/RecentProjectsSection';
 import SkillsSection from '@/components/home/SkillsSection';
+import { useLocale } from '@/utils/useLocale';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function ScrollSnapWrapper() {
+  const lang = useLocale();
   const [isTransparent, setIsTransparent] = useState(true);
   const [showTopBanner, setShowTopBanner] = useState(true);
 
@@ -36,19 +38,13 @@ export default function ScrollSnapWrapper() {
 
       <div
         ref={scrollRef}
-        className="
-          scrollbar-hide
-          h-screen
-          overflow-y-auto
-          md:scroll-smooth
-          md:snap-y md:snap-mandatory
-        "
+        className="scrollbar-hide h-screen overflow-y-auto md:snap-y md:snap-mandatory md:scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         <Header isTransparent={isTransparent} />
 
         {/* Hero */}
-        <div className="md:snap-center md:snap-always md:-scroll-mt-10 -mt-16.5 md:mt-0">
+        <div className="-mt-16.5 md:mt-0 md:snap-center md:snap-always md:-scroll-mt-10">
           <HeroSection />
         </div>
 
@@ -75,7 +71,7 @@ export default function ScrollSnapWrapper() {
                 귀사의 연락을 기다립니다.
               </p>
               <Link
-                href="/contact"
+                href={`/${lang}/contact`}
                 className="btn-primary btn-medium inline-flex items-center"
               >
                 Contact Me

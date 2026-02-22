@@ -1,6 +1,7 @@
 import { LINKS } from '@/app/lib/constants';
 import { useScrollLock } from '@/utils/hooks';
 import { cn } from '@/utils/style';
+import { useLocale } from '@/utils/useLocale';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,10 +15,10 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
+  const lang = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  // 스크롤 잠금
   useScrollLock(isOpen);
 
   const handleToggle = () => {
@@ -26,22 +27,28 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
 
   const navigationItems = useMemo(
     () => [
-      { href: '/about', label: 'About' },
-      { href: '/projects', label: 'Projects' },
+      { href: `/${lang}/about`, label: 'About' },
+      { href: `/${lang}/projects`, label: 'Projects' },
       { href: LINKS.github_blog, label: 'Blog', external: true },
-      { href: '/contact', label: 'Contact' },
+      { href: `/${lang}/contact`, label: 'Contact' },
     ],
-    []
+    [lang]
   );
 
   return (
     <>
       {/* Menu Button */}
-      <div className={cn('md:block', className, isTransparent ? "brightness-0 invert" : "")}>
+      <div
+        className={cn(
+          'md:block',
+          className,
+          isTransparent ? 'brightness-0 invert' : ''
+        )}
+      >
         <motion.button
           type="button"
           onClick={handleToggle}
-          className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors "
+          className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.2 }}
@@ -57,7 +64,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
         {isOpen && (
           <motion.div
             onClick={handleToggle}
-            className="fixed inset-0 z-100 bg-black/50 cursor-pointer"
+            className="fixed inset-0 z-100 cursor-pointer bg-black/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -70,7 +77,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed top-0 left-0 right-0 z-101 w-full max-h-[90vh] overflow-y-auto bg-white shadow-2xl"
+            className="fixed top-0 right-0 left-0 z-101 max-h-[90vh] w-full overflow-y-auto bg-white shadow-2xl"
             initial={{ y: '-100%' }}
             animate={{ y: 0 }}
             exit={{ y: '-100%' }}
@@ -84,7 +91,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                <Link href="/" className="shrink-0">
+                <Link href={`/${lang}`} className="shrink-0">
                   <Image
                     src="/images/common/logo_black.svg"
                     width={100}
@@ -97,7 +104,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
               <motion.button
                 type="button"
                 onClick={handleToggle}
-                className="rounded-lg p-2 transition-colors cursor-pointer"
+                className="cursor-pointer rounded-lg p-2 transition-colors"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.2 }}
@@ -127,14 +134,14 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
                         onMouseLeave={() => setHoveredItem(null)}
                         target={item.external ? '_blank' : undefined}
                         rel={item.external ? 'noopener noreferrer' : undefined}
-                        className="group text-2xl hover:text-gray-900 flex items-center gap-3 rounded-lg px-4 py-3 text-gray-400 transition-colors overflow-hidden"
+                        className="group flex items-center gap-3 overflow-hidden rounded-lg px-4 py-3 text-2xl text-gray-400 transition-colors hover:text-gray-900"
                       >
-                        <span className="font-bold inline-block relative h-[1.2em] overflow-hidden">
+                        <span className="relative inline-block h-[1.2em] overflow-hidden font-bold">
                           {letters.map((letter, letterIndex) => (
                             <span
                               key={letterIndex}
-                              className="inline-block relative overflow-hidden"
-                              style={{ 
+                              className="relative inline-block overflow-hidden"
+                              style={{
                                 display: 'inline-block',
                                 height: '1.2em',
                                 lineHeight: '1.2em',
@@ -159,7 +166,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
                                   duration: 0.4,
                                   ease: [0.4, 0, 0.2, 1],
                                 }}
-                                style={{ 
+                                style={{
                                   display: 'inline-block',
                                   willChange: isHovered ? 'transform' : 'auto',
                                 }}
@@ -168,7 +175,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
                               </motion.span>
                               {/* 애니메이션 텍스트 (호버 시 아래에서 올라옴) */}
                               <motion.span
-                                className="inline-block absolute top-0 left-0 text-gray-900"
+                                className="absolute top-0 left-0 inline-block text-gray-900"
                                 animate={
                                   isHovered
                                     ? {
@@ -185,9 +192,11 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
                                   duration: 0.4,
                                   ease: [0.4, 0, 0.2, 1],
                                 }}
-                                style={{ 
+                                style={{
                                   display: 'inline-block',
-                                  willChange: isHovered ? 'transform, opacity' : 'auto',
+                                  willChange: isHovered
+                                    ? 'transform, opacity'
+                                    : 'auto',
                                 }}
                               >
                                 {letter === ' ' ? '\u00A0' : letter}
@@ -201,7 +210,6 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
                 })}
               </div>
             </nav>
-
           </motion.div>
         )}
       </AnimatePresence>

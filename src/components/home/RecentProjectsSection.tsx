@@ -1,11 +1,13 @@
 'use client';
 
 import { FirebaseProject } from '@/types';
+import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function RecentProjectsSection() {
+  const lang = useLocale();
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +43,7 @@ export default function RecentProjectsSection() {
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-3xl font-bold">Recent Projects</h2>
           <Link
-            href="/projects"
+            href={`/${lang}/projects`}
             className="text-seagull-500 hover:text-seagull-700"
           >
             View All →
@@ -86,8 +88,8 @@ export default function RecentProjectsSection() {
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-3xl font-bold">Recent Projects</h2>
         <Link
-          href="/projects"
-          className="text-seagull-500 transition-colors hover:text-seagull-700"
+          href={`/${lang}/projects`}
+          className="text-seagull-500 hover:text-seagull-700 transition-colors"
         >
           View All →
         </Link>
@@ -96,7 +98,7 @@ export default function RecentProjectsSection() {
         {projects.map((project) => (
           <Link
             key={project.id}
-            href={`/projects?id=${project.id}`}
+            href={`/${lang}/projects?id=${project.id}`}
             className="group flex h-full flex-col"
           >
             <div className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 group-hover:border-gray-300 group-hover:shadow-lg">
@@ -118,10 +120,10 @@ export default function RecentProjectsSection() {
               )}
               {/* Content Section */}
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-seagull-500">
+                <h3 className="group-hover:text-seagull-500 mb-2 text-xl font-semibold text-gray-900 transition-colors">
                   {project.title}
                 </h3>
-                <p className="mb-4 flex-1 text-sm leading-relaxed text-gray-600 line-clamp-3">
+                <p className="mb-4 line-clamp-3 flex-1 text-sm leading-relaxed text-gray-600">
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
