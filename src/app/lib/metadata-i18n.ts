@@ -1,7 +1,6 @@
+import { hasLocale, LOCALE_COOKIE_NAME, type Locale } from '@/constants/locales';
 import en from '@/locales/en/common.json';
 import ko from '@/locales/ko/common.json';
-
-type Locale = 'ko' | 'en';
 
 interface MetadataStrings {
   title: string;
@@ -23,8 +22,8 @@ const metadataMap: Record<Locale, MetadataStrings> = {
 };
 
 export function getMetadataForLocale(locale: string): MetadataStrings {
-  const l: Locale = locale === 'en' ? 'en' : 'ko';
+  const l: Locale = hasLocale(locale) ? locale : 'ko';
   return metadataMap[l];
 }
 
-export const LOCALE_COOKIE_NAME = 'NEXT_LOCALE';
+export { LOCALE_COOKIE_NAME };

@@ -1,6 +1,7 @@
 'use client';
 
 import { LINKS } from '@/app/lib/constants';
+import { LANG_OPTIONS } from '@/constants/locales';
 import { useLocale } from '@/utils/useLocale';
 import { cn } from '@/utils/style';
 import Image from 'next/image';
@@ -10,16 +11,21 @@ import { useTranslation } from 'react-i18next';
 import { GrLanguage } from 'react-icons/gr';
 import Dropdown from './Dropdown';
 
-const LANG_OPTIONS = [
-  { value: 'ko', label: '한국어' },
-  { value: 'en', label: 'English' },
-];
+type HeaderProps = {
+  isTransparent?: boolean;
+  /** Pass from layout so server and client render the same nav text (avoids hydration mismatch) */
+  initialLang?: string;
+};
 
-const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
+const Header = ({
+  isTransparent = false,
+  initialLang,
+}: HeaderProps = {}) => {
   const { t, i18n } = useTranslation('common');
   const pathname = usePathname();
   const router = useRouter();
-  const lang = useLocale();
+  const langFromPath = useLocale();
+  const lang = initialLang ?? langFromPath;
   const currentLang =
     LANG_OPTIONS.find((o) => o.value === lang) ?? LANG_OPTIONS[0];
 

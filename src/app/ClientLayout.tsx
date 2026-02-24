@@ -6,7 +6,7 @@ import AdminSidebar from '@/components/admin/AdminSidebar';
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
 import TopBanner from '@/components/common/TopBanner';
-import '@/i18n';
+import i18n from '@/i18n';
 import { fadeInLeft, getMotionVariants } from '@/utils/motion';
 import { cn } from '@/utils/style';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -31,12 +31,14 @@ export default function ClientLayout({
   const isAdmin = pathname.includes('/admin');
   const isHomePage = pathname === `/${lang}`;
 
+  // Sync i18n with URL locale before any child (e.g. Header) calls t() — avoids hydration mismatch
+  if (lang && i18n.language !== lang) {
+    i18n.changeLanguage(lang);
+  }
+
   useEffect(() => {
     if (!lang) return;
     document.cookie = `${LOCALE_COOKIE_NAME}=${lang}; path=/; max-age=31536000; SameSite=Lax`;
-    import('@/i18n').then((m) => {
-      if (m.default) m.default.changeLanguage(lang);
-    });
   }, [lang]);
 
   return (
@@ -54,7 +56,9 @@ export default function ClientLayout({
             <AdminLayout>{children}</AdminLayout>
           </motion.div>
         ) : (
-          <MainLayout isHomePage={isHomePage}>{children}</MainLayout>
+          <MainLayout isHomePage={isHomePage} lang={lang}>
+            {children}
+          </MainLayout>
         )}
       </AnimatePresence>
     </QueryClientProvider>
@@ -86,15 +90,17 @@ function AdminLayout({ children }: { children: ReactNode }) {
 function MainLayout({
   children,
   isHomePage,
+  lang,
 }: {
   children: ReactNode;
   isHomePage: boolean;
+  lang: string;
 }) {
   if (isHomePage) return <>{children}</>;
   return (
     <div className="flex min-h-screen flex-col">
       <TopBanner />
-      <Header />
+      <Header initialLang={lang} />
       <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>
       <Footer />
     </div>

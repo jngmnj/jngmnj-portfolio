@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE, FALLBACK_LOCALE } from '@/constants/locales';
 import en from '@/locales/en/common.json';
 import ko from '@/locales/ko/common.json';
 import i18n from 'i18next';
@@ -11,8 +12,8 @@ const resources = {
 // Locale is driven by URL ([lang]); ClientLayout syncs via changeLanguage(lang).
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'ko',
-  fallbackLng: 'en',
+  lng: DEFAULT_LOCALE,
+  fallbackLng: FALLBACK_LOCALE,
   defaultNS: 'common',
   interpolation: {
     escapeValue: false,

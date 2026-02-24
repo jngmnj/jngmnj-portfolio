@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { db } from '../../../../../firebaseConfig';
-import { LINKS } from '../../../../lib/constants';
+import { LINKS } from '@/app/lib/constants';
 
 type PostProps = {
   params: Promise<{ lang: string; id: string }>;
@@ -131,7 +131,7 @@ export default function BlogDetailPage({ params }: PostProps) {
               tags.map((tag, index) => (
                 <Link
                   key={index}
-                  href={`/${lang}${LINKS.tag}/${tag}`}
+                  href={`/${lang}${LINKS.tag}/${encodeURIComponent(tag)}`}
                   className="rounded-lg bg-gray-100 px-2 py-1 text-sm transition hover:bg-gray-200"
                 >
                   # {tag}
