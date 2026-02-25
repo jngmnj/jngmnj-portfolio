@@ -235,5 +235,46 @@
       "ai": "AI/ML",
       "optimization": "Optimization"
     }
+  },
+  "contact": {
+    "toast": {
+      "success": "Your message has been sent successfully.",
+      "error": "Failed to send. Please try again."
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Enter your name",
+        "required": "Name is required."
+      },
+      "company": {
+        "label": "Company",
+        "placeholder": "Enter your company (optional)"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email",
+        "required": "Email is required."
+      },
+      "title": {
+        "label": "Title",
+        "placeholder": "Enter a subject",
+        "required": "Title is required."
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Enter your message",
+        "required": "Message is required."
+      },
+      "submit": "Submit",
+      "sending": "Sending..."
+    },
+    "info": {
+      "kakao": "Kakao",
+      "openChat": "Open Chat",
+      "email": "Email",
+      "location": "Location",
+      "locationValue": "Seoul, South Korea"
+    }
   }
 }
