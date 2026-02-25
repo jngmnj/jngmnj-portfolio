@@ -3,9 +3,20 @@
 import TabContent from '@/components/about/TabContent';
 import TabMenu from '@/components/about/TabMenu';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+type AboutTab = {
+  name: string;
+  description: string;
+  content: Array<Record<string, unknown>>;
+};
 
 export default function ExperienceSection() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const { t } = useTranslation('common');
+  const tabs = (t('about.experience.tabs', {
+    returnObjects: true,
+  }) as AboutTab[]) ?? [];
 
   return (
     <section className="pb-20 sm:pb-32 md:pb-40">
@@ -13,21 +24,23 @@ export default function ExperienceSection() {
         {/* Left Sidebar */}
         <div className="w-full shrink-0 md:w-1/3">
           <div className="mb-4 text-3xl leading-snug font-bold sm:text-4xl md:text-5xl lg:text-6xl">
-            Experience
-            <br />& Strengths
+            {t('about.experience.titleLine1')}
+            <br />
+            {t('about.experience.titleLine2')}
           </div>
           <div className="mb-8 text-sm text-gray-600 sm:text-base md:mb-16">
-            다양한 경험을 통해 성장해왔습니다.
+            {t('about.experience.subtitle')}
           </div>
           <TabMenu
             activeTabIndex={activeTabIndex}
             onTabChange={setActiveTabIndex}
+            tabs={tabs}
           />
         </div>
 
         {/* Right Content */}
         <div className="flex-1 py-4 md:py-0">
-          <TabContent tabIndex={activeTabIndex} />
+          <TabContent tabIndex={activeTabIndex} tabs={tabs} />
         </div>
       </div>
     </section>

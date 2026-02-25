@@ -56,6 +56,143 @@
       "button": "Contact Me"
     }
   },
+  "about": {
+    "intro": {
+      "tag": "Frontend Engineer",
+      "greetingLine1": "Hello,",
+      "greetingLine2": "I’m Jungmin Ji.",
+      "headline": "I constantly strive to build products with better user experiences.",
+      "desc1": "With frontend/back-end training and UI/UX design, publishing, and planning experience, I collaborate flexibly across development, design, and planning.",
+      "desc2": "I lead projects from planning to deployment, contributing beyond implementation to raise product quality.",
+      "resume": "Download Resume",
+      "openToWork": "Open to Work",
+      "profileAlt": "Profile Photo"
+    },
+    "portfolio": {
+      "toastPreparing": "Coming soon.",
+      "items": [
+        {
+          "id": "01",
+          "title": "Web Development",
+          "href": "/projects",
+          "description": "I deliver user-friendly interfaces and performance by writing efficient frontend code. I work with HTML, CSS, JavaScript, TypeScript, React, Next.js, and more."
+        },
+        {
+          "id": "02",
+          "title": "UI/UX Design",
+          "href": null,
+          "description": "I design optimal UX based on user needs and expectations, using tools like Figma and Adobe XD to craft visual design and interactions."
+        },
+        {
+          "id": "03",
+          "title": "Database Management (SQL)",
+          "href": null,
+          "description": "I can query, insert, update, and delete data with SQL and work with Firebase/Firestore, MySQL, and PostgreSQL."
+        },
+        {
+          "id": "04",
+          "title": "Search Engine Optimization (SEO)",
+          "href": null,
+          "description": "I improve SEO through keyword research, meta tag optimization, and internal link structure improvements, using tools like Google Analytics for analysis."
+        }
+      ]
+    },
+    "experience": {
+      "titleLine1": "Experience",
+      "titleLine2": "& Strengths",
+      "subtitle": "I have grown through diverse experiences.",
+      "tabs": [
+        {
+          "name": "Career",
+          "description": "",
+          "content": [
+            {
+              "startDate": "2023.01",
+              "endDate": "2025.03",
+              "title": "UI/UX Designer / Publisher",
+              "list": ["CoreSoft"]
+            },
+            {
+              "startDate": "2021.10",
+              "endDate": "2022.12",
+              "title": "UI/UX Designer / Publisher",
+              "list": ["KNL Information System"]
+            }
+          ]
+        },
+        {
+          "name": "Education",
+          "description": "",
+          "content": [
+            {
+              "startDate": "2024.03",
+              "endDate": "Present",
+              "title": "Computer Science",
+              "list": ["Korea National Open University"]
+            },
+            {
+              "startDate": "2025.03",
+              "endDate": "2025.08",
+              "title": "Frontend Developer Bootcamp",
+              "list": ["OZ Coding School"]
+            },
+            {
+              "startDate": "2019.10",
+              "endDate": "2021.05",
+              "title": "JAVA/Spring Developer Training",
+              "list": ["Korea IT Academy"]
+            },
+            {
+              "startDate": "2013.03",
+              "endDate": "2018.02",
+              "title": "Fashion Design, Keimyung University",
+              "list": ["Graduation Fashion Show"]
+            }
+          ]
+        },
+        {
+          "name": "Skills",
+          "description": "",
+          "content": [
+            { "title": "Figma", "icon": "FaFigma" },
+            { "title": "Html5", "icon": "FaHtml5" },
+            { "title": "Javascript", "icon": "IoLogoJavascript" },
+            { "title": "Typecript", "icon": "SiTypescript" },
+            { "title": "CSS3", "icon": "FaCss3" },
+            { "title": "React", "icon": "FaReact" },
+            { "title": "Nextjs", "icon": "RiNextjsFill" },
+            { "title": "SQL", "icon": "DiMysql" }
+          ]
+        },
+        {
+          "name": "Profile",
+          "description": "",
+          "content": [
+            { "label": "Name", "value": "Jungmin Ji" },
+            { "label": "Experience", "value": "5+ years" },
+            { "label": "Email", "value": "jngmnj4@gmail.com" },
+            { "label": "Freelance", "value": "Available" },
+            { "label": "Languages", "value": "Korean, English, Japanese" },
+            {
+              "label": "Experience",
+              "value": [
+                "2025.09 AWS Developer Q Hackathon",
+                "2025.06 ~ 2025.08 Modern JavaScript Deep Dive Study",
+                "2015.06 ~ 2015.07 FISEP Summer Program (UC Irvine, CA)"
+              ]
+            },
+            {
+              "label": "Awards",
+              "value": [
+                "2016.11 Outdoor & Sports Design Contest – Special Prize (Korea Outdoor Sports Industry Association)",
+                "2016.11 Korean Fashion Design Society Contest – Honorable Mention"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
   "projects": {
     "title": "Projects",
     "subtitle": "I introduce projects and the development process.",

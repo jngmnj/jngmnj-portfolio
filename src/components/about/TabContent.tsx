@@ -1,20 +1,23 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
-import myData, { icons } from '../../data/MyData';
+import { icons } from '../../data/MyData';
 
 type TabContentProps = {
   tabIndex: number;
+  tabs: {
+    name: string;
+    description: string;
+    content: Array<Record<string, unknown>>;
+  }[];
 };
 
-const TabContent = ({ tabIndex }: TabContentProps) => {
-  const data = myData[tabIndex];
+const TabContent = ({ tabIndex, tabs }: TabContentProps) => {
+  const data = tabs[tabIndex];
 
   if (!data) return null;
 
   const renderContent = () => {
-    switch (tabIndex) {
-      case 0:
-      case 1:
+    if (tabIndex === 0 || tabIndex === 1) {
         return (
           <div className="-mx-2 flex flex-wrap">
             {data.content.map((content, index) => (
@@ -33,7 +36,9 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
                     <div className="flex flex-wrap gap-2">
                       {'list' in content &&
                         content.list.map((item: string, itemIndex: number) => (
-                          <div key={itemIndex} className="text-sm sm:text-base">{item}</div>
+                          <div key={itemIndex} className="text-sm sm:text-base">
+                            {item}
+                          </div>
                         ))}
                     </div>
                   </div>
@@ -42,8 +47,9 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
             ))}
           </div>
         );
+    }
 
-      case 2:
+    if (tabIndex === 2) {
         return (
           <div className="-mx-2 flex flex-wrap sm:h-3/5">
             {data.content.map((content, index) => {
@@ -67,8 +73,9 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
             })}
           </div>
         );
+    }
 
-      case 3:
+    if (tabIndex === 3) {
         return (
           <div className="flex flex-col gap-6 flex-wrap md:flex-row md:gap-4">
             {data.content.map((content, index) => (
@@ -84,7 +91,7 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
                     <ul className="space-y-1.5">
                       {content.value.map((value, valueIndex) => (
                         <li key={valueIndex} className="flex gap-2">
-                          <div className="bg-seagull-500 mt-1.5 size-1.5 shrink-0 rounded-full"></div>
+                          <div className="bg-seagull-500 mt-1.5 size-1.5 shrink-0 rounded-full" />
                           <span>{value}</span>
                         </li>
                       ))}
@@ -97,10 +104,8 @@ const TabContent = ({ tabIndex }: TabContentProps) => {
             ))}
           </div>
         );
-
-      default:
-        return null;
     }
+    return null;
   };
 
   return (
