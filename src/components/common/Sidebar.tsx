@@ -1,3 +1,5 @@
+"use client";
+
 import { LINKS } from '@/app/lib/constants';
 import { useScrollLock } from '@/utils/hooks';
 import { cn } from '@/utils/style';
@@ -6,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CgClose } from 'react-icons/cg';
 import { RiMenu3Line } from 'react-icons/ri';
 
@@ -19,6 +22,8 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
+  const { t } = useTranslation('common');
+
   useScrollLock(isOpen);
 
   const handleToggle = () => {
@@ -27,12 +32,12 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
 
   const navigationItems = useMemo(
     () => [
-      { href: `/${lang}/about`, label: 'About' },
-      { href: `/${lang}/projects`, label: 'Projects' },
-      { href: LINKS.github_blog, label: 'Blog', external: true },
-      { href: `/${lang}/contact`, label: 'Contact' },
+      { href: `/${lang}/about`, label: t('nav.about') },
+      { href: `/${lang}/projects`, label: t('nav.projects') },
+      { href: LINKS.github_blog, label: t('nav.blog'), external: true },
+      { href: `/${lang}/contact`, label: t('nav.contact') },
     ],
-    [lang]
+    [lang, t]
   );
 
   return (
@@ -40,7 +45,7 @@ const Sidebar = ({ className, isTransparent = false }: SidebarProps) => {
       {/* Menu Button */}
       <div
         className={cn(
-          'md:block',
+          'md:hidden',
           className,
           isTransparent ? 'brightness-0 invert' : ''
         )}

@@ -2,14 +2,15 @@
 
 import { LINKS } from '@/app/lib/constants';
 import { LANG_OPTIONS } from '@/constants/locales';
-import { useLocale } from '@/utils/useLocale';
 import { cn } from '@/utils/style';
+import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { GrLanguage } from 'react-icons/gr';
 import Dropdown from './Dropdown';
+import Sidebar from './Sidebar';
 
 type HeaderProps = {
   isTransparent?: boolean;
@@ -17,10 +18,7 @@ type HeaderProps = {
   initialLang?: string;
 };
 
-const Header = ({
-  isTransparent = false,
-  initialLang,
-}: HeaderProps = {}) => {
+const Header = ({ isTransparent = false, initialLang }: HeaderProps = {}) => {
   const { t, i18n } = useTranslation('common');
   const pathname = usePathname();
   const router = useRouter();
@@ -86,31 +84,34 @@ const Header = ({
               </div>
             </Link>
           </nav>
-          <Dropdown.Root>
-            <Dropdown.Trigger
-              ariaLabel={t('language.select')}
-              variant="ghost"
-              showArrow={false}
-            >
-              <GrLanguage
-                className={cn(
-                  'size-5',
-                  isTransparent ? 'text-white' : 'text-black'
-                )}
-              />
-            </Dropdown.Trigger>
-            <Dropdown.Menu>
-              {LANG_OPTIONS.map((opt) => (
-                <Dropdown.Item
-                  key={opt.value}
-                  selected={currentLang.value === opt.value}
-                  onSelect={() => handleLanguageChange(opt.value)}
-                >
-                  {opt.label}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown.Root>
+          <div className="flex items-center gap-1">
+            <Dropdown.Root>
+              <Dropdown.Trigger
+                ariaLabel={t('language.select')}
+                variant="ghost"
+                showArrow={false}
+              >
+                <GrLanguage
+                  className={cn(
+                    'size-5',
+                    isTransparent ? 'text-white' : 'text-black'
+                  )}
+                />
+              </Dropdown.Trigger>
+              <Dropdown.Menu>
+                {LANG_OPTIONS.map((opt) => (
+                  <Dropdown.Item
+                    key={opt.value}
+                    selected={currentLang.value === opt.value}
+                    onSelect={() => handleLanguageChange(opt.value)}
+                  >
+                    {opt.label}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown.Root>
+            <Sidebar isTransparent={isTransparent} />
+          </div>
         </div>
       </header>
     </>
