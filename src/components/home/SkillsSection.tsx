@@ -7,6 +7,7 @@ import {
   RiPaletteLine,
   RiToolsLine,
 } from 'react-icons/ri';
+import { useTranslation } from 'react-i18next';
 
 interface SkillCategory {
   title: string;
@@ -18,44 +19,47 @@ interface SkillCategory {
 }
 
 export default function SkillsSection() {
-  const skills: SkillCategory[] = [
+  const { t } = useTranslation('common');
+  const items = (t('home.skills.items', {
+    returnObjects: true,
+  }) as { title: string; skills: string }[]) ?? [];
+
+  const base: Omit<SkillCategory, 'title' | 'skills'>[] = [
     {
-      title: 'Frontend',
       icon: <RiCodeLine className="mx-auto size-8" />,
-      skills: 'React, Next.js, TypeScript, Tailwind CSS',
       gradient: 'from-blue-50',
       iconColor: 'group-hover:text-blue-500',
       delay: 0,
     },
     {
-      title: 'Backend',
       icon: <RiDatabase2Line className="mx-auto size-8" />,
-      skills: 'Node.js, Express, Firebase',
       gradient: 'from-green-50',
       iconColor: 'group-hover:text-green-500',
       delay: 0.1,
     },
     {
-      title: 'Design',
       icon: <RiPaletteLine className="mx-auto size-8" />,
-      skills: 'Figma, UI/UX',
       gradient: 'from-purple-50',
       iconColor: 'group-hover:text-purple-500',
       delay: 0.2,
     },
     {
-      title: 'Tools',
       icon: <RiToolsLine className="mx-auto size-8" />,
-      skills: 'Git, Docker, Vercel, AWS',
       gradient: 'from-orange-50',
       iconColor: 'group-hover:text-orange-500',
       delay: 0.3,
     },
   ];
 
+  const skills: SkillCategory[] = base.map((meta, index) => ({
+    ...meta,
+    title: items[index]?.title ?? '',
+    skills: items[index]?.skills ?? '',
+  }));
+
   return (
     <section className="mb-16">
-      <h2 className="mb-8 text-3xl font-bold">Skills</h2>
+      <h2 className="mb-8 text-3xl font-bold">{t('home.skills.title')}</h2>
       <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
         {skills.map((skill) => (
           <motion.div

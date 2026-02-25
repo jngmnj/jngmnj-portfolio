@@ -13,7 +13,48 @@
   },
   "home": {
     "title": "Frontend Engineer",
-    "subtitle": "As a frontend engineer, UI/UX designer, and planner, I constantly strive to build products that deliver a better user experience."
+    "subtitle": "As a frontend engineer, UI/UX designer, and planner, I constantly strive to build products that deliver a better user experience.",
+    "hero": {
+      "subtitleLine1": "As a frontend engineer, UI/UX designer, and planner,",
+      "subtitleLine2": "I constantly strive to build products that deliver a better user experience.",
+      "resume": "Download Resume",
+      "capabilities": [
+        "Frontend engineering? I can.",
+        "UI/UX design? I can.",
+        "Service planning? I can.",
+        "Overtime? I can.",
+        "New tools? I can.",
+        "Code review? I can.",
+        "Collaboration? I can.",
+        "Documentation? I can.",
+        "Deadlines? I keep them.",
+        "Problem solving? I can.",
+        "Teamwork? I can.",
+        "Feedback? Thank you.",
+        "User-first thinking? Always.",
+        "Growth? Every day.",
+        "Let’s do this!!!"
+      ]
+    },
+    "skills": {
+      "title": "Skills",
+      "items": [
+        { "title": "Frontend", "skills": "React, Next.js, TypeScript, Tailwind CSS" },
+        { "title": "Backend", "skills": "Node.js, Express, Firebase" },
+        { "title": "Design", "skills": "Figma, UI/UX" },
+        { "title": "Tools", "skills": "Git, Docker, Vercel, AWS" }
+      ]
+    },
+    "recentProjects": {
+      "title": "Recent Projects",
+      "viewAll": "View All →"
+    },
+    "cta": {
+      "title": "Let’s Work Together",
+      "line1": "I’m open to new opportunities!",
+      "line2": "I look forward to hearing from you.",
+      "button": "Contact Me"
+    }
   },
   "projects": {
     "title": "Projects",

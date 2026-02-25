@@ -5,9 +5,11 @@ import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function RecentProjectsSection() {
   const lang = useLocale();
+  const { t } = useTranslation('common');
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,12 +43,14 @@ export default function RecentProjectsSection() {
     return (
       <section className="mb-16">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Recent Projects</h2>
+          <h2 className="text-3xl font-bold">
+            {t('home.recentProjects.title')}
+          </h2>
           <Link
             href={`/${lang}/projects`}
             className="text-seagull-500 hover:text-seagull-700"
           >
-            View All →
+            {t('home.recentProjects.viewAll')}
           </Link>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -86,12 +90,14 @@ export default function RecentProjectsSection() {
   return (
     <section className="mb-16">
       <div className="mb-8 flex items-center justify-between">
-        <h2 className="text-3xl font-bold">Recent Projects</h2>
+        <h2 className="text-3xl font-bold">
+          {t('home.recentProjects.title')}
+        </h2>
         <Link
           href={`/${lang}/projects`}
           className="text-seagull-500 hover:text-seagull-700 transition-colors"
         >
-          View All →
+          {t('home.recentProjects.viewAll')}
         </Link>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

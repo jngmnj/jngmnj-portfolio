@@ -9,9 +9,11 @@ import SkillsSection from '@/components/home/SkillsSection';
 import { useLocale } from '@/utils/useLocale';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ScrollSnapWrapper() {
   const lang = useLocale();
+  const { t } = useTranslation('common');
   const [isTransparent, setIsTransparent] = useState(true);
   const [showTopBanner, setShowTopBanner] = useState(true);
 
@@ -63,18 +65,18 @@ export default function ScrollSnapWrapper() {
           <div className="md:snap-center md:snap-always">
             <section className="rounded-lg bg-gray-50 p-8 text-center">
               <h2 className="mb-4 text-3xl font-bold">
-                Let&apos;s Work Together
+                {t('home.cta.title')}
               </h2>
               <p className="mb-6 text-gray-600">
-                I&apos;m open to new opportunities!
+                {t('home.cta.line1')}
                 <br />
-                귀사의 연락을 기다립니다.
+                {t('home.cta.line2')}
               </p>
               <Link
                 href={`/${lang}/contact`}
                 className="btn-primary btn-medium inline-flex items-center"
               >
-                Contact Me
+                {t('home.cta.button')}
               </Link>
             </section>
           </div>

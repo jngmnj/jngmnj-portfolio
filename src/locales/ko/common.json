@@ -13,7 +13,48 @@
   },
   "home": {
     "title": "Frontend Engineer",
-    "subtitle": "프론트엔드 엔지니어, UI/UX 디자이너, 기획자로서 사용자 경험이 더 좋은 프로덕트를 구현하기 위해 끊임없이 고민합니다."
+    "subtitle": "프론트엔드 엔지니어, UI/UX 디자이너, 기획자로서 사용자 경험이 더 좋은 프로덕트를 구현하기 위해 끊임없이 고민합니다.",
+    "hero": {
+      "subtitleLine1": "프론트엔드 엔지니어, UI/UX 디자이너, 기획자로서",
+      "subtitleLine2": "사용자 경험이 더 좋은 프로덕트를 구현하기 위해 끊임없이 고민합니다.",
+      "resume": "이력서 다운로드",
+      "capabilities": [
+        "프론트엔드 엔지니어링? 됩니다.",
+        "UI/UX 디자인? 됩니다.",
+        "서비스 기획? 됩니다.",
+        "야근? 됩니다.",
+        "신규 툴 도입? 됩니다.",
+        "코드 리뷰? 됩니다.",
+        "협업? 됩니다.",
+        "문서 작성? 됩니다.",
+        "데드라인? 지킵니다.",
+        "문제 해결? 됩니다.",
+        "팀워크? 됩니다.",
+        "피드백? 감사합니다.",
+        "고객 관점 고민? 늘 됩니다.",
+        "성장? 매일 됩니다.",
+        "해보겠습니다!!!"
+      ]
+    },
+    "skills": {
+      "title": "Skills",
+      "items": [
+        { "title": "Frontend", "skills": "React, Next.js, TypeScript, Tailwind CSS" },
+        { "title": "Backend", "skills": "Node.js, Express, Firebase" },
+        { "title": "Design", "skills": "Figma, UI/UX" },
+        { "title": "Tools", "skills": "Git, Docker, Vercel, AWS" }
+      ]
+    },
+    "recentProjects": {
+      "title": "최근 프로젝트",
+      "viewAll": "전체보기 →"
+    },
+    "cta": {
+      "title": "함께 일해요",
+      "line1": "새로운 기회를 기다리고 있어요!",
+      "line2": "귀사의 연락을 기다립니다.",
+      "button": "문의하기"
+    }
   },
   "projects": {
     "title": "프로젝트",
