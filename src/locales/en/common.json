@@ -236,6 +236,9 @@
       "optimization": "Optimization"
     }
   },
+  "topBanner": {
+    "text": "I am open to new opportunities"
+  },
   "contact": {
     "toast": {
       "success": "Your message has been sent successfully.",

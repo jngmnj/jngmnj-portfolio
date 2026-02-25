@@ -236,6 +236,9 @@
       "optimization": "최적화"
     }
   },
+  "topBanner": {
+    "text": "새로운 기회를 기다리고 있어요"
+  },
   "contact": {
     "toast": {
       "success": "성공적으로 전송되었습니다.",
