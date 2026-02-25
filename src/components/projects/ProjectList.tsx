@@ -2,6 +2,8 @@
 
 import { FirebaseProject } from '@/types';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocale } from '@/utils/useLocale';
 import ProjectCard from './ProjectCard';
 import ProjectDetailModal from './ProjectDetailModal';
 
@@ -18,6 +20,9 @@ const ProjectList = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] =
     useState<FirebaseProject | null>(null);
+
+  const { t } = useTranslation('common');
+  const lang = useLocale();
 
   const openModal = (id: string) => {
     const project = projects.find((p) => p.id === id);
@@ -37,7 +42,7 @@ const ProjectList = ({
     setIsModalOpen(false);
     setSelectedProject(null);
     // URL에서 query parameter 제거
-    window.history.replaceState({}, '', '/projects');
+    window.history.replaceState({}, '', `/${lang}/projects`);
   };
 
   // Empty State
@@ -45,7 +50,7 @@ const ProjectList = ({
     return (
       <div className="rounded-lg bg-gray-50 p-12 text-center">
         <p className="text-lg text-gray-600">
-          아직 등록된 프로젝트가 없습니다.
+          {t('projects.empty')}
         </p>
       </div>
     );

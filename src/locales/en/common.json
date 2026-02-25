@@ -14,5 +14,48 @@
   "home": {
     "title": "Frontend Engineer",
     "subtitle": "As a frontend engineer, UI/UX designer, and planner, I constantly strive to build products that deliver a better user experience."
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "I introduce projects and the development process.",
+    "empty": "No projects have been registered yet."
+  }
+  ,
+  "projects_modal": {
+    "close": "Close",
+    "overview": "Overview",
+    "features": "Features",
+    "info": "Project Info",
+    "timeline": "Timeline",
+    "start": "Start date:",
+    "end": "End date:",
+    "duration": "Duration:",
+    "team_info": "Team Info",
+    "team_size": "Team Size",
+    "team_unit": "members",
+    "role": "Role",
+    "responsibilities": "Responsibilities",
+    "images": "Project Images",
+    "challenges": "Challenges",
+    "results": "Results",
+    "github": "GitHub",
+    "live": "Live Demo",
+    "demo": "Demo",
+    "contributions": "Key Contributions",
+    "tech_stack": "Tech Stack",
+    "link": "Link"
+  },
+  "projects_tech": {
+    "categories": {
+      "frontend": "Frontend",
+      "styling": "Styling",
+      "deployment": "Deployment",
+      "backend": "Backend",
+      "tools": "Tools",
+      "stateManagement": "State Management",
+      "realtime": "Realtime",
+      "ai": "AI/ML",
+      "optimization": "Optimization"
+    }
   }
 }
