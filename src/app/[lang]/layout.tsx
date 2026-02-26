@@ -5,6 +5,7 @@ import {
   ROBOTS_CONFIG,
   SITE_URL,
 } from '@/app/lib/constants';
+import { DEFAULT_LOCALE } from '@/constants/locales';
 import { getMetadataForLocale } from '@/app/lib/metadata-i18n';
 import SetHtmlLang from '@/components/common/SetHtmlLang';
 import type { Metadata } from 'next';
@@ -13,10 +14,11 @@ import { ReactNode } from 'react';
 import ClientLayout from '../ClientLayout';
 import { getDictionary, hasLocale } from './dictionaries';
 
-type Props = { children: ReactNode; params: Promise<{ lang: string }> };
+type Props = { children: ReactNode; params?: Promise<{ lang: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang } = await params;
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) return {};
   const meta = getMetadataForLocale(lang);
 
@@ -85,7 +87,8 @@ export async function generateStaticParams() {
 }
 
 export default async function LangLayout({ children, params }: Props) {
-  const { lang } = await params;
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) notFound();
 
   const dictionary = await getDictionary(lang);

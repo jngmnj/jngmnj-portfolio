@@ -1,4 +1,5 @@
 import ContactForm from '@/components/contact/ContactForm';
+import { DEFAULT_LOCALE } from '@/constants/locales';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { HiLocationMarker } from 'react-icons/hi';
@@ -9,9 +10,10 @@ import { getDictionary, hasLocale } from '../dictionaries';
 export default async function ContactPage({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params?: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const { contact } = dict;

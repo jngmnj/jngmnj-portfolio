@@ -1,4 +1,5 @@
 import ProjectsSkeleton from '@/components/projects/ProjectsSkeleton';
+import { DEFAULT_LOCALE } from '@/constants/locales';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { getDictionary, hasLocale } from '../dictionaries';
@@ -8,10 +9,11 @@ export default async function ProjectsPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ lang: string }>;
+  params?: Promise<{ lang: string }>;
   searchParams: Promise<{ id?: string }>;
 }) {
-  const { lang } = await params;
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const { id } = await searchParams;

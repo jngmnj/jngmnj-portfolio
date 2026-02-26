@@ -1,12 +1,14 @@
 import Link from 'next/link';
+import { DEFAULT_LOCALE } from '@/constants/locales';
 import { getDictionary } from './dictionaries';
 
 export default async function NotFoundPage({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params?: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   const dict = await getDictionary(lang);
   const { notFound } = dict;
 
