@@ -4,14 +4,14 @@ import { MarkdownEditor } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import { useCategories, useTags } from '@/utils/hooks';
+import { useLocale } from '@/utils/useLocale';
 import axios from 'axios';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 
 export default function NewPostPage() {
   const router = useRouter();
-  const urlLang = useParams()?.lang as string | undefined;
-  const lang = urlLang ?? 'ko';
+  const lang = useLocale();
 
   const titleRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);

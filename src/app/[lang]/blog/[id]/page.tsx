@@ -2,14 +2,15 @@
 
 import { MarkdownViewer } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
+import { LINKS } from '@/app/lib/constants';
 import { Post } from '@/types';
+import { useLocale } from '@/utils/useLocale';
 import { doc, getDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { db } from '../../../../../firebaseConfig';
-import { LINKS } from '@/app/lib/constants';
 
 type PostProps = {
   params: Promise<{ lang: string; id: string }>;
@@ -21,8 +22,7 @@ type PostData = Partial<Post> & {
 
 export default function BlogDetailPage({ params }: PostProps) {
   const router = useRouter();
-  const urlLang = useParams()?.lang as string | undefined;
-  const lang = urlLang ?? 'ko';
+  const lang = useLocale();
   const [id, setId] = useState<string>('');
 
   useEffect(() => {

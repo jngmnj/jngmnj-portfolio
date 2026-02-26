@@ -1,14 +1,14 @@
 'use client';
 
 import storage from '@/utils/storage';
+import { useLocale } from '@/utils/useLocale';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, useState } from 'react';
+import { useState } from 'react';
 
 export default function MypagePage() {
-  const urlLang = useParams()?.lang as string | undefined;
-  const lang = urlLang ?? 'ko';
+  const lang = useLocale();
 
   const [userData] = useState<User | null>(() => {
     if (typeof window !== 'undefined') {

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useLocale } from '@/utils/useLocale';
 import {
   GoHeart,
   GoNorthStar,
@@ -14,8 +14,7 @@ const cardClass =
   'rounded-lg border border-gray-200 bg-white p-6 shadow transition hover:shadow-lg block';
 
 export default function AdminPage() {
-  const urlLang = useParams()?.lang as string | undefined;
-  const lang = urlLang ?? 'ko';
+  const lang = useLocale();
   const base = `/${lang}/admin`;
 
   return (
