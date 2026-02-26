@@ -39,7 +39,10 @@
     "skills": {
       "title": "Skills",
       "items": [
-        { "title": "Frontend", "skills": "React, Next.js, TypeScript, Tailwind CSS" },
+        {
+          "title": "Frontend",
+          "skills": "React, Next.js, TypeScript, Tailwind CSS"
+        },
         { "title": "Backend", "skills": "Node.js, Express, Firebase" },
         { "title": "Design", "skills": "Figma, UI/UX" },
         { "title": "Tools", "skills": "Git, Docker, Vercel, AWS" }
@@ -103,6 +106,7 @@
       "subtitle": "다양한 경험을 통해 성장해왔습니다.",
       "tabs": [
         {
+          "id": "career",
           "name": "Career",
           "description": "",
           "content": [
@@ -121,6 +125,7 @@
           ]
         },
         {
+          "id": "education",
           "name": "Education",
           "description": "",
           "content": [
@@ -151,6 +156,7 @@
           ]
         },
         {
+          "id": "skills",
           "name": "Skills",
           "description": "",
           "content": [
@@ -165,6 +171,7 @@
           ]
         },
         {
+          "id": "profile",
           "name": "Profile",
           "description": "",
           "content": [
@@ -197,8 +204,7 @@
     "title": "프로젝트",
     "subtitle": "프로젝트들과 개발과정을 소개합니다.",
     "empty": "아직 등록된 프로젝트가 없습니다."
-  }
-  ,
+  },
   "projects_modal": {
     "close": "모달 닫기",
     "overview": "프로젝트 개요",

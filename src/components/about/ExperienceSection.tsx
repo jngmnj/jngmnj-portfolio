@@ -2,21 +2,17 @@
 
 import TabContent from '@/components/about/TabContent';
 import TabMenu from '@/components/about/TabMenu';
+import type { AboutTab } from '@/data/MyData';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-type AboutTab = {
-  name: string;
-  description: string;
-  content: Array<Record<string, unknown>>;
-};
 
 export default function ExperienceSection() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const { t } = useTranslation('common');
-  const tabs = (t('about.experience.tabs', {
-    returnObjects: true,
-  }) as AboutTab[]) ?? [];
+  const tabs =
+    (t('about.experience.tabs', {
+      returnObjects: true,
+    }) as AboutTab[]) ?? [];
 
   return (
     <section className="pb-20 sm:pb-32 md:pb-40">
