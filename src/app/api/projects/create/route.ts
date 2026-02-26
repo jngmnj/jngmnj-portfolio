@@ -1,11 +1,6 @@
-import {
-  addDoc,
-  collection,
-  FirestoreError,
-  Timestamp,
-} from 'firebase/firestore';
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../../../../../firebaseConfig';
+import { adminDb } from '../../../../lib/firebaseAdmin';
+import { Timestamp } from 'firebase-admin/firestore';
 
 export async function POST(request: NextRequest) {
   try {
@@ -52,10 +47,13 @@ export async function POST(request: NextRequest) {
       createdAt: createdAtTimestamp,
     };
 
-    const docRef = await addDoc(collection(db, 'projects'), projectRequest);
+    const docRef = await adminDb.collection('projects').add(projectRequest);
     return NextResponse.json({ id: docRef.id });
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json(error as FirestoreError, { status: 400 });
+    return NextResponse.json(
+      { error: 'Failed to create project' },
+      { status: 500 }
+    );
   }
 }
