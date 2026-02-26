@@ -4,12 +4,14 @@ import { MarkdownEditor } from '@/components/blog/Markdown';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import { useCategories, useTags } from '@/utils/hooks';
+import { useLocale } from '@/utils/useLocale';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 
 export default function NewPostPage() {
   const router = useRouter();
+  const lang = useLocale();
 
   const titleRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -42,8 +44,8 @@ export default function NewPostPage() {
     formData.append('content', content);
     formData.append('tags', JSON.stringify(tags));
     formData.append('createdAt', new Date().toISOString());
-    formData.append('isPublished', 'true'); // 임시
-    formData.append('authorId', 'admin'); // 임시
+    formData.append('isPublished', 'true');
+    formData.append('authorId', 'admin');
 
     try {
       const response = await axios.post('/api/posts/create', formData, {
@@ -52,7 +54,7 @@ export default function NewPostPage() {
         },
       });
       const docRefId = response.data.id;
-      router.push(`/blog/${docRefId}`);
+      router.push(`/${lang}/blog/${docRefId}`);
     } catch (e) {
       console.error(e);
       alert('글 작성에 실패했습니다.');

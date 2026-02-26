@@ -1,4 +1,7 @@
+'use client';
+
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
 interface ProjectContributionsProps {
@@ -15,6 +18,7 @@ interface ProjectContributionsProps {
 export default function ProjectContributions({
   contributions,
 }: ProjectContributionsProps) {
+  const { t } = useTranslation('common');
   if (!contributions || contributions.length === 0) return null;
 
   return (
@@ -24,7 +28,9 @@ export default function ProjectContributions({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
     >
-      <h2 className="mb-4 text-2xl font-bold text-gray-900">주요 기여 내용</h2>
+      <h2 className="mb-4 text-2xl font-bold text-gray-900">
+        {t('projects_modal.contributions')}
+      </h2>
       <div className="space-y-6">
         {contributions.map((contribution, index) => (
           <motion.div
@@ -51,7 +57,7 @@ export default function ProjectContributions({
                         className="bg-seagull-100 text-seagull-700 hover:bg-seagull-200 ml-2 inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium transition-colors"
                       >
                         <FaExternalLinkAlt className="h-2 w-2" />
-                        {detail.linkText || '링크'}
+                        {detail.linkText || t('projects_modal.link')}
                       </a>
                     )}
                   </div>
@@ -64,4 +70,3 @@ export default function ProjectContributions({
     </motion.div>
   );
 }
-

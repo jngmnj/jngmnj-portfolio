@@ -6,6 +6,7 @@ import Input from '@/components/common/Input';
 import Toast from '@/components/common/Toast';
 import { useAuth } from '@/utils/hooks';
 import storage from '@/utils/storage';
+import { useLocale } from '@/utils/useLocale';
 import { useToast } from '@/utils/useToast';
 import { validateEmail, validatePassword } from '@/utils/validation';
 import Link from 'next/link';
@@ -14,6 +15,7 @@ import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function LoginForm() {
+  const lang = useLocale();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const [rememberEmail, setRememberEmail] = useState(() => {
@@ -174,7 +176,10 @@ export default function LoginForm() {
         </div>
         <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-4">
           <span className="text-sm sm:text-base">아직 회원이 아니신가요?</span>
-          <Link href="/register" className="link-text text-sm sm:text-base">
+          <Link
+            href={`/${lang}/register`}
+            className="link-text text-sm sm:text-base"
+          >
             회원가입
           </Link>
         </div>

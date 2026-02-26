@@ -13,10 +13,52 @@ export const icons = {
   RiNextjsFill,
   DiMysql,
   SiTypescript,
+} as const;
+
+export type IconKey = keyof typeof icons;
+
+export type TabId = 'career' | 'education' | 'skills' | 'profile';
+
+export type TimelineItem = {
+  startDate: string;
+  endDate: string;
+  title: string;
+  list: string[];
 };
 
-const myData = [
+export type SkillItem = {
+  title: string;
+  icon: IconKey;
+};
+
+export type ProfileItem = {
+  label: string;
+  value: string | string[];
+};
+
+export type AboutTab =
+  | {
+      id: 'career' | 'education';
+      name: string;
+      description: string;
+      content: TimelineItem[];
+    }
+  | {
+      id: 'skills';
+      name: string;
+      description: string;
+      content: SkillItem[];
+    }
+  | {
+      id: 'profile';
+      name: string;
+      description: string;
+      content: ProfileItem[];
+    };
+
+const myData: AboutTab[] = [
   {
+    id: 'career',
     name: 'Career',
     description: '',
     content: [
@@ -35,6 +77,7 @@ const myData = [
     ],
   },
   {
+    id: 'education',
     name: 'Education',
     description: '',
     content: [
@@ -65,6 +108,7 @@ const myData = [
     ],
   },
   {
+    id: 'skills',
     name: 'Skills',
     description: '',
     content: [
@@ -103,6 +147,7 @@ const myData = [
     ],
   },
   {
+    id: 'profile',
     name: 'Profile',
     description: '',
     content: [

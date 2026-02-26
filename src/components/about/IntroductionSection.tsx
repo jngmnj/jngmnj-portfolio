@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload } from 'react-icons/md';
@@ -16,6 +17,7 @@ interface SocialLink {
 }
 
 export default function IntroductionSection() {
+  const { t } = useTranslation('common');
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,7 +63,7 @@ export default function IntroductionSection() {
           >
             <div className="bg-seagull-500 h-2 w-2 rounded-full" />
             <span className="text-seagull-700 text-sm font-medium">
-              Frontend Engineer
+              {t('about.intro.tag')}
             </span>
           </motion.div>
 
@@ -79,7 +81,7 @@ export default function IntroductionSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                안녕하세요,
+                {t('about.intro.greetingLine1')}
               </motion.span>
               <motion.span
                 className="block text-gray-900"
@@ -87,7 +89,7 @@ export default function IntroductionSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                지정민입니다.
+                {t('about.intro.greetingLine2')}
               </motion.span>
             </h1>
           </motion.div>
@@ -100,16 +102,13 @@ export default function IntroductionSection() {
             className="mb-8 max-w-2xl space-y-4"
           >
             <p className="text-base font-semibold text-gray-900 sm:text-lg md:text-xl">
-              사용자 경험이 더 좋은 프로덕트를 구현하기위해 끊임없이 고민합니다.
+              {t('about.intro.headline')}
             </p>
             <p className="text-sm leading-relaxed text-gray-600 sm:text-base">
-              프론트엔드, 백엔드 개발과정 수료와 UI/UX 디자인·퍼블리싱·기획
-              경험을 결합하여, 개발–디자인–기획 간의 유연한 협업 역량을
-              가지고있습니다.
+              {t('about.intro.desc1')}
             </p>
             <p className="text-sm leading-relaxed text-gray-600 sm:text-base">
-              이를 통해 서비스의 기획부터 배포까지 전 과정을 주도적으로 이끌며,
-              단순 구현을 넘어 프로덕트 완성도를 높이는 데 기여하고 있습니다.
+              {t('about.intro.desc2')}
             </p>
           </motion.div>
 
@@ -132,7 +131,7 @@ export default function IntroductionSection() {
                 className="bg-seagull-500 hover:bg-seagull-600 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl sm:px-7 sm:py-3 sm:text-base"
               >
                 <MdFileDownload className="size-4 sm:size-5" />
-                이력서 다운로드
+                {t('about.intro.resume')}
               </Link>
             </motion.div>
 
@@ -189,7 +188,7 @@ export default function IntroductionSection() {
               ) : profileImageUrl ? (
                 <Image
                   src={profileImageUrl}
-                  alt="Profile Photo"
+                  alt={t('about.intro.profileAlt')}
                   width={500}
                   height={500}
                   className="size-full object-cover"
@@ -226,7 +225,7 @@ export default function IntroductionSection() {
               ))}
             </div>
             <span className="text-xs font-semibold text-gray-700 sm:text-sm">
-              Open to Work
+              {t('about.intro.openToWork')}
             </span>
           </motion.div>
         </motion.div>

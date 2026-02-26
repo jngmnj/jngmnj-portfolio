@@ -1,3 +1,5 @@
+"use client";
+
 import { FirebaseProject } from '@/types';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -5,6 +7,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
+import { useTranslation } from 'react-i18next';
 
 interface ProjectCardProps {
   project: FirebaseProject;
@@ -13,6 +16,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
   const [_isHovered, setIsHovered] = useState(false);
+  const { t } = useTranslation('common');
 
   return (
     <motion.div
@@ -90,7 +94,7 @@ const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
                 onClick={(e) => e.stopPropagation()}
                 className="rounded-full bg-gray-100 p-2 transition-colors hover:bg-gray-200"
               >
-                Demo <GoArrowUpRight className="inline text-lg" />
+                {t('projects_modal.demo')} <GoArrowUpRight className="inline text-lg" />
               </Link>
             </motion.div>
           )}

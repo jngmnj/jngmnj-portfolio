@@ -1,12 +1,15 @@
 'use client';
 
 import storage from '@/utils/storage';
+import { useLocale } from '@/utils/useLocale';
 import { User } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
 export default function MypagePage() {
+  const lang = useLocale();
+
   const [userData] = useState<User | null>(() => {
     if (typeof window !== 'undefined') {
       return storage.get<User>('userData');
@@ -19,13 +22,13 @@ export default function MypagePage() {
       <div className="flex flex-1 gap-8">
         <aside className="h-full w-1/4 border-r border-r-gray-100">
           <div className="flex flex-col gap-4">
-            <Link href="/mypage" className="p-2">
+            <Link href={`/${lang}/mypage`} className="p-2">
               마이페이지
             </Link>
-            <Link href="/mypage/info" className="p-2">
+            <Link href={`/${lang}/mypage/info`} className="p-2">
               내 정보 수정
             </Link>
-            <Link href="/mypage/info" className="p-2">
+            <Link href={`/${lang}/mypage/info`} className="p-2">
               내 활동
             </Link>
           </div>
