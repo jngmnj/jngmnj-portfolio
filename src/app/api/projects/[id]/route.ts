@@ -1,12 +1,6 @@
-import {
-  deleteDoc,
-  doc,
-  FirestoreError,
-  Timestamp,
-  updateDoc,
-} from 'firebase/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../../../../../firebaseConfig';
+import { adminDb } from '../../../../lib/firebaseAdmin';
 
 export async function PUT(
   request: NextRequest,
@@ -57,8 +51,7 @@ export async function PUT(
       updatedAt: updatedAtTimestamp,
     };
 
-    const projectRef = doc(db, 'projects', id);
-    await updateDoc(projectRef, projectUpdate);
+    await adminDb.collection('projects').doc(id).update(projectUpdate);
 
     return NextResponse.json({
       id,
@@ -66,7 +59,10 @@ export async function PUT(
     });
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json(error as FirestoreError, { status: 400 });
+    return NextResponse.json(
+      { error: 'Failed to update project' },
+      { status: 500 }
+    );
   }
 }
 
@@ -76,8 +72,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const projectRef = doc(db, 'projects', id);
-    await deleteDoc(projectRef);
+    await adminDb.collection('projects').doc(id).delete();
 
     return NextResponse.json({
       id,
@@ -85,6 +80,9 @@ export async function DELETE(
     });
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json(error as FirestoreError, { status: 400 });
+    return NextResponse.json(
+      { error: 'Failed to delete project' },
+      { status: 500 }
+    );
   }
 }
