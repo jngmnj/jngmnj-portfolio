@@ -28,7 +28,9 @@ export default function ProjectForm({
   const methods = useForm({
     defaultValues: {
       title: editingProject?.title || '',
+      titleEn: editingProject?.titleEn || '',
       description: editingProject?.description || '',
+      descriptionEn: editingProject?.descriptionEn || '',
       image: editingProject?.image || '',
       technologies: editingProject?.technologies || [],
       githubUrl: editingProject?.githubUrl || '',
@@ -65,7 +67,9 @@ export default function ProjectForm({
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('title', data.title || '');
+      formDataToSend.append('titleEn', data.titleEn || '');
       formDataToSend.append('description', data.description || '');
+      formDataToSend.append('descriptionEn', data.descriptionEn || '');
       formDataToSend.append('image', data.image || '');
       formDataToSend.append(
         'technologies',

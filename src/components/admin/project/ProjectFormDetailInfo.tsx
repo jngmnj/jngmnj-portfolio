@@ -29,11 +29,23 @@ export default function ProjectFormDetailInfo() {
         />
 
         <ProjectFormListSection
+          label="Responsibilities (English)"
+          fieldPath="detail.team.responsibilitiesEn"
+          placeholder="Enter responsibility in English, then press Enter"
+        />
+
+        <ProjectFormListSection
           label="Features"
           fieldPath="detail.features"
           placeholder="기능 입력 후 Enter"
           chipClassName="inline-flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-sm text-green-700"
           removeButtonClassName="ml-1 text-green-700 hover:text-green-900"
+        />
+
+        <ProjectFormListSection
+          label="Features (English)"
+          fieldPath="detail.featuresEn"
+          placeholder="Enter feature in English, then press Enter"
         />
 
         <ProjectFormListSection
@@ -45,11 +57,23 @@ export default function ProjectFormDetailInfo() {
         />
 
         <ProjectFormListSection
+          label="Challenges (English)"
+          fieldPath="detail.challengesEn"
+          placeholder="Enter challenge in English, then press Enter"
+        />
+
+        <ProjectFormListSection
           label="Results"
           fieldPath="detail.results"
           placeholder="결과 입력 후 Enter"
           chipClassName="inline-flex items-center gap-1 rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-700"
           removeButtonClassName="ml-1 text-purple-700 hover:text-purple-900"
+        />
+
+        <ProjectFormListSection
+          label="Results (English)"
+          fieldPath="detail.resultsEn"
+          placeholder="Enter result in English, then press Enter"
         />
 
         <ProjectFormImageUpload

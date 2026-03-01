@@ -5,20 +5,47 @@ import Input from '@/components/common/Input';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+type ContributionDetail = {
+  text: string;
+  textEn?: string;
+  link?: string;
+  linkText?: string;
+  linkTextEn?: string;
+};
+
+type Contribution = {
+  title: string;
+  titleEn?: string;
+  details?: ContributionDetail[];
+};
+
+type ContributionDetailDraft = {
+  text: string;
+  textEn: string;
+  link: string;
+  linkText: string;
+  linkTextEn: string;
+};
+
 export default function ProjectFormContributionsSection() {
   const { watch, setValue } = useFormContext();
   const [titleInput, setTitleInput] = useState('');
+  const [titleEnInput, setTitleEnInput] = useState('');
   const [detailInputs, setDetailInputs] = useState<
-    Record<number, { text: string; link: string; linkText: string }>
+    Record<number, ContributionDetailDraft>
   >({});
 
-  const contributions = watch('detail.contributions') || [];
+  const contributions = (watch('detail.contributions') || []) as Contribution[];
 
-  const updateContributionTitle = (index: number, title: string) => {
+  const updateContributionTitle = (
+    index: number,
+    field: 'title' | 'titleEn',
+    title: string
+  ) => {
     const updated = [...contributions];
     updated[index] = {
       ...updated[index],
-      title,
+      [field]: title,
     };
     setValue('detail.contributions', updated);
   };
@@ -29,16 +56,18 @@ export default function ProjectFormContributionsSection() {
       ...contributions,
       {
         title: titleInput.trim(),
+        titleEn: titleEnInput.trim() || undefined,
         details: [],
       },
     ]);
     setTitleInput('');
+    setTitleEnInput('');
   };
 
   const removeContribution = (index: number) => {
     setValue(
       'detail.contributions',
-      contributions.filter((_item: any, i: number) => i !== index)
+      contributions.filter((_item, i) => i !== index)
     );
     setDetailInputs((prev) => {
       const next = { ...prev };
@@ -49,15 +78,17 @@ export default function ProjectFormContributionsSection() {
 
   const updateContributionDetailInput = (
     index: number,
-    field: 'text' | 'link' | 'linkText',
+    field: keyof ContributionDetailDraft,
     value: string
   ) => {
     setDetailInputs((prev) => ({
       ...prev,
       [index]: {
         text: prev[index]?.text ?? '',
+        textEn: prev[index]?.textEn ?? '',
         link: prev[index]?.link ?? '',
         linkText: prev[index]?.linkText ?? '',
+        linkTextEn: prev[index]?.linkTextEn ?? '',
         [field]: value,
       },
     }));
@@ -74,15 +105,17 @@ export default function ProjectFormContributionsSection() {
         ...details,
         {
           text: draft.text.trim(),
+          textEn: draft.textEn.trim() || undefined,
           link: draft.link.trim() || undefined,
           linkText: draft.linkText.trim() || undefined,
+          linkTextEn: draft.linkTextEn.trim() || undefined,
         },
       ],
     };
     setValue('detail.contributions', updated);
     setDetailInputs((prev) => ({
       ...prev,
-      [index]: { text: '', link: '', linkText: '' },
+      [index]: { text: '', textEn: '', link: '', linkText: '', linkTextEn: '' },
     }));
   };
 
@@ -91,7 +124,7 @@ export default function ProjectFormContributionsSection() {
     const details = updated[index]?.details || [];
     updated[index] = {
       ...updated[index],
-      details: details.filter((_detail: any, i: number) => i !== detailIndex),
+      details: details.filter((_detail, i) => i !== detailIndex),
     };
     setValue('detail.contributions', updated);
   };
@@ -114,6 +147,13 @@ export default function ProjectFormContributionsSection() {
               }
             }}
           />
+          <Input
+            type="text"
+            value={titleEnInput}
+            onChange={(e) => setTitleEnInput(e.target.value)}
+            placeholder="Contribution section title"
+            className="flex-1"
+          />
           <Button
             type="button"
             onClick={addContribution}
@@ -125,10 +165,7 @@ export default function ProjectFormContributionsSection() {
 
         {contributions.map(
           (
-            contribution: {
-              title: string;
-              details?: { text: string; link?: string; linkText?: string }[];
-            },
+            contribution: Contribution,
             index: number
           ) => (
             <div
@@ -140,9 +177,18 @@ export default function ProjectFormContributionsSection() {
                   type="text"
                   value={contribution.title}
                   onChange={(e) =>
-                    updateContributionTitle(index, e.target.value)
+                    updateContributionTitle(index, 'title', e.target.value)
                   }
                   placeholder="섹션 제목"
+                  className="flex-1"
+                />
+                <Input
+                  type="text"
+                  value={contribution.titleEn ?? ''}
+                  onChange={(e) =>
+                    updateContributionTitle(index, 'titleEn', e.target.value)
+                  }
+                  placeholder="Section title (English)"
                   className="flex-1"
                 />
                 <Button
@@ -164,9 +210,15 @@ export default function ProjectFormContributionsSection() {
                       <span className="text-sm text-gray-700">
                         {detail.text}
                       </span>
+                      {detail.textEn && (
+                        <span className="block text-sm text-gray-500">
+                          {detail.textEn}
+                        </span>
+                      )}
                       {detail.link && (
                         <span className="text-xs text-blue-600">
-                          ({detail.linkText || detail.link})
+                          ({detail.linkText || detail.link}
+                          {detail.linkTextEn ? ` / ${detail.linkTextEn}` : ''})
                         </span>
                       )}
                     </div>
@@ -195,6 +247,18 @@ export default function ProjectFormContributionsSection() {
                     }
                     placeholder="내용 입력"
                   />
+                  <Input
+                    type="text"
+                    value={detailInputs[index]?.textEn ?? ''}
+                    onChange={(e) =>
+                      updateContributionDetailInput(
+                        index,
+                        'textEn',
+                        e.target.value
+                      )
+                    }
+                    placeholder="Detail text in English"
+                  />
                   <div className="flex gap-2">
                     <Input
                       type="url"
@@ -220,6 +284,19 @@ export default function ProjectFormContributionsSection() {
                         )
                       }
                       placeholder="링크 텍스트"
+                      className="flex-1"
+                    />
+                    <Input
+                      type="text"
+                      value={detailInputs[index]?.linkTextEn ?? ''}
+                      onChange={(e) =>
+                        updateContributionDetailInput(
+                          index,
+                          'linkTextEn',
+                          e.target.value
+                        )
+                      }
+                      placeholder="Link text (English)"
                       className="flex-1"
                     />
                   </div>

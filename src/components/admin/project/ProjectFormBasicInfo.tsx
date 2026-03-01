@@ -29,6 +29,15 @@ export default function ProjectFormBasicInfo() {
       </div>
 
       <div>
+        <label className="mb-2 block text-sm font-medium">영문 제목</label>
+        <Input
+          type="text"
+          {...register('titleEn')}
+          placeholder="English project title"
+        />
+      </div>
+
+      <div>
         <label className="mb-2 block text-sm font-medium">
           설명 <span className="text-red-500">*</span>
         </label>
@@ -42,6 +51,16 @@ export default function ProjectFormBasicInfo() {
             {String(errors.description?.message)}
           </p>
         )}
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium">영문 설명</label>
+        <textarea
+          {...register('descriptionEn')}
+          rows={4}
+          className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+          placeholder="English project description"
+        />
       </div>
 
       <ProjectFormImageUpload
