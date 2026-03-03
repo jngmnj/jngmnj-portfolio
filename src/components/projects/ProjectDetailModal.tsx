@@ -1,6 +1,12 @@
 'use client';
 
 import { FirebaseProject } from '@/types';
+import {
+  getLocalizedList,
+  getProjectDescription,
+  getProjectOverview,
+  getProjectTitle,
+} from '@/utils/projectLocale';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
@@ -44,9 +50,38 @@ export default function ProjectDetailModal({
   // 포커스 트랩: Tab 키로 모달 내부만 순환
   useFocusTrap(modalRef, true);
 
-  const { t } = useTranslation('common');
+  const { i18n, t } = useTranslation('common');
 
   if (!project) return null;
+
+  const title = getProjectTitle(project, i18n.language);
+  const description = getProjectDescription(project, i18n.language);
+  const overview = getProjectOverview(project, i18n.language);
+  const features = getLocalizedList(
+    project.detail?.features,
+    project.detail?.featuresEn,
+    i18n.language
+  );
+  const responsibilities = getLocalizedList(
+    project.detail?.team?.responsibilities,
+    project.detail?.team?.responsibilitiesEn,
+    i18n.language
+  );
+  const challenges = getLocalizedList(
+    project.detail?.challenges,
+    project.detail?.challengesEn,
+    i18n.language
+  );
+  const results = getLocalizedList(
+    project.detail?.results,
+    project.detail?.resultsEn,
+    i18n.language
+  );
+  const role =
+    i18n.language.startsWith('en') && project.detail?.team?.roleEn
+      ? project.detail.team.roleEn
+      : project.detail?.team?.role;
+
   return (
     <>
       <AnimatePresence mode="wait">
@@ -96,7 +131,7 @@ export default function ProjectDetailModal({
                 <div className="relative h-80 w-full overflow-hidden">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={title}
                     fill
                     className="object-cover"
                     priority
@@ -126,13 +161,13 @@ export default function ProjectDetailModal({
                       id="modal-title"
                       className="mb-2 text-3xl font-bold text-white"
                     >
-                      {project.title}
+                      {title}
                     </h1>
                     <p
                       id="modal-description"
                       className="text-lg leading-relaxed text-white/90"
                     >
-                      {project.description}
+                      {description}
                     </p>
                   </motion.div>
                 </div>
@@ -140,7 +175,7 @@ export default function ProjectDetailModal({
                 {/* Project Content */}
                 <div className="p-8">
                   {/* Overview Section */}
-                  {project.detail?.overview && (
+                  {overview && (
                     <motion.div
                       className="mb-8"
                       initial={{ opacity: 0, y: 20 }}
@@ -151,13 +186,13 @@ export default function ProjectDetailModal({
                         {t('projects_modal.overview')}
                       </h2>
                       <p className="text-lg leading-relaxed text-gray-600">
-                        {project.detail.overview}
+                        {overview}
                       </p>
                     </motion.div>
                   )}
 
                   {/* Features Section */}
-                  {project.detail?.features && (
+                  {features.length > 0 && (
                     <motion.div
                       className="mb-8"
                       initial={{ opacity: 0, y: 20 }}
@@ -168,7 +203,7 @@ export default function ProjectDetailModal({
                         {t('projects_modal.features')}
                       </h2>
                       <div className="grid gap-3">
-                        {project.detail.features.map((feature, index) => (
+                        {features.map((feature, index) => (
                           <motion.div
                             key={index}
                             className="flex items-start gap-3"
@@ -262,28 +297,25 @@ export default function ProjectDetailModal({
                             <div className="flex justify-between">
                               <span className="text-gray-600">역할:</span>
                               <span className="font-medium">
-                                {project.detail?.team?.role || '-'}
+                                {role || '-'}
                               </span>
                             </div>
                           </div>
-                          {project.detail?.team?.responsibilities &&
-                            project.detail.team.responsibilities.length > 0 && (
+                          {responsibilities.length > 0 && (
                               <div className="mt-3 border-t border-gray-200 pt-3">
                                 <h4 className="mb-2 text-sm font-semibold text-gray-700">
                                   {t('projects_modal.responsibilities')}
                                 </h4>
                                 <ul className="space-y-1">
-                                  {project.detail.team.responsibilities.map(
-                                    (resp, index) => (
-                                      <li
-                                        key={index}
-                                        className="flex items-start gap-2 text-sm text-gray-600"
-                                      >
-                                        <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
-                                        {resp}
-                                      </li>
-                                    )
-                                  )}
+                                  {responsibilities.map((resp, index) => (
+                                    <li
+                                      key={index}
+                                      className="flex items-start gap-2 text-sm text-gray-600"
+                                    >
+                                      <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
+                                      {resp}
+                                    </li>
+                                  ))}
                                 </ul>
                               </div>
                             )}
@@ -306,7 +338,7 @@ export default function ProjectDetailModal({
                         </h2>
                         <ProjectImageSlider
                           images={project.detail.images}
-                          projectTitle={project.title}
+                          projectTitle={title}
                           onImageClick={(index) => {
                             setSelectedImageIndex(index);
                             setImageViewerOpen(true);
@@ -328,7 +360,7 @@ export default function ProjectDetailModal({
                           {t('projects_modal.challenges')}
                         </h2>
                         <div className="space-y-3">
-                          {project.detail.challenges.map((challenge, index) => (
+                          {challenges.map((challenge, index) => (
                             <motion.div
                               key={index}
                               className="flex items-start gap-3"
@@ -353,7 +385,7 @@ export default function ProjectDetailModal({
                           {t('projects_modal.results')}
                         </h2>
                         <div className="space-y-3">
-                          {project.detail.results.map((result, index) => (
+                          {results.map((result, index) => (
                             <motion.div
                               key={index}
                               className="flex items-start gap-3"
@@ -410,7 +442,7 @@ export default function ProjectDetailModal({
         <ImageViewerModal
           images={project.detail.images}
           initialIndex={selectedImageIndex}
-          projectTitle={project.title}
+          projectTitle={title}
           isOpen={imageViewerOpen}
           onClose={() => setImageViewerOpen(false)}
         />

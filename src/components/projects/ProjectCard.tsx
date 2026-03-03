@@ -1,6 +1,10 @@
 "use client";
 
 import { FirebaseProject } from '@/types';
+import {
+  getProjectDescription,
+  getProjectTitle,
+} from '@/utils/projectLocale';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,7 +20,9 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
   const [_isHovered, setIsHovered] = useState(false);
-  const { t } = useTranslation('common');
+  const { i18n, t } = useTranslation('common');
+  const title = getProjectTitle(project, i18n.language);
+  const description = getProjectDescription(project, i18n.language);
 
   return (
     <motion.div
@@ -40,7 +46,7 @@ const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
         >
           <Image
             src={project.image}
-            alt={project.title}
+            alt={title}
             width={600}
             height={400}
             className="h-48 w-full object-cover"
@@ -64,9 +70,9 @@ const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
       {/* Project Content */}
       <div className="p-6">
         <h3 className="group-hover:text-seagull-600 mb-2 text-xl font-bold transition-colors">
-          {project.title}
+          {title}
         </h3>
-        <p className="mb-4 line-clamp-3 text-gray-600">{project.description}</p>
+        <p className="mb-4 line-clamp-3 text-gray-600">{description}</p>
 
         {/* Technologies */}
         <div className="mb-4 flex flex-wrap gap-2">

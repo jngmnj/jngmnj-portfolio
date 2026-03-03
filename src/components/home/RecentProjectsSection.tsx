@@ -1,6 +1,7 @@
 'use client';
 
 import { FirebaseProject } from '@/types';
+import { getTimestampMillis } from '@/utils/projectLocale';
 import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,8 +27,7 @@ export default function RecentProjectsSection() {
         const recentProjects = data
           .sort(
             (a: FirebaseProject, b: FirebaseProject) =>
-              (b.createdAt?.toMillis?.() || 0) -
-              (a.createdAt?.toMillis?.() || 0)
+              getTimestampMillis(b.createdAt) - getTimestampMillis(a.createdAt)
           )
           .slice(0, 3);
         setProjects(recentProjects);
