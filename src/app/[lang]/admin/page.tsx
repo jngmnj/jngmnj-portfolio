@@ -1,7 +1,5 @@
-'use client';
-
+import { DEFAULT_LOCALE } from '@/constants/locales';
 import Link from 'next/link';
-import { useLocale } from '@/utils/useLocale';
 import {
   GoHeart,
   GoNorthStar,
@@ -13,8 +11,13 @@ import {
 const cardClass =
   'rounded-lg border border-gray-200 bg-white p-6 shadow transition hover:shadow-lg block';
 
-export default function AdminPage() {
-  const lang = useLocale();
+export default async function AdminPage({
+  params,
+}: {
+  params?: Promise<{ lang: string }>;
+}) {
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   const base = `/${lang}/admin`;
 
   return (

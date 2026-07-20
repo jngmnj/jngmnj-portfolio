@@ -30,6 +30,9 @@ export type Post = {
   previewImgUrl?: string; // 미리보기 이미지 URL (선택적)
 };
 
+/**
+ * @deprecated Static project data is being migrated to FirebaseProject.
+ */
 export type Project = {
   id?: string;
   title: string;
@@ -53,7 +56,9 @@ export type SerializedTimestamp = {
 export type FirebaseProject = {
   id?: string;
   title: string;
+  titleEn?: string;
   description: string;
+  descriptionEn?: string;
   image: string;
   technologies: string[];
   githubUrl: string;
@@ -61,7 +66,9 @@ export type FirebaseProject = {
   category: string;
   detail?: {
     overview: string;
+    overviewEn?: string;
     features: string[];
+    featuresEn?: string[];
     images: string[];
     techStack: {
       frontend?: string[];
@@ -82,9 +89,22 @@ export type FirebaseProject = {
     team: {
       size: number;
       role: string;
+      roleEn?: string;
       responsibilities: string[];
+      responsibilitiesEn?: string[];
     };
     contributions?: {
+      title: string;
+      titleEn?: string;
+      details: {
+        text: string;
+        textEn?: string;
+        link?: string;
+        linkText?: string;
+        linkTextEn?: string;
+      }[];
+    }[];
+    contributionsEn?: {
       title: string;
       details: {
         text: string;
@@ -93,10 +113,12 @@ export type FirebaseProject = {
       }[];
     }[];
     challenges: string[];
+    challengesEn?: string[];
     results: string[];
+    resultsEn?: string[];
   };
-  createdAt: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt: Timestamp | SerializedTimestamp;
+  updatedAt?: Timestamp | SerializedTimestamp;
 };
 
 export type User = {

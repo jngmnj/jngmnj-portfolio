@@ -7,6 +7,8 @@ import {
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+const ADMIN_SESSION_COOKIE = 'admin_session';
+
 function getLocale(request: NextRequest): string {
   const cookie = request.cookies.get(LOCALE_COOKIE_NAME)?.value;
   if (cookie && hasLocale(cookie)) return cookie;
@@ -36,9 +38,23 @@ export default function proxy(request: NextRequest) {
   const pathnameHasLocale = LOCALES.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
   );
+  const locale = pathnameHasLocale ? pathname.split('/')[1] : getLocale(request);
+
+  const isAdminPath = pathnameHasLocale
+    ? pathname.startsWith(`/${locale}/admin`)
+    : pathname.startsWith('/admin');
+
+  if (isAdminPath) {
+    const isAdmin = Boolean(
+      request.cookies.get(ADMIN_SESSION_COOKIE)?.value
+    );
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    }
+  }
+
   if (pathnameHasLocale) return NextResponse.next();
 
-  const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import ProjectForm from '@/components/admin/ProjectForm';
-import ProjectList from '@/components/admin/ProjectList';
+import ProjectForm from '@/components/admin/project/ProjectForm';
+import ProjectList from '@/components/admin/project/ProjectList';
 import { FirebaseProject } from '@/types';
 import { useState } from 'react';
 
