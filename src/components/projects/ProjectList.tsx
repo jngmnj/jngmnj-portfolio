@@ -48,8 +48,8 @@ const ProjectList = ({
   // Empty State
   if (projects.length === 0) {
     return (
-      <div className="rounded-lg bg-gray-50 p-12 text-center">
-        <p className="text-lg text-gray-600">
+      <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-16 text-center">
+        <p className="text-base font-medium text-gray-600">
           {t('projects.empty')}
         </p>
       </div>
@@ -59,7 +59,7 @@ const ProjectList = ({
   return (
     <>
       {/* Projects Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
         {projects.map((project) => (
           <ProjectCard
             key={project.id}
