@@ -89,33 +89,33 @@ const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
       </div>
 
       {/* Project Content */}
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="group-hover:text-seagull-600 mb-2 line-clamp-2 min-h-14 text-xl leading-snug font-bold text-gray-900 transition-colors">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
+        <h3 className="group-hover:text-seagull-600 mb-1.5 line-clamp-2 text-lg leading-snug font-bold text-gray-900 transition-colors">
           {title}
         </h3>
-        <p className="mb-5 line-clamp-3 min-h-16 text-sm leading-relaxed text-gray-600">
+        <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-gray-600">
           {description}
         </p>
 
         {/* Technologies */}
-        <div className="mb-5 flex min-h-16 flex-wrap content-start gap-2">
+        <div className="mb-3 flex flex-wrap content-start gap-1.5">
           {visibleTechnologies.map((tech) => (
             <span
               key={tech}
-              className="inline-flex max-w-full items-center rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 transition-colors group-hover:bg-gray-200"
+              className="inline-flex max-w-full items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700 transition-colors group-hover:bg-gray-200"
             >
               {tech}
             </span>
           ))}
           {hiddenTechnologyCount > 0 && (
-            <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500">
+            <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
               +{hiddenTechnologyCount}
             </span>
           )}
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-auto flex items-center justify-between gap-3 border-t border-gray-100 pt-4">
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
           <span className="text-seagull-600 group-hover:text-seagull-700 text-sm font-medium transition-colors">
             {t('projects.details')}
           </span>
@@ -131,7 +131,7 @@ const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="focus-visible:ring-seagull-200 inline-flex min-h-9 items-center gap-1 rounded-full bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-200 focus-visible:ring-2 focus-visible:outline-none"
+                  className="focus-visible:ring-seagull-200 inline-flex min-h-8 items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-200 focus-visible:ring-2 focus-visible:outline-none"
                 >
                   {t('projects_modal.demo')}
                   <GoArrowUpRight className="text-base" />
@@ -149,7 +149,7 @@ const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 aria-label={`${title} GitHub`}
-                className="focus-visible:ring-seagull-200 inline-flex size-9 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 focus-visible:ring-2 focus-visible:outline-none"
+                className="focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 focus-visible:ring-2 focus-visible:outline-none"
               >
                 <FaGithub className="text-lg" />
               </Link>
