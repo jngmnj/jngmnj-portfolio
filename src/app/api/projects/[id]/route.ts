@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '../../../../lib/firebaseAdmin';
+import { getAdminDb } from '../../../../lib/firebaseAdmin';
 
 function parseJsonField<T>(value: string, fallback: T, fieldName: string): T {
   if (!value) return fallback;
@@ -58,7 +58,7 @@ export async function PUT(
       updatedAt: updatedAtTimestamp,
     };
 
-    await adminDb.collection('projects').doc(id).update(projectUpdate);
+    await getAdminDb().collection('projects').doc(id).update(projectUpdate);
 
     return NextResponse.json({
       id,
@@ -83,7 +83,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    await adminDb.collection('projects').doc(id).delete();
+    await getAdminDb().collection('projects').doc(id).delete();
 
     return NextResponse.json({
       id,

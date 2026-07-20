@@ -1,20 +1,36 @@
 import admin from 'firebase-admin';
 
-// Firebase Admin SDK 초기화 (중복 초기화 방지)
-if (!admin.apps.length) {
+function getFirebaseAdminApp() {
+  if (admin.apps.length) {
+    return admin.app();
+  }
+
   const credentials = JSON.parse(process.env.FIREBASE_ADMIN_CREDENTIALS || '{}');
-  
+
+  if (!credentials.project_id) {
+    throw new Error(
+      'Missing FIREBASE_ADMIN_CREDENTIALS project_id for Firebase Admin SDK.'
+    );
+  }
+
   // private_key의 개행문자 처리
   if (credentials.private_key) {
     credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
   }
-  
-  admin.initializeApp({
+
+  return admin.initializeApp({
     credential: admin.credential.cert(credentials),
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    projectId:
+      process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || credentials.project_id,
   });
 }
 
-export const adminDb = admin.firestore();
-export const adminAuth = admin.auth();
+export function getAdminDb() {
+  return getFirebaseAdminApp().firestore();
+}
+
+export function getAdminAuth() {
+  return getFirebaseAdminApp().auth();
+}
+
 export { admin };

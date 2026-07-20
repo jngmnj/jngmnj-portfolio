@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '../../../../lib/firebaseAdmin';
+import { getAdminDb } from '../../../../lib/firebaseAdmin';
 
 function parseJsonField<T>(value: string, fallback: T, fieldName: string): T {
   if (!value) return fallback;
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       createdAt: createdAtTimestamp,
     };
 
-    const docRef = await adminDb.collection('projects').add(projectRequest);
+    const docRef = await getAdminDb().collection('projects').add(projectRequest);
     return NextResponse.json({ id: docRef.id });
   } catch (error) {
     console.error('Error:', error);
