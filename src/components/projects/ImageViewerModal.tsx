@@ -106,6 +106,7 @@ export default function ImageViewerModal({
                 spaceBetween={20}
                 imageClassName="object-contain"
                 mode="viewer"
+                showPagination={false}
                 singleImageHeight="h-full max-h-[90vh]"
                 containerClassName="h-full w-full"
               />
