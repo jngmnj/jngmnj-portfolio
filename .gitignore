@@ -71,3 +71,6 @@ ui-debug.log
 /scripts
 
 /.issues
+
+# Codex local working notes
+.codex/
