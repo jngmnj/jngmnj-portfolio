@@ -1,123 +1,145 @@
-"use client";
+'use client';
 
 import { FirebaseProject } from '@/types';
-import {
-  getProjectDescription,
-  getProjectTitle,
-} from '@/utils/projectLocale';
+import { getProjectDescription, getProjectTitle } from '@/utils/projectLocale';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaGithub } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
 import { useTranslation } from 'react-i18next';
 
 interface ProjectCardProps {
   project: FirebaseProject;
-  openModal: (id: string) => void;
+  openModal?: (id: string) => void;
+  href?: string;
 }
 
-const ProjectCard = ({ project, openModal }: ProjectCardProps) => {
-  const [_isHovered, setIsHovered] = useState(false);
+const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
+  const router = useRouter();
   const { i18n, t } = useTranslation('common');
   const title = getProjectTitle(project, i18n.language);
   const description = getProjectDescription(project, i18n.language);
+  const imageSrc = project.image || '/images/common/img_user.png';
+  const visibleTechnologies = project.technologies.slice(0, 4);
+  const hiddenTechnologyCount =
+    project.technologies.length - visibleTechnologies.length;
+
+  const handleOpen = () => {
+    if (project.id && openModal) {
+      openModal(project.id);
+      return;
+    }
+
+    if (href) {
+      router.push(href);
+    }
+  };
 
   return (
     <motion.div
-      className="group cursor-pointer rounded-2xl border border-gray-200 bg-white"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={() => project.id && openModal(project.id)}
+      role="button"
+      tabIndex={0}
+      aria-label={`${title} ${t('projects.details')}`}
+      className="group focus-visible:border-seagull-500 focus-visible:ring-seagull-200 flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl border border-gray-200 bg-white transition-colors outline-none hover:border-gray-300 focus-visible:ring-2"
+      onClick={handleOpen}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          handleOpen();
+        }
+      }}
       whileHover={{
-        y: -8,
-        boxShadow:
-          '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+        y: -2,
       }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
       {/* Project Image */}
-      <div className="relative overflow-hidden rounded-t-2xl">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-        >
+      <div className="relative m-2 aspect-video overflow-hidden rounded-2xl bg-gray-100">
+        <motion.div className="size-full" transition={{ duration: 0.3 }}>
           <Image
-            src={project.image}
+            src={imageSrc}
             alt={title}
-            width={600}
-            height={400}
-            className="h-48 w-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
-
-        {/* Category Badge */}
-        <motion.div
-          className="absolute top-4 left-4"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <span className="rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-gray-700">
-            {project.category}
-          </span>
-        </motion.div>
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/[0.025]" />
       </div>
 
       {/* Project Content */}
-      <div className="p-6">
-        <h3 className="group-hover:text-seagull-600 mb-2 text-xl font-bold transition-colors">
+      <div className="flex flex-1 flex-col px-4 pt-2 pb-4 sm:px-5 sm:pb-5">
+        <div className="mb-2 flex items-center gap-3">
+          <span className="max-w-44 truncate text-[11px] font-semibold tracking-[0.08em] text-gray-400 uppercase">
+            {project.category}
+          </span>
+        </div>
+
+        <h3 className="group-hover:text-seagull-700 mb-1.5 line-clamp-2 text-xl leading-snug font-semibold text-gray-950 transition-colors">
           {title}
         </h3>
-        <p className="mb-4 line-clamp-3 text-gray-600">{description}</p>
+        <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-gray-500">
+          {description}
+        </p>
 
         {/* Technologies */}
-        <div className="mb-4 flex flex-wrap gap-2">
-          {project.technologies.map((tech, index) => (
+        <div className="mb-4 flex flex-wrap content-start gap-1.5">
+          {visibleTechnologies.map((tech) => (
             <span
-              key={index}
-              className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700"
+              key={tech}
+              className="max-w-full truncate rounded-lg bg-gray-50 px-2 py-1 text-xs font-medium text-gray-500"
             >
               {tech}
             </span>
           ))}
+          {hiddenTechnologyCount > 0 && (
+            <span className="rounded-lg bg-gray-50 px-2 py-1 text-xs font-medium text-gray-400">
+              +{hiddenTechnologyCount}
+            </span>
+          )}
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-2">
-          {project.liveUrl && (
+        <div className="mt-auto flex justify-end pt-1">
+          <div className="flex items-center gap-1.5 rounded-2xl bg-gray-50 px-2 py-1">
+            {project.liveUrl && (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Link
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label={`${title} ${t('projects_modal.demo')}`}
+                  className="hover:text-seagull-600 focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-white focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  <GoArrowUpRight className="text-base" />
+                </Link>
+              </motion.div>
+            )}
             <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.2 }}
             >
               <Link
-                href={project.liveUrl}
+                href={project.githubUrl}
                 target="_blank"
+                rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="rounded-full bg-gray-100 p-2 transition-colors hover:bg-gray-200"
+                aria-label={`${title} GitHub`}
+                className="focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-white hover:text-gray-900 focus-visible:ring-2 focus-visible:outline-none"
               >
-                {t('projects_modal.demo')} <GoArrowUpRight className="inline text-lg" />
+                <FaGithub className="text-lg" />
               </Link>
             </motion.div>
-          )}
-          <motion.div
-            whileHover={{ scale: 1.1, rotate: -5 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Link
-              href={project.githubUrl}
-              target="_blank"
-              onClick={(e) => e.stopPropagation()}
-              className="flex rounded-full bg-gray-100 p-2 transition-colors hover:bg-gray-200"
-            >
-              <FaGithub className="inline-block text-lg" />
-            </Link>
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.div>

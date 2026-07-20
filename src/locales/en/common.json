@@ -203,7 +203,8 @@
   "projects": {
     "title": "Projects",
     "subtitle": "I introduce projects and the development process.",
-    "empty": "No projects have been registered yet."
+    "empty": "No projects have been registered yet.",
+    "details": "View details"
   },
   "projects_modal": {
     "close": "Close",
