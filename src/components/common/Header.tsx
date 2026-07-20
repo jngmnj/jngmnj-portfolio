@@ -1,47 +1,115 @@
+'use client';
+
+import { LINKS } from '@/app/lib/constants';
+import { LANG_OPTIONS } from '@/constants/locales';
 import { cn } from '@/utils/style';
+import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import Link from 'next/link';
-import { LINKS } from '../../app/lib/constants';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { GrLanguage } from 'react-icons/gr';
+import Dropdown from './Dropdown';
 import Sidebar from './Sidebar';
 
-const Header = ({ isTransparent = false }: { isTransparent?: boolean }) => {
+type HeaderProps = {
+  isTransparent?: boolean;
+  /** Pass from layout so server and client render the same nav text (avoids hydration mismatch) */
+  initialLang?: string;
+};
+
+const Header = ({ isTransparent = false, initialLang }: HeaderProps = {}) => {
+  const { t, i18n } = useTranslation('common');
+  const pathname = usePathname();
+  const router = useRouter();
+  const langFromPath = useLocale();
+  const lang = initialLang ?? langFromPath;
+  const currentLang =
+    LANG_OPTIONS.find((o) => o.value === lang) ?? LANG_OPTIONS[0];
+
+  const handleLanguageChange = (lng: string) => {
+    if (lng === lang) return;
+    i18n.changeLanguage(lng);
+    const segments = pathname.split('/').filter(Boolean);
+    const rest = segments.slice(1).join('/');
+    router.push(rest ? `/${lng}/${rest}` : `/${lng}`);
+  };
+
   return (
     <>
-      <header className={cn("sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white", isTransparent ? "bg-transparent" : "bg-white")}>
-        <div className="container flex items-center justify-between py-3 lg:py-4" style={{ overflow: 'visible' }}>
-          <Link href="/" className="shrink-0">
+      <header
+        className={cn(
+          'sticky top-0 right-0 left-0 z-50 border-b border-b-gray-200 bg-white',
+          isTransparent ? 'bg-transparent' : 'bg-white'
+        )}
+      >
+        <div className="container flex items-center justify-between py-3 lg:py-4">
+          <Link href={`/${lang}`} className="shrink-0">
             <h1 className="hidden text-2xl font-bold">jngmnj</h1>
             <Image
               src="/images/common/logo.svg"
               width={100}
               height={27}
               alt="logo"
-              className={cn("transition-opacity hover:opacity-80", isTransparent ? "brightness-0 invert" : "")} 
+              className={cn(
+                'transition-opacity hover:opacity-80',
+                isTransparent ? 'brightness-0 invert' : ''
+              )}
             />
           </Link>
-          <nav className="hidden items-center justify-center lg:flex">
-            <Link href="/about">
+          <nav
+            className={cn(
+              'hidden items-center justify-center gap-1 lg:flex',
+              isTransparent ? 'font-semibold text-white' : 'text-black'
+            )}
+          >
+            <Link href={`/${lang}/about`}>
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
-                About
+                {t('nav.about')}
               </div>
             </Link>
-            <Link href="/projects">
+            <Link href={`/${lang}/projects`}>
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
-                Projects
+                {t('nav.projects')}
               </div>
             </Link>
             <Link href={LINKS.github_blog} target="_blank">
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
-                Blog
+                {t('nav.blog')}
               </div>
             </Link>
-            <Link href="/contact">
+            <Link href={`/${lang}/contact`}>
               <div className="hover:text-seagull-500 px-4 py-2 transition-colors">
-                Contact
+                {t('nav.contact')}
               </div>
             </Link>
           </nav>
-          <div className="flex items-center justify-center lg:hidden">
+          <div className="flex items-center gap-1">
+            <Dropdown.Root>
+              <Dropdown.Trigger
+                ariaLabel={t('language.select')}
+                variant="ghost"
+                showArrow={false}
+              >
+                <GrLanguage
+                  className={cn(
+                    'size-5',
+                    isTransparent ? 'text-white' : 'text-black'
+                  )}
+                />
+              </Dropdown.Trigger>
+              <Dropdown.Menu>
+                {LANG_OPTIONS.map((opt) => (
+                  <Dropdown.Item
+                    key={opt.value}
+                    selected={currentLang.value === opt.value}
+                    onSelect={() => handleLanguageChange(opt.value)}
+                  >
+                    {opt.label}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown.Root>
             <Sidebar isTransparent={isTransparent} />
           </div>
         </div>

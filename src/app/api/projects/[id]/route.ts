@@ -1,12 +1,16 @@
-import {
-  deleteDoc,
-  doc,
-  FirestoreError,
-  Timestamp,
-  updateDoc,
-} from 'firebase/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../../../../../firebaseConfig';
+import { getAdminDb } from '../../../../lib/firebaseAdmin';
+
+function parseJsonField<T>(value: string, fallback: T, fieldName: string): T {
+  if (!value) return fallback;
+
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    throw new Error(`Invalid ${fieldName}`);
+  }
+}
 
 export async function PUT(
   request: NextRequest,
@@ -17,7 +21,9 @@ export async function PUT(
     const formData = await request.formData();
 
     const title = formData.get('title') as string;
+    const titleEn = formData.get('titleEn') as string;
     const description = formData.get('description') as string;
+    const descriptionEn = formData.get('descriptionEn') as string;
     const image = formData.get('image') as string;
     const technologies = formData.get('technologies') as string;
     const githubUrl = formData.get('githubUrl') as string;
@@ -25,29 +31,24 @@ export async function PUT(
     const category = formData.get('category') as string;
     const detail = formData.get('detail') as string;
 
-    let technologiesArray = [];
-    if (technologies) {
-      try {
-        technologiesArray = JSON.parse(technologies);
-      } catch (error) {
-        console.error('Failed to parse technologies:', error);
-      }
-    }
-
-    let detailObj = null;
-    if (detail) {
-      try {
-        detailObj = JSON.parse(detail);
-      } catch (error) {
-        console.error('Failed to parse detail:', error);
-      }
-    }
+    const technologiesArray = parseJsonField<string[]>(
+      technologies,
+      [],
+      'technologies'
+    );
+    const detailObj = parseJsonField<Record<string, unknown> | null>(
+      detail,
+      null,
+      'detail'
+    );
 
     const updatedAtTimestamp = Timestamp.now();
 
     const projectUpdate = {
       title,
+      titleEn: titleEn || '',
       description,
+      descriptionEn: descriptionEn || '',
       image,
       technologies: technologiesArray,
       githubUrl,
@@ -57,8 +58,7 @@ export async function PUT(
       updatedAt: updatedAtTimestamp,
     };
 
-    const projectRef = doc(db, 'projects', id);
-    await updateDoc(projectRef, projectUpdate);
+    await getAdminDb().collection('projects').doc(id).update(projectUpdate);
 
     return NextResponse.json({
       id,
@@ -66,7 +66,14 @@ export async function PUT(
     });
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json(error as FirestoreError, { status: 400 });
+    if (error instanceof Error && error.message.startsWith('Invalid ')) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to update project' },
+      { status: 500 }
+    );
   }
 }
 
@@ -76,8 +83,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const projectRef = doc(db, 'projects', id);
-    await deleteDoc(projectRef);
+    await getAdminDb().collection('projects').doc(id).delete();
 
     return NextResponse.json({
       id,
@@ -85,6 +91,9 @@ export async function DELETE(
     });
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json(error as FirestoreError, { status: 400 });
+    return NextResponse.json(
+      { error: 'Failed to delete project' },
+      { status: 500 }
+    );
   }
 }

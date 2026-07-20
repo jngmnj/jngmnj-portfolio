@@ -28,7 +28,7 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   required = required ? `${label}을 입력해주세요.` : required;
   const hasError = !!errors[id];
-  
+
   return (
     <div className="space-y-1.5">
       <label htmlFor={id} className="block text-sm font-medium">
@@ -42,7 +42,7 @@ const FormInput: React.FC<FormInputProps> = ({
         placeholder={placeholder}
         type={type}
         className={cn(
-          `w-full border-b bg-transparent font-bold p-2 outline-none rounded-none transition-colors`,
+          `w-full rounded-none border-b bg-transparent p-2 transition-colors outline-none`,
           hasError
             ? 'border-red-500 focus:border-red-500'
             : 'border-gray-300 focus:border-gray-300',

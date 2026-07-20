@@ -2,11 +2,11 @@
 import { useScrollLock } from '@/utils/hooks';
 import storage from '@/utils/storage';
 import { cn } from '@/utils/style';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useLocale } from '@/utils/useLocale';
 import { User } from 'firebase/auth';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
   GoHeart,
@@ -23,14 +23,9 @@ type AdminSidebarProps = {
 };
 
 const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
-  const [userData, setUserData] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
-      return storage.get<User>('userData');
-    }
-    return null;
-  });
+  const lang = useLocale();
+  const [userData, setUserData] = useState<User | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const router = useRouter();
 
   // 모바일 감지
   useEffect(() => {
@@ -40,6 +35,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
 
     checkMobile();
     window.addEventListener('resize', checkMobile);
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -60,19 +56,7 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
     };
   }, []);
 
-  // setUserData 직후에 useData 읽으면 null임 -> useEffect로 처리
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // 나중에 role이 admin인지 확인하기
-      if (userData === null) {
-        alert('로그인이 필요합니다.');
-        router.push('/login');
-      }
-    }, 2000);
-
-    // 클린업 함수: 컴포넌트가 언마운트될 때 타이머 해제
-    return () => clearTimeout(timer);
-  }, [router, userData]);
+  // 로그인/권한 체크는 middleware(proxy)에서 처리
 
   return (
     <>
@@ -113,7 +97,10 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
         }}
       >
         <div className="mt-4 overflow-hidden text-center">
-          <Link href="/" className="flex items-center justify-center gap-2">
+          <Link
+            href={`/${lang}`}
+            className="flex items-center justify-center gap-2"
+          >
             <div className="bg-seagull-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white">
               <Image
                 src="/favicon/android-chrome-192x192.png"
@@ -142,7 +129,8 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               <Image
                 src={userData?.photoURL || '/images/common/img_user.png'}
                 alt={userData?.displayName || 'no-profile'}
-                layout="fill"
+                width={32}
+                height={32}
               />
             </div>
             <div className="overflow-hidden whitespace-nowrap">
@@ -152,17 +140,17 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-2">
-          <Link href="/admin" title="관리자 홈">
+          <Link href={`/${lang}/admin`} title="관리자 홈">
             <div
-              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoHome className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">HOME</span>
             </div>
           </Link>
-          <Link href="/admin/projects" title="프로젝트 관리">
+          <Link href={`/${lang}/admin/projects`} title="프로젝트 관리">
             <div
-              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoStack className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -170,9 +158,9 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/offers" title="메인페이지 관리">
+          <Link href={`/${lang}/admin/offers`} title="메인페이지 관리">
             <div
-              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoNorthStar className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -180,9 +168,9 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/users" title="회원 관리">
+          <Link href={`/${lang}/admin/users`} title="회원 관리">
             <div
-              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoPeople className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -190,9 +178,9 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/contact" title="문의/방명록">
+          <Link href={`/${lang}/admin/contact`} title="문의/방명록">
             <div
-              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoHeart className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
@@ -200,9 +188,9 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href="/admin/setting" title="사이트 관리">
+          <Link href={`/${lang}/admin/setting`} title="사이트 관리">
             <div
-              className={`hover:text-seagull-500 flex min-h-[44px] items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoTools className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">

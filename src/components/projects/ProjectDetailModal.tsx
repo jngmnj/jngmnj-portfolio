@@ -1,7 +1,16 @@
+'use client';
+
 import { FirebaseProject } from '@/types';
+import {
+  getLocalizedList,
+  getProjectDescription,
+  getProjectOverview,
+  getProjectTitle,
+} from '@/utils/projectLocale';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { RiCloseLine } from 'react-icons/ri';
 import {
@@ -41,7 +50,38 @@ export default function ProjectDetailModal({
   // 포커스 트랩: Tab 키로 모달 내부만 순환
   useFocusTrap(modalRef, true);
 
+  const { i18n, t } = useTranslation('common');
+
   if (!project) return null;
+
+  const title = getProjectTitle(project, i18n.language);
+  const description = getProjectDescription(project, i18n.language);
+  const overview = getProjectOverview(project, i18n.language);
+  const features = getLocalizedList(
+    project.detail?.features,
+    project.detail?.featuresEn,
+    i18n.language
+  );
+  const responsibilities = getLocalizedList(
+    project.detail?.team?.responsibilities,
+    project.detail?.team?.responsibilitiesEn,
+    i18n.language
+  );
+  const challenges = getLocalizedList(
+    project.detail?.challenges,
+    project.detail?.challengesEn,
+    i18n.language
+  );
+  const results = getLocalizedList(
+    project.detail?.results,
+    project.detail?.resultsEn,
+    i18n.language
+  );
+  const role =
+    i18n.language.startsWith('en') && project.detail?.team?.roleEn
+      ? project.detail.team.roleEn
+      : project.detail?.team?.role;
+
   return (
     <>
       <AnimatePresence mode="wait">
@@ -80,7 +120,7 @@ export default function ProjectDetailModal({
                 onClick={closeModal}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                aria-label="모달 닫기"
+                aria-label={t('projects_modal.close')}
               >
                 <RiCloseLine className="text-2xl" />
               </motion.button>
@@ -91,7 +131,7 @@ export default function ProjectDetailModal({
                 <div className="relative h-80 w-full overflow-hidden">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={title}
                     fill
                     className="object-cover"
                     priority
@@ -121,13 +161,13 @@ export default function ProjectDetailModal({
                       id="modal-title"
                       className="mb-2 text-3xl font-bold text-white"
                     >
-                      {project.title}
+                      {title}
                     </h1>
                     <p
                       id="modal-description"
                       className="text-lg leading-relaxed text-white/90"
                     >
-                      {project.description}
+                      {description}
                     </p>
                   </motion.div>
                 </div>
@@ -135,7 +175,7 @@ export default function ProjectDetailModal({
                 {/* Project Content */}
                 <div className="p-8">
                   {/* Overview Section */}
-                  {project.detail?.overview && (
+                  {overview && (
                     <motion.div
                       className="mb-8"
                       initial={{ opacity: 0, y: 20 }}
@@ -143,16 +183,16 @@ export default function ProjectDetailModal({
                       transition={{ delay: 0.4 }}
                     >
                       <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                        프로젝트 개요
+                        {t('projects_modal.overview')}
                       </h2>
                       <p className="text-lg leading-relaxed text-gray-600">
-                        {project.detail.overview}
+                        {overview}
                       </p>
                     </motion.div>
                   )}
 
                   {/* Features Section */}
-                  {project.detail?.features && (
+                  {features.length > 0 && (
                     <motion.div
                       className="mb-8"
                       initial={{ opacity: 0, y: 20 }}
@@ -160,10 +200,10 @@ export default function ProjectDetailModal({
                       transition={{ delay: 0.5 }}
                     >
                       <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                        주요 기능
+                        {t('projects_modal.features')}
                       </h2>
                       <div className="grid gap-3">
-                        {project.detail.features.map((feature, index) => (
+                        {features.map((feature, index) => (
                           <motion.div
                             key={index}
                             className="flex items-start gap-3"
@@ -187,7 +227,6 @@ export default function ProjectDetailModal({
                     </motion.div>
                   )}
 
-                  {/* Contributions Section */}
                   <ProjectContributions
                     contributions={project.detail?.contributions}
                   />
@@ -204,29 +243,35 @@ export default function ProjectDetailModal({
                       transition={{ delay: 0.8 }}
                     >
                       <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                        프로젝트 정보
+                        {t('projects_modal.info')}
                       </h2>
                       <div className="grid gap-6 md:grid-cols-2">
                         {/* Timeline */}
                         <div className="rounded-lg bg-gray-50 p-4">
                           <h3 className="mb-3 font-semibold text-gray-900">
-                            타임라인
+                            {t('projects_modal.timeline')}
                           </h3>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">시작일:</span>
+                              <span className="text-gray-600">
+                                {t('projects_modal.start')}
+                              </span>
                               <span className="font-medium">
                                 {project.detail?.timeline?.startDate || '-'}
                               </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">종료일:</span>
+                              <span className="text-gray-600">
+                                {t('projects_modal.end')}
+                              </span>
                               <span className="font-medium">
                                 {project.detail?.timeline?.endDate || '-'}
                               </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">기간:</span>
+                              <span className="text-gray-600">
+                                {t('projects_modal.duration')}
+                              </span>
                               <span className="font-medium">
                                 {project.detail?.timeline?.duration || '-'}
                               </span>
@@ -237,40 +282,40 @@ export default function ProjectDetailModal({
                         {/* Team Info */}
                         <div className="rounded-lg bg-gray-50 p-4">
                           <h3 className="mb-3 font-semibold text-gray-900">
-                            팀 정보
+                            {t('projects_modal.team_info')}
                           </h3>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">팀 규모:</span>
+                              <span className="text-gray-600">
+                                {t('projects_modal.team_size')}:
+                              </span>
                               <span className="font-medium">
-                                {project.detail?.team?.size || 1}명
+                                {project.detail?.team?.size || 1}{' '}
+                                {t('projects_modal.team_unit')}
                               </span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-gray-600">역할:</span>
                               <span className="font-medium">
-                                {project.detail?.team?.role || '-'}
+                                {role || '-'}
                               </span>
                             </div>
                           </div>
-                          {project.detail?.team?.responsibilities &&
-                            project.detail.team.responsibilities.length > 0 && (
+                          {responsibilities.length > 0 && (
                               <div className="mt-3 border-t border-gray-200 pt-3">
                                 <h4 className="mb-2 text-sm font-semibold text-gray-700">
-                                  담당 업무
+                                  {t('projects_modal.responsibilities')}
                                 </h4>
                                 <ul className="space-y-1">
-                                  {project.detail.team.responsibilities.map(
-                                    (resp, index) => (
-                                      <li
-                                        key={index}
-                                        className="flex items-start gap-2 text-sm text-gray-600"
-                                      >
-                                        <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
-                                        {resp}
-                                      </li>
-                                    )
-                                  )}
+                                  {responsibilities.map((resp, index) => (
+                                    <li
+                                      key={index}
+                                      className="flex items-start gap-2 text-sm text-gray-600"
+                                    >
+                                      <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
+                                      {resp}
+                                    </li>
+                                  ))}
                                 </ul>
                               </div>
                             )}
@@ -289,11 +334,11 @@ export default function ProjectDetailModal({
                         transition={{ delay: 0.85 }}
                       >
                         <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                          프로젝트 이미지
+                          {t('projects_modal.images')}
                         </h2>
                         <ProjectImageSlider
                           images={project.detail.images}
-                          projectTitle={project.title}
+                          projectTitle={title}
                           onImageClick={(index) => {
                             setSelectedImageIndex(index);
                             setImageViewerOpen(true);
@@ -312,10 +357,10 @@ export default function ProjectDetailModal({
                         transition={{ delay: 0.9 }}
                       >
                         <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                          도전 과제
+                          {t('projects_modal.challenges')}
                         </h2>
                         <div className="space-y-3">
-                          {project.detail.challenges.map((challenge, index) => (
+                          {challenges.map((challenge, index) => (
                             <motion.div
                               key={index}
                               className="flex items-start gap-3"
@@ -337,10 +382,10 @@ export default function ProjectDetailModal({
                         transition={{ delay: 1.1 }}
                       >
                         <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                          성과
+                          {t('projects_modal.results')}
                         </h2>
                         <div className="space-y-3">
-                          {project.detail.results.map((result, index) => (
+                          {results.map((result, index) => (
                             <motion.div
                               key={index}
                               className="flex items-start gap-3"
@@ -371,7 +416,7 @@ export default function ProjectDetailModal({
                       className="flex items-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-white transition-colors hover:bg-gray-800"
                     >
                       <FaGithub className="text-lg" />
-                      <span>GitHub</span>
+                      <span>{t('projects_modal.github')}</span>
                     </a>
                     {project.liveUrl && (
                       <a
@@ -381,7 +426,7 @@ export default function ProjectDetailModal({
                         className="bg-seagull-500 hover:bg-seagull-600 flex items-center gap-2 rounded-lg px-6 py-3 text-white transition-colors"
                       >
                         <FaExternalLinkAlt className="text-lg" />
-                        <span>Live Demo</span>
+                        <span>{t('projects_modal.live')}</span>
                       </a>
                     )}
                   </motion.div>
@@ -397,7 +442,7 @@ export default function ProjectDetailModal({
         <ImageViewerModal
           images={project.detail.images}
           initialIndex={selectedImageIndex}
-          projectTitle={project.title}
+          projectTitle={title}
           isOpen={imageViewerOpen}
           onClose={() => setImageViewerOpen(false)}
         />

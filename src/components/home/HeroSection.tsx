@@ -6,34 +6,25 @@ import { getImageUrl } from '@/utils/imageUpload';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaLinkedinIn } from 'react-icons/fa';
 import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io';
 import { MdFileDownload, MdKeyboardArrowDown } from 'react-icons/md';
-
-const CAPABILITIES = [
-  '프론트엔드 엔지니어링? 됩니다.',
-  'UI/UX 디자인? 됩니다.',
-  '서비스 기획? 됩니다.',
-  '야근? 됩니다.',
-  '신규 툴 도입? 됩니다.',
-  '코드 리뷰? 됩니다.',
-  '협업? 됩니다.',
-  '문서 작성? 됩니다.',
-  '데드라인? 지킵니다.',
-  '문제 해결? 됩니다.',
-  '팀워크? 됩니다.',
-  '피드백? 감사합니다.',
-  '고객 관점 고민? 늘 됩니다.',
-  '성장? 매일 됩니다.',
-  '해보겠습니다!!!',
-];
 
 const TYPING_SPEED = 50; // 타이핑 속도 (밀리초)
 const DELETE_SPEED = 30; // 삭제 속도 (밀리초)
 const PAUSE_TIME = 1500; // 문장 끝에서의 대기 시간 (밀리초)
 
 export default function HeroSection() {
+  const { t } = useTranslation('common');
+  const capabilities = useMemo(
+    () =>
+      (t('home.hero.capabilities', {
+        returnObjects: true,
+      }) as string[]) ?? [],
+    [t]
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -69,11 +60,11 @@ export default function HeroSection() {
         .finally(() => {
           setIsLoadingBg(false);
         });
-    } 
+    }
   }, [isMobile]);
 
   useEffect(() => {
-    const currentCapability = CAPABILITIES[currentIndex];
+    const currentCapability = capabilities[currentIndex] ?? '';
     let timeout: NodeJS.Timeout;
 
     if (!isDeleting) {
@@ -98,16 +89,21 @@ export default function HeroSection() {
         // 삭제 완료, 다음 문장으로
         timeout = setTimeout(() => {
           setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % CAPABILITIES.length);
+          if (capabilities.length > 0) {
+            setCurrentIndex((prev) => (prev + 1) % capabilities.length);
+          }
         }, 0); // setTimeout으로 감싸서 비동기 콜백으로
       }
     }
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, currentIndex]);
+  }, [displayText, isDeleting, currentIndex, capabilities]);
 
   // Map icons to social links
-  const iconMap: Record<SocialIconKey, React.ComponentType<{ className?: string }>> = {
+  const iconMap: Record<
+    SocialIconKey,
+    React.ComponentType<{ className?: string }>
+  > = {
     github: IoLogoGithub,
     instagram: IoLogoInstagram,
     linkedin: FaLinkedinIn,
@@ -118,23 +114,21 @@ export default function HeroSection() {
     icon: iconMap[key as SocialIconKey],
   }));
 
-
   if (isMobile && isLoadingBg) {
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
 
   return (
     <section className="relative flex min-h-[calc(100vh-40px)] items-center justify-center overflow-hidden">
       {/* Image Background - Mobile only */}
       {isMobile && !isLoadingBg && (
-          <>
+        <>
           <div
             className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat"
             style={{
               zIndex: 0,
-              backgroundImage: 'linear-gradient(135deg, #57c076 0%, #00512a 100%)',
+              backgroundImage:
+                'linear-gradient(135deg, #57c076 0%, #00512a 100%)',
             }}
           />
           {mobileBgImageUrl && (
@@ -161,17 +155,17 @@ export default function HeroSection() {
             muted
             loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover hidden md:block"
+            className="absolute inset-0 hidden h-full w-full object-cover md:block"
             style={{ zIndex: 0 }}
           >
             <source src="/images/bg/video_bg_hero.mp4" type="video/mp4" />
           </video>
-  
+
           {/* Dark Overlay for Content Visibility */}
-          <div className="hidden md:block absolute inset-0 z-1 bg-[#cee8ff] mix-blend-multiply md:backdrop-blur-sm backdrop-hue-rotate-[-30deg]" />
-  
+          <div className="absolute inset-0 z-1 hidden bg-[#cee8ff] mix-blend-multiply backdrop-hue-rotate-[-30deg] md:block md:backdrop-blur-sm" />
+
           {/* Background decorative elements */}
-          <div className="hidden md:blockabsolute inset-0 -z-10 overflow-hidden">
+          <div className="md:blockabsolute inset-0 -z-10 hidden overflow-hidden">
             <motion.div
               className="from-seagull-400/20 to-seagull-500/10 absolute -top-48 -right-48 h-96 w-96 rounded-full bg-linear-to-br blur-3xl"
               animate={{
@@ -200,23 +194,19 @@ export default function HeroSection() {
         </>
       )}
 
-      
-
-      
-
       <div
         className="relative container flex flex-col px-6 md:items-center md:justify-center md:text-center"
-        style={{ 
+        style={{
           zIndex: 2,
           ...(isMobile && {
             justifyContent: 'flex-start',
             paddingTop: '66.666%', // 2/3 지점
-          })
+          }),
         }}
       >
         {/* Main typing text */}
-        <div className="mb-8 flex items-start md:items-center md:justify-center sm:mb-10 md:mb-12">
-          <h1 className="text-left text-4xl leading-tight text-white sm:text-5xl md:text-center md:text-black md:text-6xl lg:text-7xl xl:text-8xl">
+        <div className="mb-8 flex items-start sm:mb-10 md:mb-12 md:items-center md:justify-center">
+          <h1 className="text-left text-4xl leading-tight text-white sm:text-5xl md:text-center md:text-6xl md:text-black lg:text-7xl xl:text-8xl">
             <span className="font-extrabold">
               {displayText}
               <motion.span
@@ -235,12 +225,12 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
-          className="mb-8 max-w-2xl text-left text-gray-100 sm:mb-10 sm:text-lg sm:text-gray-200 md:mb-12 md:text-center md:text-gray-600 md:text-2xl"
+          className="mb-8 max-w-2xl text-left text-gray-100 sm:mb-10 sm:text-lg sm:text-gray-200 md:mb-12 md:text-center md:text-2xl md:text-gray-600"
         >
-          프론트엔드 엔지니어, UI/UX 디자이너, 기획자로서
+          {t('home.hero.subtitleLine1')}
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>
-          사용자 경험이 더 좋은 프로덕트를 구현하기 위해 끊임없이 고민합니다.
+          {t('home.hero.subtitleLine2')}
         </motion.p>
 
         {/* CTA Buttons and Social Links */}
@@ -262,7 +252,7 @@ export default function HeroSection() {
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl sm:px-7 sm:text-base"
             >
               <MdFileDownload className="size-5" />
-              이력서 다운로드
+              {t('home.hero.resume')}
             </Link>
           </motion.div>
 
@@ -311,8 +301,12 @@ export default function HeroSection() {
       >
         <div className="flex flex-col items-center gap-2">
           {/* <p className="text-sm font-medium text-black">Scroll</p> */}
-          <div className={`rounded-full border-2 p-2 ${isMobile ? 'border-white' : 'border-black'}`}>
-            <MdKeyboardArrowDown className={`size-5 ${isMobile ? 'text-white' : 'text-black'}`} />
+          <div
+            className={`rounded-full border-2 p-2 ${isMobile ? 'border-white' : 'border-black'}`}
+          >
+            <MdKeyboardArrowDown
+              className={`size-5 ${isMobile ? 'text-white' : 'text-black'}`}
+            />
           </div>
         </div>
       </motion.div>

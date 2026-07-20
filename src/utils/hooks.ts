@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  type User,
 } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -43,12 +44,47 @@ export const useAuth = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  const createAdminSession = async (user: User | null) => {
+    if (!user) {
+      return { success: false, error: '로그인 정보를 확인할 수 없습니다.' };
+    }
+
+    const idToken = await user.getIdToken(true);
+    const response = await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ idToken }),
+    });
+
+    if (response.ok) {
+      return { success: true, error: null };
+    }
+
+    const payload = await response.json().catch(() => null);
+    return {
+      success: false,
+      error: payload?.message || '관리자 권한이 없습니다.',
+    };
+  };
+
+  const clearAdminSession = async () => {
+    await fetch('/api/auth/session', { method: 'DELETE' }).catch(() => null);
+  };
+
   //  구글 간편 로그인 함수
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       storage.set('userData', result.user);
+      const sessionResult = await createAdminSession(result.user);
+      if (!sessionResult.success) {
+        await auth.signOut();
+        storage.set('userData', null);
+        throw new Error(sessionResult.error || '관리자 권한이 없습니다.');
+      }
       if (result.user !== null) {
         router.push('/');
       }
@@ -69,6 +105,13 @@ export const useAuth = () => {
         password
       );
       storage.set('userData', userCredential?.user);
+      const sessionResult = await createAdminSession(userCredential?.user);
+      if (!sessionResult.success) {
+        await auth.signOut();
+        storage.set('userData', null);
+        setLoading(false);
+        return { success: false, error: sessionResult.error };
+      }
       setLoading(false);
       return { success: true, error: null };
     } catch (error) {
@@ -88,6 +131,13 @@ export const useAuth = () => {
         password
       );
       storage.set('userData', userCredential.user);
+      const sessionResult = await createAdminSession(userCredential?.user);
+      if (!sessionResult.success) {
+        await auth.signOut();
+        storage.set('userData', null);
+        setLoading(false);
+        return { success: false, error: sessionResult.error };
+      }
       setLoading(false);
       return { success: true, error: null };
     } catch (error) {
@@ -102,6 +152,7 @@ export const useAuth = () => {
     try {
       await auth.signOut();
       storage.set('userData', null);
+      await clearAdminSession();
       router.push('/');
     } catch (error) {
       console.error('Logout error:', error);

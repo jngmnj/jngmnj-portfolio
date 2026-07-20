@@ -1,4 +1,7 @@
+'use client';
+
 import { Post } from '@/types';
+import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -22,13 +25,14 @@ const PostCard: FC<PostCardProps> = ({
   createdAt,
   previewImgUrl: preview_img_url,
 }) => {
+  const lang = useLocale();
   const stripHtmlTags = (content: string): string => {
     return content.replace(/<[^>]*>/g, '');
   };
   return (
     <div className="w-full">
       <Link
-        href={`/blog/${id}`}
+        href={`/${lang}/blog/${id}`}
         className="group flex w-full flex-col gap-4 rounded-2xl p-0 transition-all ease-in-out hover:bg-gray-50 hover:p-4 sm:flex-row sm:gap-6 lg:gap-8"
       >
         {/* 텍스트 콘텐츠 */}

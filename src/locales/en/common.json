@@ -1,0 +1,298 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "language": { "select": "Select language" },
+  "metadata": {
+    "title": "Jungmin Ji | Frontend Engineer",
+    "description": "Portfolio of Jungmin Ji, frontend engineer.",
+    "siteName": "Jungmin Ji Portfolio"
+  },
+  "home": {
+    "title": "Frontend Engineer",
+    "subtitle": "As a frontend engineer, UI/UX designer, and planner, I constantly strive to build products that deliver a better user experience.",
+    "hero": {
+      "subtitleLine1": "As a frontend engineer, UI/UX designer, and planner,",
+      "subtitleLine2": "I constantly strive to build products that deliver a better user experience.",
+      "resume": "Download Resume",
+      "capabilities": [
+        "Frontend engineering? I can.",
+        "UI/UX design? I can.",
+        "Service planning? I can.",
+        "Overtime? I can.",
+        "New tools? I can.",
+        "Code review? I can.",
+        "Collaboration? I can.",
+        "Documentation? I can.",
+        "Deadlines? I keep them.",
+        "Problem solving? I can.",
+        "Teamwork? I can.",
+        "Feedback? Thank you.",
+        "User-first thinking? Always.",
+        "Growth? Every day.",
+        "Let’s do this!!!"
+      ]
+    },
+    "skills": {
+      "title": "Skills",
+      "items": [
+        {
+          "title": "Frontend",
+          "skills": "React, Next.js, TypeScript, Tailwind CSS"
+        },
+        { "title": "Backend", "skills": "Node.js, Express, Firebase" },
+        { "title": "Design", "skills": "Figma, UI/UX" },
+        { "title": "Tools", "skills": "Git, Docker, Vercel, AWS" }
+      ]
+    },
+    "recentProjects": {
+      "title": "Recent Projects",
+      "viewAll": "View All →"
+    },
+    "cta": {
+      "title": "Let’s Work Together",
+      "line1": "I’m open to new opportunities!",
+      "line2": "I look forward to hearing from you.",
+      "button": "Contact Me"
+    }
+  },
+  "about": {
+    "intro": {
+      "tag": "Frontend Engineer",
+      "greetingLine1": "Hello,",
+      "greetingLine2": "I’m Jungmin Ji.",
+      "headline": "I constantly strive to build products with better user experiences.",
+      "desc1": "With frontend/back-end training and UI/UX design, publishing, and planning experience, I collaborate flexibly across development, design, and planning.",
+      "desc2": "I lead projects from planning to deployment, contributing beyond implementation to raise product quality.",
+      "resume": "Download Resume",
+      "openToWork": "Open to Work",
+      "profileAlt": "Profile Photo"
+    },
+    "portfolio": {
+      "toastPreparing": "Coming soon.",
+      "items": [
+        {
+          "id": "01",
+          "title": "Web Development",
+          "href": "/projects",
+          "description": "I deliver user-friendly interfaces and performance by writing efficient frontend code. I work with HTML, CSS, JavaScript, TypeScript, React, Next.js, and more."
+        },
+        {
+          "id": "02",
+          "title": "UI/UX Design",
+          "href": null,
+          "description": "I design optimal UX based on user needs and expectations, using tools like Figma and Adobe XD to craft visual design and interactions."
+        },
+        {
+          "id": "03",
+          "title": "Database Management (SQL)",
+          "href": null,
+          "description": "I can query, insert, update, and delete data with SQL and work with Firebase/Firestore, MySQL, and PostgreSQL."
+        },
+        {
+          "id": "04",
+          "title": "Search Engine Optimization (SEO)",
+          "href": null,
+          "description": "I improve SEO through keyword research, meta tag optimization, and internal link structure improvements, using tools like Google Analytics for analysis."
+        }
+      ]
+    },
+    "experience": {
+      "titleLine1": "Experience",
+      "titleLine2": "& Strengths",
+      "subtitle": "I have grown through diverse experiences.",
+      "tabs": [
+        {
+          "id": "career",
+          "name": "Career",
+          "description": "",
+          "content": [
+            {
+              "startDate": "2023.01",
+              "endDate": "2025.03",
+              "title": "UI/UX Designer / Publisher",
+              "list": ["CoreSoft"]
+            },
+            {
+              "startDate": "2021.10",
+              "endDate": "2022.12",
+              "title": "UI/UX Designer / Publisher",
+              "list": ["KNL Information System"]
+            }
+          ]
+        },
+        {
+          "id": "education",
+          "name": "Education",
+          "description": "",
+          "content": [
+            {
+              "startDate": "2024.03",
+              "endDate": "Present",
+              "title": "Computer Science",
+              "list": ["Korea National Open University"]
+            },
+            {
+              "startDate": "2025.03",
+              "endDate": "2025.08",
+              "title": "Frontend Developer Bootcamp",
+              "list": ["OZ Coding School"]
+            },
+            {
+              "startDate": "2019.10",
+              "endDate": "2021.05",
+              "title": "JAVA/Spring Developer Training",
+              "list": ["Korea IT Academy"]
+            },
+            {
+              "startDate": "2013.03",
+              "endDate": "2018.02",
+              "title": "Fashion Design, Keimyung University",
+              "list": ["Graduation Fashion Show"]
+            }
+          ]
+        },
+        {
+          "id": "skills",
+          "name": "Skills",
+          "description": "",
+          "content": [
+            { "title": "Figma", "icon": "FaFigma" },
+            { "title": "Html5", "icon": "FaHtml5" },
+            { "title": "Javascript", "icon": "IoLogoJavascript" },
+            { "title": "Typecript", "icon": "SiTypescript" },
+            { "title": "CSS3", "icon": "FaCss3" },
+            { "title": "React", "icon": "FaReact" },
+            { "title": "Nextjs", "icon": "RiNextjsFill" },
+            { "title": "SQL", "icon": "DiMysql" }
+          ]
+        },
+        {
+          "id": "profile",
+          "name": "Profile",
+          "description": "",
+          "content": [
+            { "label": "Name", "value": "Jungmin Ji" },
+            { "label": "Experience", "value": "5+ years" },
+            { "label": "Email", "value": "jngmnj4@gmail.com" },
+            { "label": "Freelance", "value": "Available" },
+            { "label": "Languages", "value": "Korean, English, Japanese" },
+            {
+              "label": "Experience",
+              "value": [
+                "2025.09 AWS Developer Q Hackathon",
+                "2025.06 ~ 2025.08 Modern JavaScript Deep Dive Study",
+                "2015.06 ~ 2015.07 FISEP Summer Program (UC Irvine, CA)"
+              ]
+            },
+            {
+              "label": "Awards",
+              "value": [
+                "2016.11 Outdoor & Sports Design Contest – Special Prize (Korea Outdoor Sports Industry Association)",
+                "2016.11 Korean Fashion Design Society Contest – Honorable Mention"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "I introduce projects and the development process.",
+    "empty": "No projects have been registered yet."
+  },
+  "projects_modal": {
+    "close": "Close",
+    "overview": "Overview",
+    "features": "Features",
+    "info": "Project Info",
+    "timeline": "Timeline",
+    "start": "Start date:",
+    "end": "End date:",
+    "duration": "Duration:",
+    "team_info": "Team Info",
+    "team_size": "Team Size",
+    "team_unit": "members",
+    "role": "Role",
+    "responsibilities": "Responsibilities",
+    "images": "Project Images",
+    "challenges": "Challenges",
+    "results": "Results",
+    "github": "GitHub",
+    "live": "Live Demo",
+    "demo": "Demo",
+    "contributions": "Key Contributions",
+    "tech_stack": "Tech Stack",
+    "link": "Link"
+  },
+  "projects_tech": {
+    "categories": {
+      "frontend": "Frontend",
+      "styling": "Styling",
+      "deployment": "Deployment",
+      "backend": "Backend",
+      "tools": "Tools",
+      "stateManagement": "State Management",
+      "realtime": "Realtime",
+      "ai": "AI/ML",
+      "optimization": "Optimization"
+    }
+  },
+  "topBanner": {
+    "text": "I am open to new opportunities"
+  },
+  "contact": {
+    "toast": {
+      "success": "Your message has been sent successfully.",
+      "error": "Failed to send. Please try again."
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Enter your name",
+        "required": "Name is required."
+      },
+      "company": {
+        "label": "Company",
+        "placeholder": "Enter your company (optional)"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email",
+        "required": "Email is required."
+      },
+      "title": {
+        "label": "Title",
+        "placeholder": "Enter a subject",
+        "required": "Title is required."
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Enter your message",
+        "required": "Message is required."
+      },
+      "submit": "Submit",
+      "sending": "Sending..."
+    },
+    "info": {
+      "kakao": "Kakao",
+      "openChat": "Open Chat",
+      "email": "Email",
+      "location": "Location",
+      "locationValue": "Seoul, South Korea"
+    }
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "description": "The page you are looking for doesn’t exist or has been moved.",
+    "actions": {
+      "home": "Go to Home",
+      "contact": "Contact"
+    }
+  }
+}

@@ -1,18 +1,19 @@
+import type { AboutTab } from '@/data/MyData';
 import { motion } from 'framer-motion';
-import myData from '../../data/MyData';
 
 type TabMenuProps = {
   activeTabIndex: number;
   onTabChange: (index: number) => void;
+  tabs: AboutTab[];
 };
 
-const TabMenu = ({ activeTabIndex, onTabChange }: TabMenuProps) => {
+const TabMenu = ({ activeTabIndex, onTabChange, tabs }: TabMenuProps) => {
   return (
-    <div className="flex flex-row gap-2 md:gap-4 md:flex-col">
-      {myData.map((data, index) => (
+    <div className="flex flex-row gap-2 md:flex-col md:gap-4">
+      {tabs.map((data, index) => (
         <motion.button
           type="button"
-          key={data.name}
+          key={data.id}
           className={`w-full cursor-pointer rounded-xl border px-6 py-3 text-center transition-colors ${
             activeTabIndex === index
               ? 'border-seagull-500 bg-seagull-50 text-seagull-700'

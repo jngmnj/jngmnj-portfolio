@@ -5,11 +5,12 @@ import Checkbox from '@/components/common/CheckBox';
 import Input from '@/components/common/Input';
 import Toast from '@/components/common/Toast';
 import { useAuth } from '@/utils/hooks';
+import { useLocale } from '@/utils/useLocale';
 import { useToast } from '@/utils/useToast';
 import {
-  validateEmail,
-  validatePassword,
-  validatePasswordMatch,
+    validateEmail,
+    validatePassword,
+    validatePasswordMatch,
 } from '@/utils/validation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,6 +18,7 @@ import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function RegisterForm() {
+  const lang = useLocale();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const passwordCheckRef = React.useRef<HTMLInputElement>(null);
@@ -139,10 +141,7 @@ export default function RegisterForm() {
       )}
       <div className="w-full rounded-xl border border-gray-300 bg-white px-4 py-8 md:w-1/2 md:px-6 md:py-10">
         <h1 className="text-xl font-semibold md:text-2xl">회원가입</h1>
-        <form
-          className="mt-6 mb-4 flex flex-col gap-4"
-          onSubmit={handleSubmit}
-        >
+        <form className="mt-6 mb-4 flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
             <Input
               type="email"
@@ -176,27 +175,17 @@ export default function RegisterForm() {
               onChange={handlePasswordCheckChange}
             />
             {passwordCheckError && (
-              <p className="mt-1 text-sm text-red-600">
-                {passwordCheckError}
-              </p>
+              <p className="mt-1 text-sm text-red-600">{passwordCheckError}</p>
             )}
           </div>
           <div className="">
             <Checkbox id="remember" disabled={isLoading}>
               <p className="text-sm sm:text-base">
-                <Link
-                  href={'/policy'}
-                  target="_blank"
-                  className="link-text"
-                >
+                <Link href={'/policy'} target="_blank" className="link-text">
                   이용약관
                 </Link>
                 <span> 및 </span>
-                <Link
-                  href={'/policy'}
-                  target="_blank"
-                  className="link-text"
-                >
+                <Link href={'/policy'} target="_blank" className="link-text">
                   개인정보처리방침
                 </Link>
                 <span>에 동의합니다.</span>
@@ -222,7 +211,10 @@ export default function RegisterForm() {
         </div>
         <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-4">
           <span className="text-sm sm:text-base">이미 회원이신가요?</span>
-          <Link href="/login" className="link-text text-sm sm:text-base">
+          <Link
+            href={`/${lang}/login`}
+            className="link-text text-sm sm:text-base"
+          >
             로그인
           </Link>
         </div>
@@ -230,4 +222,3 @@ export default function RegisterForm() {
     </>
   );
 }
-
