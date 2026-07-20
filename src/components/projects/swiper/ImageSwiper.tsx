@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,6 +21,7 @@ interface ImageSwiperProps {
     prevEl: string;
     nextEl: string;
   };
+  showPagination?: boolean;
   // 스타일 옵션
   imageClassName?: string;
   containerClassName?: string;
@@ -39,16 +39,14 @@ export default function ImageSwiper({
   slidesPerView = 1,
   spaceBetween = 16,
   navigation,
+  showPagination = true,
   imageClassName = 'object-cover',
   containerClassName = '',
   singleImageHeight = 'h-64 md:h-96',
   mode = 'thumbnail',
 }: ImageSwiperProps) {
-  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-
   // Swiper 인스턴스 설정
   const handleSwiper = (swiper: SwiperType) => {
-    setSwiperInstance(swiper);
     onSwiper?.(swiper);
 
     // initialIndex가 있으면 해당 슬라이드로 이동
@@ -97,14 +95,16 @@ export default function ImageSwiper({
 
   // Swiper 설정
   const swiperConfig = {
-    modules: [Navigation, Pagination, A11y],
+    modules: [Navigation, ...(showPagination ? [Pagination] : []), A11y],
     slidesPerView: typeof slidesPerView === 'number' ? slidesPerView : 1,
     spaceBetween: typeof spaceBetween === 'number' ? spaceBetween : 16,
     navigation: navigation || undefined,
-    pagination: {
-      clickable: true,
-      dynamicBullets: true,
-    },
+    pagination: showPagination
+      ? {
+          clickable: true,
+          dynamicBullets: true,
+        }
+      : false,
     loop: images.length > 1, // 이미지가 2개 이상일 때만 loop 활성화
     onSwiper: handleSwiper,
     a11y: {
