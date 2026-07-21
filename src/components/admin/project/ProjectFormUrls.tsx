@@ -10,10 +10,11 @@ export default function ProjectFormUrls() {
   } = useFormContext();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <label className="mb-2 block text-sm font-medium">
-          GitHub URL <span className="text-red-500">*</span>
+        <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-800">
+          <span>GitHub URL</span>
+          <span className="text-xs font-medium text-red-600">필수</span>
         </label>
         <Input
           type="url"
@@ -21,19 +22,27 @@ export default function ProjectFormUrls() {
             required: 'GitHub URL을 입력해주세요.',
           })}
           placeholder="https://github.com/..."
+          className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 focus:ring-2 focus:outline-none"
+          aria-invalid={Boolean(errors.githubUrl)}
         />
         {errors.githubUrl && (
-          <p className="mt-1 text-xs text-red-500">
+          <p className="mt-1.5 text-xs font-medium text-red-600" role="alert">
             {String(errors.githubUrl?.message)}
           </p>
         )}
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium">
-          Live URL (선택)
+        <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-800">
+          <span>Live URL</span>
+          <span className="text-xs font-medium text-gray-400">선택</span>
         </label>
-        <Input type="url" {...register('liveUrl')} placeholder="https://..." />
+        <Input
+          type="url"
+          {...register('liveUrl')}
+          placeholder="https://..."
+          className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 focus:ring-2 focus:outline-none"
+        />
       </div>
     </div>
   );

@@ -10,6 +10,8 @@ interface FormTextareaProps {
   validation?: object;
   rows?: number;
   className?: string;
+  optional?: boolean;
+  language?: 'ko' | 'en';
 }
 
 export default function FormTextarea({
@@ -20,6 +22,8 @@ export default function FormTextarea({
   validation = {},
   rows = 4,
   className,
+  optional = false,
+  language = 'ko',
 }: FormTextareaProps) {
   const {
     register,
@@ -34,17 +38,31 @@ export default function FormTextarea({
 
   return (
     <div className={className}>
-      <label className="mb-2 block text-sm font-medium">
-        {label} {required && <span className="text-red-500">*</span>}
+      <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-800">
+        <span>{label}</span>
+        {required && (
+          <span className="text-xs font-medium text-red-600">필수</span>
+        )}
+        {optional && (
+          <span className="text-xs font-medium text-gray-400">선택</span>
+        )}
+        {language === 'en' && (
+          <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-gray-500">
+            EN
+          </span>
+        )}
       </label>
       <textarea
         {...register(name, rules)}
         rows={rows}
         placeholder={placeholder}
-        className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+        aria-invalid={Boolean(error)}
+        className="focus:border-seagull-500 focus:ring-seagull-100 w-full resize-y rounded-xl border border-gray-300 px-4 py-3 leading-6 transition-colors focus:ring-2 focus:outline-none"
       />
       {error && (
-        <p className="mt-1 text-xs text-red-500">{String(error?.message)}</p>
+        <p className="mt-1.5 text-xs font-medium text-red-600" role="alert">
+          {String(error?.message)}
+        </p>
       )}
     </div>
   );

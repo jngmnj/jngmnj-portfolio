@@ -50,18 +50,32 @@ export default function ProjectFormImageUpload({
 
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
+      <div className="mb-2 flex items-center gap-2">
+        <p className="text-sm font-semibold text-gray-800">{label}</p>
+        {required ? (
+          <span className="text-xs font-medium text-red-600">필수</span>
+        ) : (
+          <span className="text-xs font-medium text-gray-400">선택</span>
+        )}
+      </div>
+      <p className="mb-3 text-xs leading-5 break-keep text-gray-500">
+        파일을 직접 업로드하거나 외부 이미지 URL을 입력할 수 있습니다.
+      </p>
 
       {/* 업로드 방식 선택 탭 */}
-      <div className="mb-3 flex gap-2 overflow-x-auto border-b border-gray-200">
+      <div
+        className="mb-4 inline-flex rounded-xl bg-gray-100 p-1"
+        role="tablist"
+        aria-label={`${label} 입력 방식`}
+      >
         <button
           type="button"
           onClick={() => setUploadType('upload')}
-          className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+          role="tab"
+          aria-selected={uploadType === 'upload'}
+          className={`min-h-10 rounded-lg px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
             uploadType === 'upload'
-              ? 'border-seagull-500 text-seagull-600 border-b-2'
+              ? 'text-seagull-700 bg-white'
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
@@ -70,9 +84,11 @@ export default function ProjectFormImageUpload({
         <button
           type="button"
           onClick={() => setUploadType('url')}
-          className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+          role="tab"
+          aria-selected={uploadType === 'url'}
+          className={`min-h-10 rounded-lg px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
             uploadType === 'url'
-              ? 'border-seagull-500 text-seagull-600 border-b-2'
+              ? 'text-seagull-700 bg-white'
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
@@ -97,36 +113,36 @@ export default function ProjectFormImageUpload({
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               placeholder={placeholder}
-              className="flex-1"
-              onKeyPress={(e) => {
+              className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 flex-1 focus:ring-2 focus:outline-none"
+              onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
                   handleAddUrl();
                 }
               }}
             />
-            {multiple && (
-              <Button
-                type="button"
-                onClick={handleAddUrl}
-                className="w-full sm:w-auto"
-              >
-                추가
-              </Button>
-            )}
+            <Button
+              type="button"
+              onClick={handleAddUrl}
+              color="secondary"
+              className="min-h-11 w-full sm:w-auto"
+            >
+              {multiple ? '추가' : '적용'}
+            </Button>
           </div>
           {multiple && Array.isArray(value) && value.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
               {value.map((url: string, index: number) => (
                 <span
                   key={index}
-                  className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-700"
+                  className="inline-flex max-w-full items-center gap-1 rounded-lg bg-gray-100 px-3 py-1.5 text-sm text-gray-700"
                 >
                   {url.length > 40 ? `${url.substring(0, 40)}...` : url}
                   <button
                     type="button"
                     onClick={() => handleRemoveUrl(index)}
-                    className="ml-1 text-yellow-700 hover:text-yellow-900"
+                    className="ml-1 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-900"
+                    aria-label={`${index + 1}번째 이미지 URL 삭제`}
                   >
                     ×
                   </button>
