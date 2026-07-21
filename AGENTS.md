@@ -106,5 +106,6 @@
 
 ## Local Notes
 
-- `.codex/` is ignored and should be used only for local working notes.
-- Shared plans should live in GitHub issues or repo docs instead of `.codex/`.
+- `.codex/local/` is ignored and should be used only for local working notes.
+- `.codex/skills/` may contain repository-shared Codex skills.
+- Shared plans should live in GitHub issues or repo docs instead of `.codex/local/`.
