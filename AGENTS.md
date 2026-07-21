@@ -28,6 +28,8 @@
 - Keep simple, local, or tightly coupled changes in the main Codex thread.
 - Define each subagent's ownership before delegation and keep final integration in the main thread.
 - Record subagent usage in the issue or PR when subagents contributed to the work.
+- Project-scoped custom agents live under `.codex/agents/`.
+- Prefer `ui-designer-agent` for focused UI implementation, `frontend-reviewer-agent` for frontend review, and `firebase-integration-agent` for Firebase/API work.
 
 ## Skills
 
@@ -56,7 +58,8 @@
 ## AI-Assisted Records
 
 - Prefix AI-assisted commit subjects with `[ai-assisted]`.
-- Record the issue number, summary, and validation result in commit or PR bodies.
+- Include the issue number in the commit subject using the existing `(#issue-number)` suffix style.
+- Record the summary and validation result in commit or PR bodies.
 - Mark AI involvement in issue or PR descriptions when Codex drafted, implemented, reviewed, or prepared validation.
 
 ## Approval Boundaries
@@ -75,6 +78,8 @@
 ## Frontend Design Taste
 
 - Aim for a soft, polished product UI: generous breathing room, rounded surfaces, quiet borders, and clear hierarchy.
+- Prefer existing Tailwind classes, theme tokens, and shared component styles before introducing arbitrary values.
+- Keep spacing, radius, border, typography, and color choices consistent with the existing design system.
 - Prefer friendly rounded rectangles with smooth radius for inputs, cards, tabs, and primary actions. Avoid sharp editorial edges unless the surrounding UI already uses them.
 - Use pale neutral backgrounds for inactive surfaces and white or lightly elevated surfaces for active content.
 - Borders should be subtle and cool gray. Shadows should be minimal or absent; never rely on heavy shadows to make an element feel designed.
@@ -85,6 +90,8 @@
 - Tech stacks should be readable metadata. Use restrained chips or text tags; avoid making every tag look like a button.
 - Hover and focus states should be smooth and restrained: slight background, border, color, or scale changes. Avoid dramatic lift, oversized shadow, or noisy animation.
 - Check Korean and English text lengths. Clamp long titles/descriptions and make sure rounded controls still look balanced with both languages.
+- Use Korean-friendly wrapping such as `word-break: keep-all` or balanced text wrapping where it improves readability.
+- Keep interactive controls accessible with clear labels, keyboard focus states, and touch-friendly hit areas.
 - When unsure, make the UI softer, cleaner, and more intentional before adding decoration.
 
 ## Development Checks
@@ -107,5 +114,6 @@
 ## Local Notes
 
 - `.codex/local/` is ignored and should be used only for local working notes.
+- `.codex/agents/` may contain repository-shared Codex custom agents.
 - `.codex/skills/` may contain repository-shared Codex skills.
 - Shared plans should live in GitHub issues or repo docs instead of `.codex/local/`.
