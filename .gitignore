@@ -72,5 +72,5 @@ ui-debug.log
 
 /.issues
 
-# Codex local working notes
-.codex/
+# Codex local-only state
+.codex/local/
