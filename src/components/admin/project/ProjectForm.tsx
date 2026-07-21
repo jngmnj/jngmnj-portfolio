@@ -25,6 +25,7 @@ export default function ProjectForm({
 }: ProjectFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const methods = useForm({
     defaultValues: {
@@ -64,6 +65,7 @@ export default function ProjectForm({
 
   const onSubmit = async (data: Partial<FirebaseProject>) => {
     setLoading(true);
+    setSubmitError(null);
 
     try {
       const formDataToSend = new FormData();
@@ -96,14 +98,14 @@ export default function ProjectForm({
         onSuccess();
         router.refresh();
       } else {
-        alert(
+        setSubmitError(
           editingProject
             ? '프로젝트 수정에 실패했습니다.'
             : '프로젝트 등록에 실패했습니다.'
         );
       }
     } catch {
-      alert(
+      setSubmitError(
         editingProject
           ? '프로젝트 수정 중 오류가 발생했습니다.'
           : '프로젝트 등록 중 오류가 발생했습니다.'
@@ -153,6 +155,15 @@ export default function ProjectForm({
           </ProjectFormSection>
 
           <ProjectFormDetailInfo />
+
+          {submitError && (
+            <div
+              role="alert"
+              className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium break-keep text-red-800"
+            >
+              {submitError}
+            </div>
+          )}
 
           <div className="sticky bottom-3 z-10 flex flex-col-reverse gap-3 rounded-2xl border border-gray-200 bg-white/95 p-3 backdrop-blur sm:flex-row sm:justify-end sm:p-4">
             <Button
