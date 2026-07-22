@@ -1,12 +1,12 @@
 import {
   DEFAULT_KEYWORDS,
   DEFAULT_NAME,
-  HOME_OG_IMAGE_URL,
   ROBOTS_CONFIG,
   SITE_URL,
 } from '@/app/lib/constants';
 import { DEFAULT_LOCALE } from '@/constants/locales';
 import { getMetadataForLocale } from '@/app/lib/metadata-i18n';
+import { createPageMetadata } from '@/app/lib/og-metadata';
 import SetHtmlLang from '@/components/common/SetHtmlLang';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) return {};
   const meta = getMetadataForLocale(lang);
+  const pageMetadata = createPageMetadata({ lang, page: 'home', path: '' });
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -49,28 +50,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     manifest: '/manifest.json',
-    openGraph: {
-      title: meta.title,
-      description: meta.description,
-      url: SITE_URL,
-      siteName: meta.siteName,
-      images: [
-        {
-          url: HOME_OG_IMAGE_URL,
-          width: 1200,
-          height: 630,
-          alt: meta.siteName,
-        },
-      ],
-      locale: lang === 'ko' ? 'ko_KR' : 'en_US',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: meta.title,
-      description: meta.description,
-      images: [HOME_OG_IMAGE_URL],
-    },
+    alternates: pageMetadata.alternates,
+    openGraph: pageMetadata.openGraph,
+    twitter: pageMetadata.twitter,
     authors: [{ name: DEFAULT_NAME }],
     creator: DEFAULT_NAME,
     publisher: DEFAULT_NAME,
