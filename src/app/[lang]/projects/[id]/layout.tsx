@@ -1,4 +1,5 @@
 import { createPageMetadata } from '@/app/lib/og-metadata';
+import { getProjectOgData } from '@/app/lib/project-og';
 import type { ReactNode } from 'react';
 
 export async function generateMetadata({
@@ -7,7 +8,15 @@ export async function generateMetadata({
   params: Promise<{ lang: string; id: string }>;
 }) {
   const { lang, id } = await params;
-  return createPageMetadata({ lang, page: 'project', path: `/projects/${id}` });
+  const project = await getProjectOgData(id, lang);
+  return createPageMetadata({
+    lang,
+    page: 'project',
+    path: `/projects/${id}`,
+    title: project?.title,
+    description: project?.description,
+    imageParams: { projectId: id },
+  });
 }
 
 export default function ProjectLayout({ children }: { children: ReactNode }) {

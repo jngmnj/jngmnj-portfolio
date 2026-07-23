@@ -150,21 +150,32 @@ export function createPageMetadata({
   lang,
   page,
   path,
+  title,
+  description,
+  imageParams,
 }: {
   lang: string;
   page: OgPage;
   path: string;
+  title?: string;
+  description?: string;
+  imageParams?: Record<string, string>;
 }): Metadata {
   const locale: Locale = hasLocale(lang) ? lang : 'ko';
   const copy = getOgPageCopy(locale, page);
+  const resolvedTitle = title || copy.title;
+  const resolvedDescription = description || copy.description;
   const canonicalPath = `/${locale}${path}`;
   const image = new URL('/api/og', SITE_URL);
   image.searchParams.set('lang', locale);
   image.searchParams.set('page', page);
+  Object.entries(imageParams ?? {}).forEach(([key, value]) => {
+    image.searchParams.set(key, value);
+  });
 
   return {
-    title: copy.title,
-    description: copy.description,
+    title: resolvedTitle,
+    description: resolvedDescription,
     alternates: {
       canonical: canonicalPath,
       languages: {
@@ -173,20 +184,25 @@ export function createPageMetadata({
       },
     },
     openGraph: {
-      title: copy.title,
-      description: copy.description,
+      title: resolvedTitle,
+      description: resolvedDescription,
       url: canonicalPath,
       siteName: locale === 'ko' ? '지정민 포트폴리오' : 'Jungmin Ji Portfolio',
       images: [
-        { url: image.toString(), width: 1200, height: 630, alt: copy.title },
+        {
+          url: image.toString(),
+          width: 1200,
+          height: 630,
+          alt: resolvedTitle,
+        },
       ],
       locale: locale === 'ko' ? 'ko_KR' : 'en_US',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: copy.title,
-      description: copy.description,
+      title: resolvedTitle,
+      description: resolvedDescription,
       images: [image.toString()],
     },
   };

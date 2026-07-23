@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OG Image Preview</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 48px 24px;
+        background: #e9eef4;
+        color: #172033;
+        font-family: SUIT, Pretendard, 'Noto Sans KR', Arial, sans-serif;
+      }
+
+      .preview-shell {
+        width: min(1200px, 100%);
+        margin: 0 auto;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .toolbar h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      button {
+        min-height: 40px;
+        padding: 0 16px;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        background: #fff;
+        color: #475569;
+        font: inherit;
+        font-weight: 650;
+        cursor: pointer;
+      }
+
+      button:hover,
+      button:focus-visible {
+        border-color: #21a7c7;
+        color: #167f99;
+        outline: none;
+      }
+
+      button.active {
+        border-color: #21a7c7;
+        background: #21a7c7;
+        color: #fff;
+      }
+
+      .og-card {
+        position: relative;
+        display: flex;
+        aspect-ratio: 1200 / 630;
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        padding: 6% 7%;
+        border: 1px solid #dce3eb;
+        background: #f6f8fb;
+        box-shadow: 0 24px 70px rgb(30 50 70 / 12%);
+      }
+
+      .eyebrow,
+      .content,
+      .footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #387186;
+        font-size: clamp(12px, 2.15vw, 26px);
+        font-weight: 750;
+        letter-spacing: 0.16em;
+      }
+
+      .dot {
+        width: clamp(9px, 1.5vw, 18px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #21a7c7;
+      }
+
+      .content {
+        max-width: 82%;
+      }
+
+      .title {
+        margin: 0;
+        font-size: clamp(28px, 5.65vw, 68px);
+        font-weight: 850;
+        letter-spacing: -0.035em;
+        line-height: 1.16;
+        word-break: keep-all;
+      }
+
+      .description {
+        margin: 3% 0 0;
+        color: #5a6577;
+        font-size: clamp(14px, 2.5vw, 30px);
+        font-weight: 450;
+        line-height: 1.45;
+        word-break: keep-all;
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: clamp(12px, 2.1vw, 26px);
+      }
+
+      .name {
+        font-weight: 750;
+      }
+
+      .domain {
+        color: #758094;
+      }
+
+      .circle {
+        position: absolute;
+        top: -21%;
+        right: -9%;
+        width: 32.5%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #dff4f8;
+      }
+
+      .diamond {
+        position: absolute;
+        right: 9%;
+        bottom: 14.5%;
+        width: 9.3%;
+        aspect-ratio: 1;
+        transform: rotate(18deg);
+        border: clamp(7px, 1.5vw, 18px) solid #c7eaf1;
+        border-radius: 28%;
+      }
+
+      .hint {
+        margin: 16px 0 0;
+        color: #64748b;
+        font-size: 14px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="preview-shell">
+      <div class="toolbar">
+        <h1>동적 OG 이미지 미리보기</h1>
+        <div class="controls" aria-label="미리보기 선택">
+          <button type="button" data-page="home">홈</button>
+          <button type="button" data-page="projects">프로젝트</button>
+          <button type="button" data-page="project">프로젝트 상세</button>
+          <button type="button" data-page="blog">블로그</button>
+          <button type="button" data-page="mypage" class="active">
+            마이페이지
+          </button>
+          <button type="button" data-lang="ko" class="active">KO</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </div>
+
+      <section class="og-card" aria-label="OG 이미지 예시">
+        <div class="circle"></div>
+        <div class="diamond"></div>
+
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span id="label">MY PAGE</span>
+        </div>
+
+        <div class="content">
+          <h2 class="title" id="title">마이페이지 | 지정민</h2>
+          <p class="description" id="description">
+            내 계정 정보를 확인하고 관리합니다.
+          </p>
+        </div>
+
+        <div class="footer">
+          <span class="name">JUNGMIN JI</span>
+          <span class="domain">jngmnj.dev</span>
+        </div>
+      </section>
+
+      <p class="hint">실제 OG 이미지 비율: 1200 × 630</p>
+    </main>
+
+    <script>
+      const copy = {
+        ko: {
+          home: {
+            label: 'PORTFOLIO',
+            title: '지정민 | Frontend Engineer',
+            description:
+              '사용자 경험을 고민하며 제품을 만드는 프론트엔드 엔지니어 지정민입니다.',
+          },
+          projects: {
+            label: 'PROJECTS',
+            title: '프로젝트 | 지정민',
+            description: '직접 참여한 프로젝트와 문제 해결 과정을 소개합니다.',
+          },
+          project: {
+            label: 'PROJECT',
+            title: 'JNGMNJ Portfolio',
+            description:
+              'Next.js와 Firebase로 구축한 다국어 포트폴리오 프로젝트입니다.',
+          },
+          blog: {
+            label: 'BLOG',
+            title: '블로그 | 지정민',
+            description: '개발 과정에서 배운 내용과 경험을 기록합니다.',
+          },
+          mypage: {
+            label: 'MY PAGE',
+            title: '마이페이지 | 지정민',
+            description: '내 계정 정보를 확인하고 관리합니다.',
+          },
+        },
+        en: {
+          home: {
+            label: 'PORTFOLIO',
+            title: 'Jungmin Ji | Frontend Engineer',
+            description:
+              'Frontend engineer building thoughtful products around the user experience.',
+          },
+          projects: {
+            label: 'PROJECTS',
+            title: 'Projects | Jungmin Ji',
+            description:
+              'A collection of projects and the problem-solving behind them.',
+          },
+          project: {
+            label: 'PROJECT',
+            title: 'JNGMNJ Portfolio',
+            description:
+              'A multilingual portfolio project built with Next.js and Firebase.',
+          },
+          blog: {
+            label: 'BLOG',
+            title: 'Blog | Jungmin Ji',
+            description:
+              'Notes and lessons from building products for the web.',
+          },
+          mypage: {
+            label: 'MY PAGE',
+            title: 'My page | Jungmin Ji',
+            description: 'Review and manage your account.',
+          },
+        },
+      };
+
+      let currentPage = 'mypage';
+      let currentLang = 'ko';
+
+      function render() {
+        const current = copy[currentLang][currentPage];
+        document.documentElement.lang = currentLang;
+        document.querySelector('#label').textContent = current.label;
+        document.querySelector('#title').textContent = current.title;
+        document.querySelector('#description').textContent =
+          current.description;
+      }
+
+      document.querySelectorAll('[data-page]').forEach((button) => {
+        button.addEventListener('click', () => {
+          currentPage = button.dataset.page;
+          document
+            .querySelectorAll('[data-page]')
+            .forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          render();
+        });
+      });
+
+      document.querySelectorAll('[data-lang]').forEach((button) => {
+        button.addEventListener('click', () => {
+          currentLang = button.dataset.lang;
+          document
+            .querySelectorAll('[data-lang]')
+            .forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          render();
+        });
+      });
+    </script>
+  </body>
+</html>

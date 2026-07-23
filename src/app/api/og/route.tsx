@@ -1,4 +1,5 @@
 import { getOgPageCopy, type OgPage } from '@/app/lib/og-metadata';
+import { getProjectOgData } from '@/app/lib/project-og';
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'nodejs';
@@ -17,13 +18,32 @@ const pages = new Set<OgPage>([
   'admin',
 ]);
 
+function truncate(value: string, maxLength: number) {
+  return value.length > maxLength
+    ? `${value.slice(0, maxLength).trimEnd()}…`
+    : value;
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const lang = searchParams.get('lang') === 'en' ? 'en' : 'ko';
   const requestedPage = searchParams.get('page') as OgPage | null;
   const page =
     requestedPage && pages.has(requestedPage) ? requestedPage : 'home';
-  const copy = getOgPageCopy(lang, page);
+  const defaultCopy = getOgPageCopy(lang, page);
+  const projectId = searchParams.get('projectId');
+  const project =
+    page === 'project' && projectId
+      ? await getProjectOgData(projectId, lang)
+      : null;
+  const copy = {
+    ...defaultCopy,
+    title: truncate(project?.title ?? defaultCopy.title, 52),
+    description: truncate(
+      project?.description || defaultCopy.description,
+      lang === 'ko' ? 110 : 150
+    ),
+  };
   return new ImageResponse(
     (
       <div
