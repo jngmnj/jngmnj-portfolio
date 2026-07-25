@@ -253,12 +253,12 @@ export default function BlogPageClient() {
 - 제목과 설명이 길면 이미지 렌더링에서만 글자 수를 제한하고, HTML 메타데이터에는
   원문을 유지한다.
 
-## 현재 구현에 대한 리팩터링 방향
+## 리팩터링 계획과 적용 결과
 
 현재 경로별 `layout.tsx` 구현은 동작하지만 메타데이터만을 위해 빈 레이아웃이
 반복된다.
 
-권장 후속 작업:
+아래 권장 작업은 모두 적용했다.
 
 1. 서버 페이지의 `generateMetadata`를 각 `page.tsx`로 이동한다.
 2. Client Component 페이지를 Server `page.tsx`와 Client UI 파일로 분리한다.
@@ -267,6 +267,9 @@ export default function BlogPageClient() {
 5. 공통 OG JSX와 스타일은 재사용 가능한 서버 전용 모듈로 분리한다.
 6. `?id=` 프로젝트 모달 URL은 `projects/page.tsx`에서 계속 처리하거나,
    장기적으로 독립 상세 URL과 Intercepting Routes 구조로 전환한다.
+
+현재는 1~5번과 6번의 `projects/page.tsx` 호환 처리를 완료했다. Intercepting
+Routes 전환은 URL 및 브라우저 탐색 동작을 변경하므로 별도 이슈로 진행한다.
 
 ## 참고 자료
 

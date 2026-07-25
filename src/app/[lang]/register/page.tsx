@@ -1,5 +1,15 @@
 import RegisterForm from '@/components/auth/RegisterForm';
+import { createPageMetadata } from '@/app/lib/og-metadata';
 import Image from 'next/image';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return createPageMetadata({ lang, page: 'register', path: '/register' });
+}
 
 export default function RegisterPage() {
   return (
