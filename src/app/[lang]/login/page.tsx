@@ -1,5 +1,15 @@
 import LoginForm from '@/components/auth/LoginForm';
+import { createPageMetadata } from '@/app/lib/og-metadata';
 import Image from 'next/image';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return createPageMetadata({ lang, page: 'login', path: '/login' });
+}
 
 export default function LoginPage() {
   return (

@@ -1,17 +1,44 @@
 import ProjectsSkeleton from '@/components/projects/ProjectsSkeleton';
+import { createPageMetadata } from '@/app/lib/og-metadata';
+import { getProjectOgData } from '@/app/lib/project-og';
 import { DEFAULT_LOCALE } from '@/constants/locales';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { getDictionary, hasLocale } from '../dictionaries';
 import ProjectsContent from './ProjectsContent';
 
+type ProjectsPageProps = {
+  params?: Promise<{ lang: string }>;
+  searchParams: Promise<{ id?: string }>;
+};
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: ProjectsPageProps) {
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
+  const { id } = await searchParams;
+
+  if (!id) {
+    return createPageMetadata({ lang, page: 'projects', path: '/projects' });
+  }
+
+  const project = await getProjectOgData(id, lang);
+  return createPageMetadata({
+    lang,
+    page: 'project',
+    path: `/projects?id=${encodeURIComponent(id)}`,
+    title: project?.title,
+    description: project?.description,
+    imageParams: { projectId: id },
+  });
+}
+
 export default async function ProjectsPage({
   params,
   searchParams,
-}: {
-  params?: Promise<{ lang: string }>;
-  searchParams: Promise<{ id?: string }>;
-}) {
+}: ProjectsPageProps) {
   const resolvedParams = await params;
   const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) notFound();
