@@ -204,7 +204,13 @@
     "title": "Projects",
     "subtitle": "I introduce projects and the development process.",
     "empty": "No projects have been registered yet.",
-    "details": "View details"
+    "details": "View details",
+    "sort": {
+      "label": "Sort by",
+      "latest": "Newest",
+      "oldest": "Oldest",
+      "name": "Name"
+    }
   },
   "projects_modal": {
     "close": "Close",
