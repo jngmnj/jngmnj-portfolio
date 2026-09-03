@@ -33,6 +33,8 @@ const ProjectList = ({
   useEffect(() => {
     // initialProjectId가 있고 projects가 로드되면 모달 자동 열기
     if (initialProjectId && projects.length > 0) {
+      // Synchronize modal state with the server-provided URL query.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       openModal(initialProjectId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

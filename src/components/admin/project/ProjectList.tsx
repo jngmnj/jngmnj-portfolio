@@ -40,7 +40,9 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
   }, []);
 
   useEffect(() => {
-    fetchProjects();
+    // Fetch remote data when the admin list mounts.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchProjects();
   }, [fetchProjects]);
 
   const handleDelete = async (projectId: string, projectTitle: string) => {
