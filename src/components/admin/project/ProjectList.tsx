@@ -6,6 +6,7 @@ import { ProjectSort, sortProjects } from '@/utils/projectSort';
 import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { LuRefreshCw } from 'react-icons/lu';
 import { useTranslation } from 'react-i18next';
 
 interface ProjectListProps {
@@ -189,8 +190,9 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
             onClick={fetchProjects}
             color="linePrimary"
             size="small"
-            className="min-h-10"
+            className="flex min-h-10 items-center gap-2"
           >
+            <LuRefreshCw aria-hidden="true" className="text-base" />
             목록 새로고침
           </Button>
         </div>
