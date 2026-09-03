@@ -1,7 +1,9 @@
 'use client';
 
 import { FirebaseProject } from '@/types';
-import { useEffect, useState } from 'react';
+import { getProjectSort, ProjectSort, sortProjects } from '@/utils/projectSort';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '@/utils/useLocale';
 import ProjectCard from './ProjectCard';
@@ -23,6 +25,38 @@ const ProjectList = ({
 
   const { t } = useTranslation('common');
   const lang = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const sort = getProjectSort(searchParams.get('sort'));
+
+  const sortedProjects = useMemo(
+    () => sortProjects(projects, sort, lang),
+    [lang, projects, sort]
+  );
+
+  const updateUrl = (params: URLSearchParams) => {
+    const query = params.toString();
+    window.history.replaceState(
+      {},
+      '',
+      query ? `${pathname}?${query}` : pathname
+    );
+  };
+
+  const handleSortChange = (nextSort: ProjectSort) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (nextSort === 'latest') {
+      params.delete('sort');
+    } else {
+      params.set('sort', nextSort);
+    }
+
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  };
 
   const openModal = (id: string) => {
     const project = projects.find((p) => p.id === id);
@@ -44,7 +78,9 @@ const ProjectList = ({
     setIsModalOpen(false);
     setSelectedProject(null);
     // URL에서 query parameter 제거
-    window.history.replaceState({}, '', `/${lang}/projects`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('id');
+    updateUrl(params);
   };
 
   // Empty State
@@ -60,9 +96,25 @@ const ProjectList = ({
 
   return (
     <>
+      <div className="mb-6 flex justify-end">
+        <select
+          id="project-sort"
+          aria-label={t('projects.sort.label')}
+          value={sort}
+          onChange={(event) =>
+            handleSortChange(event.target.value as ProjectSort)
+          }
+          className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 min-w-32 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors focus:ring-2 focus:outline-none"
+        >
+          <option value="latest">{t('projects.sort.latest')}</option>
+          <option value="oldest">{t('projects.sort.oldest')}</option>
+          <option value="name">{t('projects.sort.name')}</option>
+        </select>
+      </div>
+
       {/* Projects Grid */}
       <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {projects.map((project) => (
+        {sortedProjects.map((project) => (
           <ProjectCard
             key={project.id}
             project={project}

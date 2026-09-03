@@ -2,8 +2,11 @@
 
 import Button from '@/components/common/Button';
 import { FirebaseProject } from '@/types';
+import { ProjectSort, sortProjects } from '@/utils/projectSort';
+import { useLocale } from '@/utils/useLocale';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ProjectListProps {
   onEdit: (project: FirebaseProject) => void;
@@ -11,6 +14,7 @@ interface ProjectListProps {
 
 export default function ProjectList({ onEdit }: ProjectListProps) {
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
+  const [sort, setSort] = useState<ProjectSort>('latest');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingProjectId, setDeletingProjectId] = useState<string | null>(
@@ -20,6 +24,12 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
     type: 'success' | 'error';
     text: string;
   } | null>(null);
+  const { t } = useTranslation('common');
+  const lang = useLocale();
+  const sortedProjects = useMemo(
+    () => sortProjects(projects, sort, lang),
+    [lang, projects, sort]
+  );
 
   const fetchProjects = useCallback(async () => {
     setLoading(true);
@@ -157,24 +167,36 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-3 px-1">
+      <div className="flex flex-col gap-3 px-1 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-gray-500">
           총{' '}
           <span className="font-semibold text-gray-900">{projects.length}</span>
           개
         </p>
-        <Button
-          type="button"
-          onClick={fetchProjects}
-          color="linePrimary"
-          size="small"
-          className="min-h-10"
-        >
-          목록 새로고침
-        </Button>
+        <div className="flex items-center gap-2">
+          <select
+            aria-label={t('projects.sort.label')}
+            value={sort}
+            onChange={(event) => setSort(event.target.value as ProjectSort)}
+            className="focus:border-seagull-500 focus:ring-seagull-100 min-h-10 min-w-32 flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition-colors focus:ring-2 focus:outline-none sm:flex-none"
+          >
+            <option value="latest">{t('projects.sort.latest')}</option>
+            <option value="oldest">{t('projects.sort.oldest')}</option>
+            <option value="name">{t('projects.sort.name')}</option>
+          </select>
+          <Button
+            type="button"
+            onClick={fetchProjects}
+            color="linePrimary"
+            size="small"
+            className="min-h-10"
+          >
+            목록 새로고침
+          </Button>
+        </div>
       </div>
 
-      {projects.map((project) => (
+      {sortedProjects.map((project) => (
         <div
           key={project.id}
           className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 sm:flex-row sm:items-center sm:p-5"

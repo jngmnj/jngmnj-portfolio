@@ -204,7 +204,13 @@
     "title": "프로젝트",
     "subtitle": "프로젝트들과 개발과정을 소개합니다.",
     "empty": "아직 등록된 프로젝트가 없습니다.",
-    "details": "자세히 보기"
+    "details": "자세히 보기",
+    "sort": {
+      "label": "정렬",
+      "latest": "최신순",
+      "oldest": "오래된순",
+      "name": "이름순"
+    }
   },
   "projects_modal": {
     "close": "모달 닫기",
