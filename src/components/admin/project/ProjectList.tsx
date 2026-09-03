@@ -179,7 +179,7 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
             aria-label={t('projects.sort.label')}
             value={sort}
             onChange={(event) => setSort(event.target.value as ProjectSort)}
-            className="focus:border-seagull-500 focus:ring-seagull-100 min-h-10 min-w-32 flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition-colors focus:ring-2 focus:outline-none sm:flex-none"
+            className="focus:border-seagull-500 focus:ring-seagull-100 min-h-10 min-w-32 flex-1 rounded border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition-colors focus:ring-2 focus:outline-none sm:flex-none"
           >
             <option value="latest">{t('projects.sort.latest')}</option>
             <option value="oldest">{t('projects.sort.oldest')}</option>
