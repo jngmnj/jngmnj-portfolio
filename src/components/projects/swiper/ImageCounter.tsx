@@ -16,20 +16,25 @@ export default function ImageCounter({
   totalImages,
   className = '',
 }: ImageCounterProps) {
-  const [displayIndex, setDisplayIndex] = useState(currentIndex + 1);
-
-  useEffect(() => {
-    setDisplayIndex(currentIndex + 1);
-  }, [currentIndex]);
+  const [slideState, setSlideState] = useState<{
+    instance: SwiperType;
+    index: number;
+  } | null>(null);
+  const displayIndex =
+    slideState?.instance === swiperInstance
+      ? slideState.index
+      : (swiperInstance?.realIndex ?? currentIndex) + 1;
 
   useEffect(() => {
     if (!swiperInstance) return;
 
     const updateIndex = () => {
-      setDisplayIndex(swiperInstance.realIndex + 1);
+      setSlideState({
+        instance: swiperInstance,
+        index: swiperInstance.realIndex + 1,
+      });
     };
 
-    updateIndex();
     swiperInstance.on('slideChange', updateIndex);
     swiperInstance.on('realIndexChange', updateIndex);
 

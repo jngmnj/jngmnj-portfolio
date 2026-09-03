@@ -14,10 +14,6 @@ export default function RecentProjectsSection() {
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
   const fetchProjects = async () => {
     try {
       const response = await fetch('/api/projects');
@@ -38,6 +34,12 @@ export default function RecentProjectsSection() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Fetch remote data when the home section mounts.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchProjects();
+  }, []);
 
   if (loading) {
     return (
