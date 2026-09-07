@@ -58,7 +58,10 @@ const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
     >
       {/* Project Image */}
       <div className="relative m-2 aspect-video overflow-hidden rounded-2xl bg-gray-100">
-        <motion.div className="size-full" transition={{ duration: 0.3 }}>
+        <motion.div
+          className="relative size-full"
+          transition={{ duration: 0.3 }}
+        >
           <Image
             src={imageSrc}
             alt={title}
