@@ -35,25 +35,25 @@ export default function ProjectTechStack({ techStack }: ProjectTechStackProps) {
 
   return (
     <motion.div
-      className="mb-8"
+      className=""
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.7 }}
     >
-      <h2 className="mb-4 text-2xl font-bold text-gray-900">
+      <h2 className="mb-4 text-xl font-semibold text-gray-950">
         {t('projects_modal.tech_stack')}
       </h2>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {Object.entries(techStack).map(([category, techs]) => (
-          <div key={category} className="rounded-lg bg-gray-50 p-4">
-            <h3 className="mb-2 font-semibold text-gray-900 capitalize">
+          <div key={category} className="rounded-3xl bg-gray-50 p-5">
+            <h3 className="mb-3 text-sm font-semibold text-gray-950 capitalize">
               {categoryLabels[category] || category}
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {techs?.map((tech, index) => (
                 <span
                   key={index}
-                  className="bg-seagull-100 text-seagull-800 rounded-full px-3 py-1 text-sm font-medium"
+                  className="rounded-lg bg-white px-2 py-1 text-xs font-medium text-gray-500"
                 >
                   {tech}
                 </span>

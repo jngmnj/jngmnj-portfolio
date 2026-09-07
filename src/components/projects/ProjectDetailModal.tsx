@@ -93,30 +93,30 @@ export default function ProjectDetailModal({
           transition={{ duration: 0.2 }}
         >
           <motion.div
-            className="fixed top-0 left-0 z-60 size-full cursor-pointer bg-black/50"
+            className="fixed top-0 left-0 z-60 size-full cursor-pointer bg-gray-950/45 backdrop-blur-sm"
             onClick={handleBackdropClick}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
-          <div className="fixed top-1/2 left-1/2 z-70 max-h-[95vh] w-[95vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl">
+          <div className="fixed top-1/2 left-1/2 z-70 max-h-[92vh] w-[94vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl">
             <motion.div
               ref={modalRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-title"
               aria-describedby="modal-description"
-              className="relative bg-white shadow-2xl"
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              className="relative border border-gray-200 bg-white shadow-xl shadow-gray-950/10"
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              exit={{ opacity: 0, scale: 0.96, y: 20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button - 고정 */}
               <motion.button
                 ref={closeButtonRef}
-                className="absolute top-4 right-4 z-10 cursor-pointer rounded-full bg-white/90 p-2 shadow-md transition-colors hover:bg-gray-100"
+                className="focus-visible:ring-seagull-200 absolute top-4 right-4 z-10 inline-flex size-10 cursor-pointer items-center justify-center rounded-2xl bg-white/90 text-gray-500 shadow-sm ring-1 ring-gray-200 backdrop-blur transition-colors hover:bg-gray-50 hover:text-gray-900 focus-visible:ring-2 focus-visible:outline-none"
                 onClick={closeModal}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -126,46 +126,39 @@ export default function ProjectDetailModal({
               </motion.button>
 
               {/* Project Content - 전체 스크롤 */}
-              <div className="max-h-[95vh] overflow-y-auto">
+              <div className="max-h-[92vh] overflow-y-auto">
                 {/* Project Header */}
-                <div className="relative h-80 w-full overflow-hidden">
+                <div className="relative m-2 h-72 overflow-hidden rounded-3xl sm:h-80">
                   <Image
-                    src={project.image}
+                    src={project.image || '/images/common/img_user.png'}
                     alt={title}
                     fill
                     className="object-cover"
                     priority
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
-
-                  {/* Category Badge */}
-                  <motion.div
-                    className="absolute top-4 left-4"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <span className="rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-gray-700">
-                      {project.category}
-                    </span>
-                  </motion.div>
+                  <div className="absolute inset-0 bg-linear-to-t from-gray-950/75 via-gray-950/20 to-transparent" />
 
                   {/* Project Title */}
                   <motion.div
-                    className="absolute right-6 bottom-6 left-6"
+                    className="absolute right-5 bottom-5 left-5 sm:right-8 sm:bottom-8 sm:left-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                   >
                     <h1
                       id="modal-title"
-                      className="mb-2 text-3xl font-bold text-white"
+                      className="mb-3 max-w-4xl text-3xl leading-tight font-semibold text-white sm:text-4xl"
                     >
                       {title}
                     </h1>
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="rounded-xl bg-white/15 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-white/80 uppercase backdrop-blur">
+                        {project.category}
+                      </span>
+                    </div>
                     <p
                       id="modal-description"
-                      className="text-lg leading-relaxed text-white/90"
+                      className="max-w-3xl text-base leading-relaxed text-white/85 sm:text-lg"
                     >
                       {description}
                     </p>
@@ -173,19 +166,19 @@ export default function ProjectDetailModal({
                 </div>
 
                 {/* Project Content */}
-                <div className="p-8">
+                <div className="space-y-10 px-5 pt-6 pb-8 sm:px-8">
                   {/* Overview Section */}
                   {overview && (
                     <motion.div
-                      className="mb-8"
+                      className="rounded-3xl bg-gray-50 p-5 sm:p-6"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                      <h2 className="mb-3 text-xl font-semibold text-gray-950">
                         {t('projects_modal.overview')}
                       </h2>
-                      <p className="text-lg leading-relaxed text-gray-600">
+                      <p className="text-base leading-8 text-gray-600">
                         {overview}
                       </p>
                     </motion.div>
@@ -194,26 +187,26 @@ export default function ProjectDetailModal({
                   {/* Features Section */}
                   {features.length > 0 && (
                     <motion.div
-                      className="mb-8"
+                      className="rounded-3xl border border-gray-200 p-5 sm:p-6"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                      <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                      <h2 className="mb-4 text-xl font-semibold text-gray-950">
                         {t('projects_modal.features')}
                       </h2>
-                      <div className="grid gap-3">
+                      <div className="grid gap-3 sm:grid-cols-2">
                         {features.map((feature, index) => (
                           <motion.div
                             key={index}
-                            className="flex items-start gap-3"
+                            className="flex items-start gap-3 rounded-2xl bg-gray-50 px-4 py-3"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.6 + index * 0.1 }}
                           >
-                            <div className="bg-seagull-500 mt-2 h-2 w-2 shrink-0 rounded-full" />
+                            <div className="bg-seagull-500 mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
                             <span
-                              className="text-gray-600"
+                              className="text-sm leading-6 text-gray-600"
                               dangerouslySetInnerHTML={{
                                 __html: feature.replace(
                                   /\*\*(.*?)\*\*/g,
@@ -237,42 +230,42 @@ export default function ProjectDetailModal({
                   {/* Project Info Grid */}
                   {project.detail && (
                     <motion.div
-                      className="mb-8"
+                      className=""
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.8 }}
                     >
-                      <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                      <h2 className="mb-4 text-xl font-semibold text-gray-950">
                         {t('projects_modal.info')}
                       </h2>
                       <div className="grid gap-6 md:grid-cols-2">
                         {/* Timeline */}
-                        <div className="rounded-lg bg-gray-50 p-4">
-                          <h3 className="mb-3 font-semibold text-gray-900">
+                        <div className="rounded-3xl bg-gray-50 p-5">
+                          <h3 className="mb-4 text-base font-semibold text-gray-950">
                             {t('projects_modal.timeline')}
                           </h3>
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between gap-4">
+                              <span className="text-sm text-gray-500">
                                 {t('projects_modal.start')}
                               </span>
-                              <span className="font-medium">
+                              <span className="text-sm font-semibold text-gray-800">
                                 {project.detail?.timeline?.startDate || '-'}
                               </span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">
+                            <div className="flex items-center justify-between gap-4">
+                              <span className="text-sm text-gray-500">
                                 {t('projects_modal.end')}
                               </span>
-                              <span className="font-medium">
+                              <span className="text-sm font-semibold text-gray-800">
                                 {project.detail?.timeline?.endDate || '-'}
                               </span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">
+                            <div className="flex items-center justify-between gap-4">
+                              <span className="text-sm text-gray-500">
                                 {t('projects_modal.duration')}
                               </span>
-                              <span className="font-medium">
+                              <span className="text-sm font-semibold text-gray-800">
                                 {project.detail?.timeline?.duration || '-'}
                               </span>
                             </div>
@@ -280,45 +273,47 @@ export default function ProjectDetailModal({
                         </div>
 
                         {/* Team Info */}
-                        <div className="rounded-lg bg-gray-50 p-4">
-                          <h3 className="mb-3 font-semibold text-gray-900">
+                        <div className="rounded-3xl bg-gray-50 p-5">
+                          <h3 className="mb-4 text-base font-semibold text-gray-950">
                             {t('projects_modal.team_info')}
                           </h3>
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between gap-4">
+                              <span className="text-sm text-gray-500">
                                 {t('projects_modal.team_size')}:
                               </span>
-                              <span className="font-medium">
+                              <span className="text-sm font-semibold text-gray-800">
                                 {project.detail?.team?.size || 1}{' '}
                                 {t('projects_modal.team_unit')}
                               </span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">역할:</span>
-                              <span className="font-medium">
+                            <div className="flex items-center justify-between gap-4">
+                              <span className="text-sm text-gray-500">
+                                {t('projects_modal.role')}:
+                              </span>
+                              <span className="text-right text-sm font-semibold text-gray-800">
                                 {role || '-'}
                               </span>
                             </div>
                           </div>
                           {responsibilities.length > 0 && (
-                              <div className="mt-3 border-t border-gray-200 pt-3">
-                                <h4 className="mb-2 text-sm font-semibold text-gray-700">
-                                  {t('projects_modal.responsibilities')}
-                                </h4>
-                                <ul className="space-y-1">
-                                  {responsibilities.map((resp, index) => (
-                                    <li
-                                      key={index}
-                                      className="flex items-start gap-2 text-sm text-gray-600"
-                                    >
-                                      <span className="bg-seagull-500 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
-                                      {resp}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
+                            <div className="mt-4 border-t border-gray-200 pt-4">
+                              <h4 className="mb-2 text-sm font-semibold text-gray-700">
+                                {t('projects_modal.responsibilities')}
+                              </h4>
+                              <ul className="space-y-2">
+                                {responsibilities.map((resp, index) => (
+                                  <li
+                                    key={index}
+                                    className="flex items-start gap-2 text-sm leading-6 text-gray-600"
+                                  >
+                                    <span className="bg-seagull-500 mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
+                                    {resp}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -328,12 +323,12 @@ export default function ProjectDetailModal({
                   {project.detail?.images &&
                     project.detail.images.length > 0 && (
                       <motion.div
-                        className="mb-8"
+                        className=""
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.85 }}
                       >
-                        <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                        <h2 className="mb-4 text-xl font-semibold text-gray-950">
                           {t('projects_modal.images')}
                         </h2>
                         <ProjectImageSlider
@@ -348,63 +343,69 @@ export default function ProjectDetailModal({
                     )}
 
                   {/* Challenges & Results */}
-                  {project.detail && (
-                    <div className="mb-8 grid gap-8 md:grid-cols-2">
+                  {(challenges.length > 0 || results.length > 0) && (
+                    <div className="grid gap-6 md:grid-cols-2">
                       {/* Challenges */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.9 }}
-                      >
-                        <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                          {t('projects_modal.challenges')}
-                        </h2>
-                        <div className="space-y-3">
-                          {challenges.map((challenge, index) => (
-                            <motion.div
-                              key={index}
-                              className="flex items-start gap-3"
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 1.0 + index * 0.1 }}
-                            >
-                              <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-orange-500" />
-                              <span className="text-gray-600">{challenge}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
+                      {challenges.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.9 }}
+                        >
+                          <h2 className="mb-4 text-xl font-semibold text-gray-950">
+                            {t('projects_modal.challenges')}
+                          </h2>
+                          <div className="space-y-2 rounded-3xl bg-gray-50 p-5">
+                            {challenges.map((challenge, index) => (
+                              <motion.div
+                                key={index}
+                                className="flex items-start gap-3 text-sm leading-6"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 1.0 + index * 0.1 }}
+                              >
+                                <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400" />
+                                <span className="text-gray-600">
+                                  {challenge}
+                                </span>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
 
                       {/* Results */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.1 }}
-                      >
-                        <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                          {t('projects_modal.results')}
-                        </h2>
-                        <div className="space-y-3">
-                          {results.map((result, index) => (
-                            <motion.div
-                              key={index}
-                              className="flex items-start gap-3"
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 1.2 + index * 0.1 }}
-                            >
-                              <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-green-500" />
-                              <span className="text-gray-600">{result}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
+                      {results.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.1 }}
+                        >
+                          <h2 className="mb-4 text-xl font-semibold text-gray-950">
+                            {t('projects_modal.results')}
+                          </h2>
+                          <div className="space-y-2 rounded-3xl bg-gray-50 p-5">
+                            {results.map((result, index) => (
+                              <motion.div
+                                key={index}
+                                className="flex items-start gap-3 text-sm leading-6"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 1.2 + index * 0.1 }}
+                              >
+                                <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green-400" />
+                                <span className="text-gray-600">{result}</span>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
                     </div>
                   )}
 
                   {/* Project Links */}
                   <motion.div
-                    className="flex flex-wrap gap-4"
+                    className="flex flex-wrap gap-3 border-t border-gray-100 pt-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.3 }}
@@ -413,7 +414,7 @@ export default function ProjectDetailModal({
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-white transition-colors hover:bg-gray-800"
+                      className="inline-flex min-h-11 items-center gap-2 rounded-2xl bg-gray-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800 focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:outline-none"
                     >
                       <FaGithub className="text-lg" />
                       <span>{t('projects_modal.github')}</span>
@@ -423,7 +424,7 @@ export default function ProjectDetailModal({
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-seagull-500 hover:bg-seagull-600 flex items-center gap-2 rounded-lg px-6 py-3 text-white transition-colors"
+                        className="bg-seagull-500 hover:bg-seagull-600 focus-visible:ring-seagull-200 inline-flex min-h-11 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:ring-2 focus-visible:outline-none"
                       >
                         <FaExternalLinkAlt className="text-lg" />
                         <span>{t('projects_modal.live')}</span>

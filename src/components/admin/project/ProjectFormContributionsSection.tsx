@@ -130,49 +130,72 @@ export default function ProjectFormContributionsSection() {
   };
 
   return (
-    <div>
-      <label className="mb-2 block text-sm font-medium">Contributions</label>
-      <div className="space-y-4">
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Input
-            type="text"
-            value={titleInput}
-            onChange={(e) => setTitleInput(e.target.value)}
-            placeholder="기여 섹션 제목 입력"
-            className="flex-1"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                addContribution();
-              }
-            }}
-          />
-          <Input
-            type="text"
-            value={titleEnInput}
-            onChange={(e) => setTitleEnInput(e.target.value)}
-            placeholder="Contribution section title"
-            className="flex-1"
-          />
+    <div className="space-y-5">
+      <div className="rounded-xl bg-gray-50 p-4">
+        <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
+          <label className="block">
+            <span className="mb-2 block text-xs font-semibold text-gray-600">
+              기여 주제
+            </span>
+            <Input
+              type="text"
+              value={titleInput}
+              onChange={(e) => setTitleInput(e.target.value)}
+              placeholder="예: 성능 최적화"
+              className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 bg-white focus:ring-2 focus:outline-none"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addContribution();
+                }
+              }}
+            />
+          </label>
+          <label className="block">
+            <span className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-gray-600">
+              Contribution title
+              <span className="rounded bg-white px-1 py-0.5 text-[9px] font-bold tracking-wide text-gray-500">
+                EN
+              </span>
+            </span>
+            <Input
+              type="text"
+              value={titleEnInput}
+              onChange={(e) => setTitleEnInput(e.target.value)}
+              placeholder="Performance optimization"
+              className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 bg-white focus:ring-2 focus:outline-none"
+            />
+          </label>
           <Button
             type="button"
             onClick={addContribution}
-            className="w-full sm:w-auto"
+            color="secondary"
+            className="min-h-11 w-full lg:w-auto"
           >
-            섹션 추가
+            주제 추가
           </Button>
         </div>
+      </div>
 
-        {contributions.map(
-          (
-            contribution: Contribution,
-            index: number
-          ) => (
-            <div
-              key={index}
-              className="space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-4"
-            >
-              <div className="flex items-center gap-2">
+      {contributions.length === 0 && (
+        <div className="rounded-xl border border-dashed border-gray-300 px-4 py-7 text-center">
+          <p className="text-sm break-keep text-gray-500">
+            등록된 기여 내용이 없습니다. 먼저 기여 주제를 추가해 주세요.
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {contributions.map((contribution: Contribution, index: number) => (
+          <div
+            key={index}
+            className="space-y-4 rounded-xl border border-gray-200 p-4 sm:p-5"
+          >
+            <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
+              <label className="block">
+                <span className="mb-1.5 block text-xs font-semibold text-gray-600">
+                  기여 주제 {index + 1}
+                </span>
                 <Input
                   type="text"
                   value={contribution.title}
@@ -180,8 +203,16 @@ export default function ProjectFormContributionsSection() {
                     updateContributionTitle(index, 'title', e.target.value)
                   }
                   placeholder="섹션 제목"
-                  className="flex-1"
+                  className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 focus:ring-2 focus:outline-none"
                 />
+              </label>
+              <label className="block">
+                <span className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-gray-600">
+                  Contribution title
+                  <span className="rounded bg-gray-100 px-1 py-0.5 text-[9px] font-bold tracking-wide text-gray-500">
+                    EN
+                  </span>
+                </span>
                 <Input
                   type="text"
                   value={contribution.titleEn ?? ''}
@@ -189,130 +220,152 @@ export default function ProjectFormContributionsSection() {
                     updateContributionTitle(index, 'titleEn', e.target.value)
                   }
                   placeholder="Section title (English)"
-                  className="flex-1"
+                  className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 focus:ring-2 focus:outline-none"
                 />
-                <Button
-                  type="button"
-                  onClick={() => removeContribution(index)}
-                  className="bg-red-500 hover:bg-red-600"
+              </label>
+              <Button
+                type="button"
+                onClick={() => removeContribution(index)}
+                color="danger"
+                className="min-h-11 w-full lg:w-auto"
+              >
+                주제 삭제
+              </Button>
+            </div>
+
+            <div className="space-y-3 border-t border-gray-100 pt-4">
+              <p className="text-sm font-semibold text-gray-800">세부 내용</p>
+              {contribution.details?.map((detail, detailIndex) => (
+                <div
+                  key={detailIndex}
+                  className="flex flex-col gap-3 rounded-xl bg-gray-50 p-3 sm:flex-row sm:items-start"
                 >
-                  섹션 삭제
-                </Button>
-              </div>
-
-              <div className="space-y-2 rounded bg-white p-3">
-                <label className="text-xs font-medium text-gray-600">
-                  상세 내용
-                </label>
-                {contribution.details?.map((detail, detailIndex) => (
-                  <div key={detailIndex} className="flex items-start gap-2">
-                    <div className="flex-1 space-y-1">
-                      <span className="text-sm text-gray-700">
-                        {detail.text}
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <span className="block text-sm leading-6 break-words text-gray-700">
+                      {detail.text}
+                    </span>
+                    {detail.textEn && (
+                      <span className="block text-sm leading-6 break-words text-gray-500">
+                        {detail.textEn}
                       </span>
-                      {detail.textEn && (
-                        <span className="block text-sm text-gray-500">
-                          {detail.textEn}
-                        </span>
-                      )}
-                      {detail.link && (
-                        <span className="text-xs text-blue-600">
-                          ({detail.linkText || detail.link}
-                          {detail.linkTextEn ? ` / ${detail.linkTextEn}` : ''})
-                        </span>
-                      )}
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={() =>
-                        removeContributionDetail(index, detailIndex)
-                      }
-                      className="h-auto bg-red-500 px-2 py-1 text-xs hover:bg-red-600"
-                    >
-                      삭제
-                    </Button>
-                  </div>
-                ))}
-
-                <div className="mt-2 space-y-2 border-t pt-2">
-                  <Input
-                    type="text"
-                    value={detailInputs[index]?.text ?? ''}
-                    onChange={(e) =>
-                      updateContributionDetailInput(
-                        index,
-                        'text',
-                        e.target.value
-                      )
-                    }
-                    placeholder="내용 입력"
-                  />
-                  <Input
-                    type="text"
-                    value={detailInputs[index]?.textEn ?? ''}
-                    onChange={(e) =>
-                      updateContributionDetailInput(
-                        index,
-                        'textEn',
-                        e.target.value
-                      )
-                    }
-                    placeholder="Detail text in English"
-                  />
-                  <div className="flex gap-2">
-                    <Input
-                      type="url"
-                      value={detailInputs[index]?.link ?? ''}
-                      onChange={(e) =>
-                        updateContributionDetailInput(
-                          index,
-                          'link',
-                          e.target.value
-                        )
-                      }
-                      placeholder="링크 (선택)"
-                      className="flex-1"
-                    />
-                    <Input
-                      type="text"
-                      value={detailInputs[index]?.linkText ?? ''}
-                      onChange={(e) =>
-                        updateContributionDetailInput(
-                          index,
-                          'linkText',
-                          e.target.value
-                        )
-                      }
-                      placeholder="링크 텍스트"
-                      className="flex-1"
-                    />
-                    <Input
-                      type="text"
-                      value={detailInputs[index]?.linkTextEn ?? ''}
-                      onChange={(e) =>
-                        updateContributionDetailInput(
-                          index,
-                          'linkTextEn',
-                          e.target.value
-                        )
-                      }
-                      placeholder="Link text (English)"
-                      className="flex-1"
-                    />
+                    )}
+                    {detail.link && (
+                      <span className="text-seagull-700 block text-xs break-all">
+                        ({detail.linkText || detail.link}
+                        {detail.linkTextEn ? ` / ${detail.linkTextEn}` : ''})
+                      </span>
+                    )}
                   </div>
                   <Button
                     type="button"
-                    onClick={() => addContributionDetail(index)}
-                    className="w-full text-sm"
+                    onClick={() => removeContributionDetail(index, detailIndex)}
+                    color="danger"
+                    className="min-h-9 w-full px-3 py-1.5 text-xs sm:w-auto"
                   >
-                    상세 내용 추가
+                    삭제
                   </Button>
                 </div>
+              ))}
+
+              <div className="mt-2 space-y-4 rounded-xl bg-gray-50 p-3 sm:p-4">
+                <div className="grid gap-3 lg:grid-cols-2">
+                  <ContributionInput
+                    label="세부 내용"
+                    value={detailInputs[index]?.text ?? ''}
+                    onChange={(value) =>
+                      updateContributionDetailInput(index, 'text', value)
+                    }
+                    placeholder="구체적으로 기여한 내용을 입력하세요"
+                  />
+                  <ContributionInput
+                    label="Detail"
+                    language="en"
+                    value={detailInputs[index]?.textEn ?? ''}
+                    onChange={(value) =>
+                      updateContributionDetailInput(index, 'textEn', value)
+                    }
+                    placeholder="Describe your contribution in English"
+                  />
+                </div>
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  <ContributionInput
+                    label="관련 링크"
+                    type="url"
+                    value={detailInputs[index]?.link ?? ''}
+                    onChange={(value) =>
+                      updateContributionDetailInput(index, 'link', value)
+                    }
+                    placeholder="https://..."
+                  />
+                  <ContributionInput
+                    label="링크 이름"
+                    value={detailInputs[index]?.linkText ?? ''}
+                    onChange={(value) =>
+                      updateContributionDetailInput(index, 'linkText', value)
+                    }
+                    placeholder="예: 관련 PR 보기"
+                  />
+                  <ContributionInput
+                    label="Link label"
+                    language="en"
+                    value={detailInputs[index]?.linkTextEn ?? ''}
+                    onChange={(value) =>
+                      updateContributionDetailInput(index, 'linkTextEn', value)
+                    }
+                    placeholder="View pull request"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => addContributionDetail(index)}
+                  color="secondary"
+                  className="min-h-11 w-full text-sm sm:w-auto"
+                >
+                  세부 내용 추가
+                </Button>
               </div>
             </div>
-          )
-        )}
+          </div>
+        ))}
       </div>
     </div>
+  );
+}
+
+interface ContributionInputProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  type?: 'text' | 'url';
+  language?: 'ko' | 'en';
+}
+
+function ContributionInput({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = 'text',
+  language = 'ko',
+}: ContributionInputProps) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-gray-600">
+        {label}
+        {language === 'en' && (
+          <span className="rounded bg-white px-1 py-0.5 text-[9px] font-bold tracking-wide text-gray-500">
+            EN
+          </span>
+        )}
+      </span>
+      <Input
+        type={type}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 bg-white focus:ring-2 focus:outline-none"
+      />
+    </label>
   );
 }

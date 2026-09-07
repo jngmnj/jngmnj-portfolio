@@ -1,4 +1,5 @@
 import ContactForm from '@/components/contact/ContactForm';
+import { createPageMetadata } from '@/app/lib/og-metadata';
 import { DEFAULT_LOCALE } from '@/constants/locales';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -6,6 +7,15 @@ import { HiLocationMarker } from 'react-icons/hi';
 import { MdEmail } from 'react-icons/md';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { getDictionary, hasLocale } from '../dictionaries';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return createPageMetadata({ lang, page: 'contact', path: '/contact' });
+}
 
 export default async function ContactPage({
   params,

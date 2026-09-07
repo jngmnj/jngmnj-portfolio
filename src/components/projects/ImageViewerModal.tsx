@@ -81,13 +81,13 @@ export default function ImageViewerModal({
           </h2>
           {/* Close Button */}
           <motion.button
-            className="absolute top-4 right-4 z-20 cursor-pointer rounded-full bg-white/90 p-3 shadow-lg transition-all hover:bg-white hover:shadow-xl"
+            className="absolute top-5 right-5 z-20 flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl border border-white/34 bg-white/24 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.28),0_14px_40px_rgba(15,23,42,0.24)] backdrop-blur-xl transition-all hover:border-white/42 hover:bg-white/30 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 focus-visible:outline-none sm:top-6 sm:right-6"
             onClick={onClose}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
             aria-label="이미지 뷰어 닫기"
           >
-            <RiCloseLine className="text-2xl text-gray-700" />
+            <RiCloseLine className="text-2xl" />
           </motion.button>
 
           {/* Image Slider */}
@@ -106,19 +106,19 @@ export default function ImageViewerModal({
                 spaceBetween={20}
                 imageClassName="object-contain"
                 mode="viewer"
+                showPagination={false}
                 singleImageHeight="h-full max-h-[90vh]"
                 containerClassName="h-full w-full"
               />
-
-              {/* Navigation Buttons (only for multiple images) */}
-              {images.length > 1 && (
-                <SwiperNavigationButtons
-                  prevButtonId="viewer-prev"
-                  nextButtonId="viewer-next"
-                  variant="viewer"
-                />
-              )}
             </div>
+            {/* Navigation Buttons (only for multiple images) */}
+            {images.length > 1 && (
+              <SwiperNavigationButtons
+                prevButtonId="viewer-prev"
+                nextButtonId="viewer-next"
+                variant="viewer"
+              />
+            )}
           </div>
 
           {/* Image Counter */}

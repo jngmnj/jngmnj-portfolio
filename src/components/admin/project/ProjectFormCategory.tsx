@@ -11,14 +11,16 @@ export default function ProjectFormCategory() {
 
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium">
-        카테고리 <span className="text-red-500">*</span>
+      <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-800">
+        <span>카테고리</span>
+        <span className="text-xs font-medium text-red-600">필수</span>
       </label>
       <select
         {...register('category', {
           required: '카테고리를 선택해주세요.',
         })}
-        className="focus:border-seagull-500 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none"
+        aria-invalid={Boolean(errors.category)}
+        className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 w-full rounded-xl border border-gray-300 bg-white px-4 py-2 focus:ring-2 focus:outline-none"
       >
         {PROJECT_CATEGORIES.map((category) => (
           <option key={category} value={category}>
@@ -27,7 +29,7 @@ export default function ProjectFormCategory() {
         ))}
       </select>
       {errors.category && (
-        <p className="mt-1 text-xs text-red-500">
+        <p className="mt-1.5 text-xs font-medium text-red-600" role="alert">
           {String(errors.category?.message)}
         </p>
       )}

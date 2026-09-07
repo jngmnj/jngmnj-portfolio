@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE } from '@/constants/locales';
+import { createPageMetadata } from '@/app/lib/og-metadata';
 import Link from 'next/link';
 import {
   GoHeart,
@@ -10,6 +11,15 @@ import {
 
 const cardClass =
   'rounded-lg border border-gray-200 bg-white p-6 shadow transition hover:shadow-lg block';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return createPageMetadata({ lang, page: 'admin', path: '/admin' });
+}
 
 export default async function AdminPage({
   params,
