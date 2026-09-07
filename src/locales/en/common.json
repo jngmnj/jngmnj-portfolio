@@ -16,6 +16,9 @@
     "subtitle": "As a frontend engineer, UI/UX designer, and planner, I constantly strive to build products that deliver a better user experience.",
     "hero": {
       "eyebrow": "Frontend · UI/UX · Product",
+      "headlineLine1": "Building products with",
+      "headlineLine2": "a better experience",
+      "capabilityLabel": "And also",
       "subtitleLine1": "As a frontend engineer, UI/UX designer, and planner,",
       "subtitleLine2": "I constantly strive to build products that deliver a better user experience.",
       "viewProjects": "View Projects",
@@ -71,7 +74,141 @@
       "title": "Let’s Work Together",
       "line1": "I’m open to new opportunities!",
       "line2": "I look forward to hearing from you.",
-      "button": "Contact Me"
+      "button": "Contact Me",
+      "status": "Open to new opportunities",
+      "points": [
+        "Full-time or contract roles",
+        "Project-based collaboration",
+        "Questions about my work or background"
+      ],
+      "emailButton": "Send an email",
+      "emailLabel": "or reach me directly"
+    },
+    "capabilityStrip": {
+      "title": "Planning, design, and engineering handled as one flow",
+      "items": [
+        "Frontend Development",
+        "UI/UX Design",
+        "Publishing",
+        "Database",
+        "SEO"
+      ]
+    },
+    "whatIDo": {
+      "eyebrow": "What I Do",
+      "title": "Not just one screen — the whole way it gets built",
+      "primaryCta": "View Projects",
+      "secondaryCta": "Let's work together",
+      "items": [
+        {
+          "label": "Frontend Engineering",
+          "headlineLine1": "Building screens is",
+          "headlineLine2": "where I start, not stop",
+          "descriptionLine1": "I set the rules with types, cut repetition with components, and check performance as I go.",
+          "descriptionLine2": "The bar is simple: leave code the next person can pick up and change.",
+          "highlights": [
+            "React · Next.js",
+            "TypeScript typing",
+            "Responsive · a11y",
+            "Performance · SEO"
+          ]
+        },
+        {
+          "label": "UI/UX Design",
+          "headlineLine1": "I do not just receive",
+          "headlineLine2": "designs — I shape them",
+          "descriptionLine1": "With color, spacing, and states captured as tokens, the rules hold as screens multiply.",
+          "descriptionLine2": "It gives designers and engineers one shared language to work from.",
+          "highlights": [
+            "Figma design system",
+            "Component states",
+            "Korean readability",
+            "Design QA"
+          ]
+        },
+        {
+          "label": "Plan to Deploy",
+          "headlineLine1": "From planning to release,",
+          "headlineLine2": "I run the full cycle",
+          "descriptionLine1": "It starts with what and why, and ends only after checking whether it is actually used.",
+          "descriptionLine2": "The less that has to be handed off midway, the faster decisions land.",
+          "highlights": [
+            "Requirements",
+            "API design",
+            "Firebase · deploy",
+            "Post-launch care"
+          ],
+          "pipelineSteps": [
+            "Planning",
+            "Design system",
+            "Build · review",
+            "Deploy"
+          ]
+        }
+      ]
+    },
+    "career": {
+      "eyebrow": "Career",
+      "title": "The path so far",
+      "subtitle": "Started in design and publishing, then grew into engineering. The full record lives on the about page.",
+      "button": "See full history",
+      "items": [
+        {
+          "period": "2024.03 – Present",
+          "role": "BS, Computer Science",
+          "org": "Korea National Open University",
+          "type": "Education"
+        },
+        {
+          "period": "2025.03 – 2025.08",
+          "role": "Frontend Developer Bootcamp",
+          "org": "Oz Coding School",
+          "type": "Education"
+        },
+        {
+          "period": "2023.01 – 2025.03",
+          "role": "UI/UX Designer · Publisher",
+          "org": "Coresoft",
+          "type": "Career"
+        },
+        {
+          "period": "2021.10 – 2022.12",
+          "role": "UI/UX Designer · Publisher",
+          "org": "KNL Information Systems",
+          "type": "Career"
+        }
+      ]
+    },
+    "process": {
+      "eyebrow": "How I Work",
+      "title": "How the work actually goes",
+      "subtitle": "Rather than transcribing a request, I first align on the problem it is meant to solve.",
+      "items": [
+        {
+          "step": "Step 1",
+          "title": "Agree on the problem",
+          "desc": "What we are building, why, and how we will know it worked.",
+          "output": "Problem statement · success criteria"
+        },
+        {
+          "step": "Step 2",
+          "title": "Set the rules",
+          "desc": "Color, spacing, and component states become tokens so the system holds as it grows.",
+          "output": "Design tokens · component list"
+        },
+        {
+          "step": "Step 3",
+          "title": "Build in small pieces",
+          "desc": "Split into reviewable units instead of shipping everything at once.",
+          "output": "Reviewed PRs · verified behavior"
+        },
+        {
+          "step": "Step 4",
+          "title": "Ship, then refine",
+          "desc": "Release is not the end — watch the real flow and fix what catches.",
+          "output": "Release · follow-up issues"
+        }
+      ]
     }
   },
   "about": {
