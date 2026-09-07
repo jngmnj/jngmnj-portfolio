@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: PostProps) {
   });
 }
 
-export default function BlogDetailPage({ params }: PostProps) {
-  return <BlogDetailClient params={params} />;
+export default async function BlogDetailPage({ params }: PostProps) {
+  const { id } = await params;
+  return <BlogDetailClient key={id} params={params} />;
 }
