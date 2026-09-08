@@ -4,17 +4,21 @@ import en from '@/locales/en/common.json';
 import ko from '@/locales/ko/common.json';
 import { useLocale } from '@/utils/useLocale';
 import Link from 'next/link';
+import type { Locale } from '@/constants/locales';
 
 type ErrorStateProps = {
   kind?: 'notFound' | 'postNotFound' | 'unexpected';
   reset?: () => void;
+  locale?: Locale;
 };
 
 export default function ErrorState({
   kind = 'unexpected',
   reset,
+  locale,
 }: ErrorStateProps) {
-  const lang = useLocale();
+  const routeLang = useLocale();
+  const lang = locale ?? routeLang;
   // Error boundaries must also work when the translation provider fails.
   const dict = lang === 'en' ? en : ko;
   const copy = kind === 'notFound' ? dict.notFound : dict.errors[kind];
