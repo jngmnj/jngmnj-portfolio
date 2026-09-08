@@ -2,6 +2,7 @@ import { renderOgImage } from '@/app/lib/og-image';
 import { getOgPageCopy, type OgPage } from '@/app/lib/og-metadata';
 import { getPostOgData } from '@/app/lib/post-og';
 import { getProjectOgData } from '@/app/lib/project-og';
+import { INTERNAL_BLOG_ENABLED } from '@/constants/features';
 
 export const runtime = 'nodejs';
 
@@ -33,7 +34,10 @@ export async function GET(request: Request) {
     page === 'project' && projectId
       ? await getProjectOgData(projectId, lang)
       : null;
-  const post = page === 'post' && postId ? await getPostOgData(postId) : null;
+  const post =
+    INTERNAL_BLOG_ENABLED && page === 'post' && postId
+      ? await getPostOgData(postId)
+      : null;
 
   return renderOgImage(
     {

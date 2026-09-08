@@ -5,9 +5,16 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { NextRequest, NextResponse } from 'next/server';
+import { INTERNAL_BLOG_ENABLED } from '@/constants/features';
 import { db } from '../../../../../firebaseConfig';
 
 export async function POST(request: NextRequest) {
+  if (!INTERNAL_BLOG_ENABLED) {
+    return NextResponse.json(
+      { error: 'Internal blog publishing is temporarily disabled.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } }
+    );
+  }
   try {
     const formData = await request.formData();
 
