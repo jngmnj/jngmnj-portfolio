@@ -1,5 +1,8 @@
 import { createPageMetadata } from '@/app/lib/og-metadata';
 import { getProjectOgData } from '@/app/lib/project-og';
+import { projectExists } from '@/app/lib/project-exists';
+import { hasLocale } from '@/constants/locales';
+import { notFound, redirect } from 'next/navigation';
 
 type PostProps = {
   params: Promise<{ lang: string; id: string }>;
@@ -18,13 +21,8 @@ export async function generateMetadata({ params }: PostProps) {
   });
 }
 
-export default function ProjectDetailPage() {
-  return (
-    <div className="content container">
-      <div className="grid grid-flow-col grid-cols-3 grid-rows-2 gap-4 lg:grid-rows-1">
-        <div className="col-span-3 border lg:col-span-2"></div>
-        <div className="col-span-3 border lg:col-span-1">dd</div>
-      </div>
-    </div>
-  );
+export default async function ProjectDetailPage({ params }: PostProps) {
+  const { lang, id } = await params;
+  if (!hasLocale(lang) || !(await projectExists(id))) notFound();
+  redirect(`/${lang}/projects?id=${encodeURIComponent(id)}`);
 }

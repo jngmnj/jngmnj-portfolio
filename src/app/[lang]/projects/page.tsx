@@ -1,6 +1,7 @@
 import ProjectsSkeleton from '@/components/projects/ProjectsSkeleton';
 import { createPageMetadata } from '@/app/lib/og-metadata';
 import { getProjectOgData } from '@/app/lib/project-og';
+import { projectExists } from '@/app/lib/project-exists';
 import { DEFAULT_LOCALE } from '@/constants/locales';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
@@ -44,6 +45,7 @@ export default async function ProjectsPage({
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const { id } = await searchParams;
+  if (id && !(await projectExists(id))) notFound();
 
   return (
     <div className="content container flex flex-col">
