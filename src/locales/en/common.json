@@ -445,6 +445,17 @@
       "locationValue": "Seoul, South Korea"
     }
   },
+  "errors": {
+    "unexpected": {
+      "title": "We couldn’t load this page",
+      "description": "Please try again in a moment. If the problem continues, return to the home page."
+    },
+    "postNotFound": {
+      "title": "Post not found",
+      "description": "This post may have been removed or the link may be incorrect. Explore other posts on the blog."
+    },
+    "actions": { "retry": "Try again", "blog": "Back to blog" }
+  },
   "notFound": {
     "code": "404",
     "title": "Page not found",
