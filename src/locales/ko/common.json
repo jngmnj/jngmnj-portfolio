@@ -440,6 +440,17 @@
       "locationValue": "서울, 대한민국"
     }
   },
+  "errors": {
+    "unexpected": {
+      "title": "페이지를 불러오지 못했어요",
+      "description": "잠시 후 다시 시도해 주세요. 문제가 계속되면 홈으로 돌아가 주세요."
+    },
+    "postNotFound": {
+      "title": "게시글을 찾을 수 없어요",
+      "description": "삭제된 게시글이거나 주소가 올바르지 않을 수 있어요. 블로그에서 다른 글을 만나보세요."
+    },
+    "actions": { "retry": "다시 시도", "blog": "블로그 목록으로" }
+  },
   "notFound": {
     "code": "404",
     "title": "페이지를 찾을 수 없습니다",

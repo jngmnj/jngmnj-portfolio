@@ -8,7 +8,7 @@ import { useLocale } from '@/utils/useLocale';
 import { doc, getDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { db } from '../../../../../firebaseConfig';
 
@@ -33,17 +33,21 @@ export default function BlogDetailPage({ params }: PostProps) {
 
   const [postData, setPostData] = useState<PostData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (!id) return;
+
+    let active = true;
 
     const fetchPost = async () => {
       try {
         const docRef = doc(db, 'posts', id);
         const docSnap = await getDoc(docRef);
+        if (!active) return;
 
         if (!docSnap.exists()) {
-          router.push(`/${lang}/404`);
+          setPostData(null);
           return;
         }
 
@@ -62,23 +66,30 @@ export default function BlogDetailPage({ params }: PostProps) {
           previewImgUrl: previewImgUrl || null,
         });
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching post:', error);
-        router.push(`/${lang}/404`);
+        if (active) {
+          setError(
+            error instanceof Error ? error : new Error('Failed to load post')
+          );
+        }
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
 
     fetchPost();
-  }, [id, lang, router]);
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  if (error) throw error;
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (!postData) {
-    return <div>Post not found</div>;
+    notFound();
   }
 
   const {
