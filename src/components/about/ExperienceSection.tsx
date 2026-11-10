@@ -4,20 +4,20 @@ import TabContent from '@/components/about/TabContent';
 import TabMenu from '@/components/about/TabMenu';
 import type { AboutTab } from '@/data/MyData';
 import { useEffect, useState } from 'react';
-import { Career, isCareerList } from '@/data/careers';
+import { AboutContent, isAboutContent } from '@/data/aboutContent';
 import { useTranslation } from 'react-i18next';
 
 export default function ExperienceSection() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const { t, i18n } = useTranslation('common');
-  const [careers, setCareers] = useState<Career[] | null>(null);
+  const [content, setContent] = useState<AboutContent | null>(null);
   useEffect(() => {
     const controller = new AbortController();
-    fetch('/api/careers', { cache: 'no-store', signal: controller.signal })
+    fetch('/api/about', { cache: 'no-store', signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) return;
         const data = await response.json();
-        if (isCareerList(data.careers)) setCareers(data.careers);
+        if (isAboutContent(data.content)) setContent(data.content);
       })
       .catch(() => {
         /* Keep the localized fallback when unavailable. */
@@ -29,27 +29,9 @@ export default function ExperienceSection() {
       returnObjects: true,
     }) as AboutTab[]) ?? [];
 
-  const displayTabs: AboutTab[] = tabs.map((tab) =>
-    tab.id === 'career' && careers !== null
-      ? {
-          ...tab,
-          content: careers.map((career) => ({
-            startDate: career.startDate,
-            endDate:
-              career.endDate ||
-              (i18n.language.startsWith('en') ? 'Present' : '재직 중'),
-            title: i18n.language.startsWith('en')
-              ? career.titleEn || career.title
-              : career.title,
-            list: [
-              i18n.language.startsWith('en')
-                ? career.companyEn || career.company
-                : career.company,
-            ],
-          })),
-        }
-      : tab
-  );
+  const displayTabs = content
+    ? content[i18n.language.startsWith('en') ? 'en' : 'ko']
+    : tabs;
 
   return (
     <section className="pb-20 sm:pb-32 md:pb-40">
