@@ -90,7 +90,7 @@ export default function SkillsSection() {
             <h3 className="text-lg font-semibold text-gray-950">
               {skill.title}
             </h3>
-            <p className="mt-2 text-sm leading-6 break-words text-gray-600">
+            <p className="mt-2 text-sm leading-6 [overflow-wrap:anywhere] break-keep text-gray-600">
               {skill.skills}
             </p>
           </motion.div>

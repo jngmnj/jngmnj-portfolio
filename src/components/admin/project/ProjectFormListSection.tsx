@@ -77,7 +77,7 @@ export default function ProjectFormListSection({
       <div className="mt-3 flex min-h-7 flex-wrap gap-2" aria-live="polite">
         {items.map((item: string, index: number) => (
           <span key={index} className={`${chipClassName} max-w-full`}>
-            <span className="break-all">{item}</span>
+            <span className="[overflow-wrap:anywhere] break-keep">{item}</span>
             <button
               type="button"
               onClick={() => handleRemove(index)}
