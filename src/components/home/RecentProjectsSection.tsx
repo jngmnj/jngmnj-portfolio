@@ -36,7 +36,15 @@ function SectionHeader({ lang }: { lang: string }) {
   );
 }
 
-export default function RecentProjectsSection() {
+const EMPTY_PROJECT_IDS: string[] = [];
+
+export default function RecentProjectsSection({
+  mode = 'latest',
+  projectIds = EMPTY_PROJECT_IDS,
+}: {
+  mode?: 'latest' | 'selected';
+  projectIds?: string[];
+}) {
   const lang = useLocale();
   const { t } = useTranslation('common');
   const [projects, setProjects] = useState<FirebaseProject[]>([]);
@@ -50,13 +58,20 @@ export default function RecentProjectsSection() {
       if (!response.ok) throw new Error('Failed to fetch projects');
 
       const data = (await response.json()) as FirebaseProject[];
-      setProjects(sortProjects(data, 'latest', lang).slice(0, 3));
+      setProjects(
+        mode === 'selected'
+          ? projectIds.flatMap((id) => {
+              const project = data.find((item) => item.id === id);
+              return project ? [project] : [];
+            })
+          : sortProjects(data, 'latest', lang).slice(0, 3)
+      );
     } catch {
       setHasError(true);
     } finally {
       setLoading(false);
     }
-  }, [lang]);
+  }, [lang, mode, projectIds]);
 
   useEffect(() => {
     // Fetch remote data when the home section mounts.
