@@ -35,7 +35,7 @@ export default function ExperienceSection() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 py-4 md:py-0">
+        <div className="min-w-0 flex-1 py-4 md:py-0">
           <TabContent tabIndex={activeTabIndex} tabs={tabs} />
         </div>
       </div>

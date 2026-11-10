@@ -213,14 +213,14 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="line-clamp-2 text-lg font-bold break-words text-gray-950">
+              <h3 className="line-clamp-2 text-lg font-bold [overflow-wrap:anywhere] break-keep text-gray-950">
                 {project.title}
               </h3>
-              <span className="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium break-all text-gray-600">
+              <span className="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium [overflow-wrap:anywhere] break-keep text-gray-600">
                 {project.category}
               </span>
             </div>
-            <p className="mt-1 line-clamp-2 text-sm leading-6 break-words text-gray-600">
+            <p className="mt-1 line-clamp-2 text-sm leading-6 [overflow-wrap:anywhere] break-keep text-gray-600">
               {project.description}
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -229,7 +229,7 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
                 .map((tech: string, index: number) => (
                   <span
                     key={index}
-                    className="max-w-full rounded-lg bg-gray-100 px-2 py-1 text-xs break-all text-gray-700"
+                    className="max-w-full rounded-lg bg-gray-100 px-2 py-1 text-xs [overflow-wrap:anywhere] break-keep text-gray-700"
                   >
                     {tech}
                   </span>

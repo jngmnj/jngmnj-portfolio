@@ -47,8 +47,20 @@
 
 body {
   font-family: 'SUIT-Variable', sans-serif;
+  /* Wrap Korean at word boundaries; only split oversized URLs/tokens. */
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  white-space: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Preserve intentional whitespace and scrolling in code blocks. */
+pre {
+  word-break: normal;
+  overflow-wrap: normal;
+  white-space: pre;
+  overflow-x: auto;
 }
 
 .inner {

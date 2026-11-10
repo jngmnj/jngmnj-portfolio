@@ -263,6 +263,16 @@
           "description": "",
           "content": [
             {
+              "startDate": "2026.03",
+              "endDate": "Present",
+              "title": "Frontend Developer",
+              "list": [
+                "Podo Software · Assistant Manager",
+                "Education platform frontend development",
+                "Responsive UI · Shared components · API integration"
+              ]
+            },
+            {
               "startDate": "2023.01",
               "endDate": "2025.03",
               "title": "UI/UX Designer / Publisher",
