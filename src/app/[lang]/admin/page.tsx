@@ -1,13 +1,7 @@
 import { DEFAULT_LOCALE } from '@/constants/locales';
 import { createPageMetadata } from '@/app/lib/og-metadata';
 import Link from 'next/link';
-import {
-  GoHeart,
-  GoNorthStar,
-  GoPeople,
-  GoStack,
-  GoTools,
-} from 'react-icons/go';
+import { GoHeart, GoPeople, GoStack } from 'react-icons/go';
 
 const cardClass =
   'rounded-lg border border-gray-200 bg-white p-6 shadow transition hover:shadow-lg block';
@@ -55,36 +49,14 @@ export default async function AdminPage({
           </p>
         </Link>
 
-        <Link href={`${base}/offers`} className={cardClass}>
-          <div className="mb-4 flex items-center gap-3">
-            <GoNorthStar className="text-seagull-500 text-3xl" />
-            <h2 className="text-xl font-semibold">메인페이지 관리</h2>
-          </div>
-          <p className="text-gray-600">메인페이지 콘텐츠를 관리합니다.</p>
-        </Link>
-
-        <Link href={`${base}/users`} className={cardClass}>
-          <div className="mb-4 flex items-center gap-3">
-            <GoPeople className="text-seagull-500 text-3xl" />
-            <h2 className="text-xl font-semibold">회원 관리</h2>
-          </div>
-          <p className="text-gray-600">회원 정보를 조회하고 관리합니다.</p>
-        </Link>
-
         <Link href={`${base}/contact`} className={cardClass}>
           <div className="mb-4 flex items-center gap-3">
             <GoHeart className="text-seagull-500 text-3xl" />
             <h2 className="text-xl font-semibold">문의 조회</h2>
           </div>
-          <p className="text-gray-600">접수된 문의 목록과 상세 내용을 확인합니다.</p>
-        </Link>
-
-        <Link href={`${base}/setting`} className={cardClass}>
-          <div className="mb-4 flex items-center gap-3">
-            <GoTools className="text-seagull-500 text-3xl" />
-            <h2 className="text-xl font-semibold">사이트 관리</h2>
-          </div>
-          <p className="text-gray-600">사이트 설정을 관리합니다.</p>
+          <p className="text-gray-600">
+            접수된 문의 목록과 상세 내용을 확인합니다.
+          </p>
         </Link>
       </div>
     </div>
