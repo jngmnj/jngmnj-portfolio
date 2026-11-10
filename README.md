@@ -73,9 +73,28 @@
 
 ## 개발환경
 
+- Node.js 22 이상 (CI: 22.x, 24.x)
 - NextJS
-- Yarn
+- npm (`npm ci`로 lockfile 기준 설치)
 - ESlint & Prettier
+
+### 보안 의존성 관리
+
+Firebase Admin 14는 모듈별 import를 사용하며, 서버 실행 환경도 Node.js 22
+이상이어야 합니다. 초기화는 요청 시점에 수행합니다.
+
+`package.json`의 보안 override는 다음 상위 패키지에만 적용합니다.
+
+- `@firebase/firestore` → `@grpc/grpc-js`: 기존 1.9.x 제약 대신 수정된
+  1.14.7 이상을 사용합니다.
+- `@typescript-eslint/typescript-estree` → `minimatch`: 취약한 10.x 대신
+  11.0.1 이상을 사용합니다.
+
+- `google-gax`, `gaxios` → `rimraf`: Firestore 하위의 취약한 glob 경로를
+  제거하기 위해 6.1.4 이상을 사용합니다.
+
+상위 패키지가 수정 버전을 직접 지원하면 해당 override를 제거하고
+`npm audit`, `npm run lint`, `npm run build`를 다시 확인합니다.
 
 ## Skills
 

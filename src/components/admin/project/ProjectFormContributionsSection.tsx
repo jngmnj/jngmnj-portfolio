@@ -241,16 +241,16 @@ export default function ProjectFormContributionsSection() {
                   className="flex flex-col gap-3 rounded-xl bg-gray-50 p-3 sm:flex-row sm:items-start"
                 >
                   <div className="min-w-0 flex-1 space-y-1">
-                    <span className="block text-sm leading-6 break-words text-gray-700">
+                    <span className="block text-sm leading-6 [overflow-wrap:anywhere] break-keep text-gray-700">
                       {detail.text}
                     </span>
                     {detail.textEn && (
-                      <span className="block text-sm leading-6 break-words text-gray-500">
+                      <span className="block text-sm leading-6 [overflow-wrap:anywhere] break-keep text-gray-500">
                         {detail.textEn}
                       </span>
                     )}
                     {detail.link && (
-                      <span className="text-seagull-700 block text-xs break-all">
+                      <span className="text-seagull-700 block text-xs [overflow-wrap:anywhere] break-keep">
                         ({detail.linkText || detail.link}
                         {detail.linkTextEn ? ` / ${detail.linkTextEn}` : ''})
                       </span>

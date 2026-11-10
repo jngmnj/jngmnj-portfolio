@@ -115,7 +115,9 @@ export default function ProjectFormTechStackDetail() {
                       key={`${tech}-${index}`}
                       className="text-seagull-800 inline-flex max-w-full items-center gap-1 rounded-lg bg-white px-2.5 py-1 text-xs"
                     >
-                      <span className="break-all">{tech}</span>
+                      <span className="[overflow-wrap:anywhere] break-keep">
+                        {tech}
+                      </span>
                       <button
                         type="button"
                         onClick={() => removeTechStack(category.value, index)}

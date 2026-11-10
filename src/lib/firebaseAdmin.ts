@@ -1,8 +1,10 @@
-import admin from 'firebase-admin';
+import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
 
 function getFirebaseAdminApp() {
-  if (admin.apps.length) {
-    return admin.app();
+  if (getApps().length) {
+    return getApp();
   }
 
   const credentials = JSON.parse(process.env.FIREBASE_ADMIN_CREDENTIALS || '{}');
@@ -18,19 +20,17 @@ function getFirebaseAdminApp() {
     credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
   }
 
-  return admin.initializeApp({
-    credential: admin.credential.cert(credentials),
+  return initializeApp({
+    credential: cert(credentials),
     projectId:
       process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || credentials.project_id,
   });
 }
 
 export function getAdminDb() {
-  return getFirebaseAdminApp().firestore();
+  return getFirestore(getFirebaseAdminApp());
 }
 
 export function getAdminAuth() {
-  return getFirebaseAdminApp().auth();
+  return getAuth(getFirebaseAdminApp());
 }
-
-export { admin };

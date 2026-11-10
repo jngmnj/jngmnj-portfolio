@@ -63,6 +63,12 @@ const myData: AboutTab[] = [
     description: '',
     content: [
       {
+        startDate: '2026.03',
+        endDate: '재직 중',
+        title: 'Frontend Developer',
+        list: ['포도소프트웨어'],
+      },
+      {
         startDate: '2023.01',
         endDate: '2025.03',
         title: 'UIUX Designer / Publisher',

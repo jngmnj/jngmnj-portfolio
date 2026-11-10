@@ -36,4 +36,10 @@ export default defineConfig([
       ],
     },
   },
+  {
+    // Administrative CLI scripts use Node's CommonJS module format.
+    files: ['scripts/*.js'],
+    languageOptions: { sourceType: 'commonjs' },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
 ]);

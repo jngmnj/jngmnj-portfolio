@@ -19,12 +19,12 @@ const TabContent = ({ tabIndex, tabs }: TabContentProps) => {
       return (
         <div className="-mx-2 flex flex-wrap">
           {items.map((content, index) => (
-            <div className="w-full p-2 sm:w-1/2" key={index}>
-              <div className="h-full rounded-2xl border border-gray-400 px-3 py-4 sm:px-4 sm:py-6">
+            <div className="w-full min-w-0 p-2 sm:w-1/2" key={index}>
+              <div className="h-full min-w-0 rounded-2xl border border-gray-400 px-3 py-4 sm:px-4 sm:py-6">
                 <div className="mb-2 text-base sm:text-lg md:text-xl lg:text-2xl">
                   {`${content.startDate} - ${content.endDate}`}
                 </div>
-                <div className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl md:text-3xl">
+                <div className="mb-3 text-xl leading-snug font-bold sm:mb-4 sm:text-2xl md:text-3xl">
                   {content.title}
                 </div>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
