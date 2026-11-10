@@ -3,16 +3,35 @@
 import TabContent from '@/components/about/TabContent';
 import TabMenu from '@/components/about/TabMenu';
 import type { AboutTab } from '@/data/MyData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AboutContent, isAboutContent } from '@/data/aboutContent';
 import { useTranslation } from 'react-i18next';
 
 export default function ExperienceSection() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const [content, setContent] = useState<AboutContent | null>(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/about', { cache: 'no-store', signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const data = await response.json();
+        if (isAboutContent(data.content)) setContent(data.content);
+      })
+      .catch(() => {
+        /* Keep the localized fallback when unavailable. */
+      });
+    return () => controller.abort();
+  }, []);
   const tabs =
     (t('about.experience.tabs', {
       returnObjects: true,
     }) as AboutTab[]) ?? [];
+
+  const displayTabs = content
+    ? content[i18n.language.startsWith('en') ? 'en' : 'ko']
+    : tabs;
 
   return (
     <section className="pb-20 sm:pb-32 md:pb-40">
@@ -30,13 +49,13 @@ export default function ExperienceSection() {
           <TabMenu
             activeTabIndex={activeTabIndex}
             onTabChange={setActiveTabIndex}
-            tabs={tabs}
+            tabs={displayTabs}
           />
         </div>
 
         {/* Right Content */}
         <div className="min-w-0 flex-1 py-4 md:py-0">
-          <TabContent tabIndex={activeTabIndex} tabs={tabs} />
+          <TabContent tabIndex={activeTabIndex} tabs={displayTabs} />
         </div>
       </div>
     </section>

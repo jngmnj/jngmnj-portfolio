@@ -158,6 +158,14 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
+          <Link
+            href={`/${lang}/admin/about`}
+            title="소개 관리"
+            className="hover:text-seagull-500 flex min-h-11 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500"
+          >
+            <GoPeople className="w-12 shrink-0 px-2 text-xl" />
+            <span className="overflow-hidden whitespace-nowrap">소개 관리</span>
+          </Link>
           <Link href={`/${lang}/admin/offers`} title="메인페이지 관리">
             <div
               className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}

@@ -45,6 +45,16 @@ export default async function AdminPage({
           </p>
         </Link>
 
+        <Link href={`${base}/about`} className={cardClass}>
+          <div className="mb-4 flex items-center gap-3">
+            <GoPeople className="text-seagull-500 text-3xl" />
+            <h2 className="text-xl font-semibold">소개 관리</h2>
+          </div>
+          <p className="text-gray-600">
+            경력, 교육, 기술, 프로필 정보를 탭별로 관리합니다.
+          </p>
+        </Link>
+
         <Link href={`${base}/offers`} className={cardClass}>
           <div className="mb-4 flex items-center gap-3">
             <GoNorthStar className="text-seagull-500 text-3xl" />
