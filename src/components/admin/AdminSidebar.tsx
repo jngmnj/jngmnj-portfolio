@@ -8,7 +8,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { GoHeart, GoHome, GoPeople, GoStack } from 'react-icons/go';
+import {
+  GoHeart,
+  GoNorthStar,
+  GoHome,
+  GoPeople,
+  GoStack,
+} from 'react-icons/go';
 
 type AdminSidebarProps = {
   isOpen: boolean;
@@ -158,6 +164,16 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
           >
             <GoPeople className="w-12 shrink-0 px-2 text-xl" />
             <span className="overflow-hidden whitespace-nowrap">소개 관리</span>
+          </Link>
+          <Link href={`/${lang}/admin/home`} title="메인페이지 관리">
+            <div
+              className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
+            >
+              <GoNorthStar className="w-12 shrink-0 px-2 text-xl" />
+              <span className="overflow-hidden whitespace-nowrap">
+                메인페이지 관리
+              </span>
+            </div>
           </Link>
 
           <Link href={`/${lang}/admin/contact`} title="문의 조회">

@@ -1,7 +1,7 @@
 import { DEFAULT_LOCALE } from '@/constants/locales';
 import { createPageMetadata } from '@/app/lib/og-metadata';
 import Link from 'next/link';
-import { GoHeart, GoPeople, GoStack } from 'react-icons/go';
+import { GoHeart, GoNorthStar, GoPeople, GoStack } from 'react-icons/go';
 
 const cardClass =
   'rounded-lg border border-gray-200 bg-white p-6 shadow transition hover:shadow-lg block';
@@ -47,6 +47,14 @@ export default async function AdminPage({
           <p className="text-gray-600">
             경력, 교육, 기술, 프로필 정보를 탭별로 관리합니다.
           </p>
+        </Link>
+
+        <Link href={`${base}/home`} className={cardClass}>
+          <div className="mb-4 flex items-center gap-3">
+            <GoNorthStar className="text-seagull-500 text-3xl" />
+            <h2 className="text-xl font-semibold">메인페이지 관리</h2>
+          </div>
+          <p className="text-gray-600">메인페이지 콘텐츠를 관리합니다.</p>
         </Link>
 
         <Link href={`${base}/contact`} className={cardClass}>
