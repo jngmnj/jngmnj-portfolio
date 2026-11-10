@@ -186,13 +186,13 @@ const AdminSidebar = ({ isOpen, handleOpen }: AdminSidebarProps) => {
               </span>
             </div>
           </Link>
-          <Link href={`/${lang}/admin/contact`} title="문의/방명록">
+          <Link href={`/${lang}/admin/contact`} title="문의 조회">
             <div
               className={`hover:text-seagull-500 flex min-h-10 items-center gap-4 rounded-2xl py-3 pr-2 font-semibold text-gray-500 transition`}
             >
               <GoHeart className="w-12 shrink-0 px-2 text-xl" />
               <span className="overflow-hidden whitespace-nowrap">
-                문의/방명록
+                문의 조회
               </span>
             </div>
           </Link>
