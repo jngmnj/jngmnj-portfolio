@@ -54,6 +54,8 @@ export default function ProjectDetailModal({
 
   if (!project) return null;
 
+  const githubUrl = project.githubUrl?.trim();
+  const liveUrl = project.liveUrl?.trim();
   const title = getProjectTitle(project, i18n.language);
   const description = getProjectDescription(project, i18n.language);
   const overview = getProjectOverview(project, i18n.language);
@@ -128,42 +130,37 @@ export default function ProjectDetailModal({
               {/* Project Content - 전체 스크롤 */}
               <div className="max-h-[92vh] overflow-y-auto">
                 {/* Project Header */}
-                <div className="relative m-2 h-72 overflow-hidden rounded-3xl sm:h-80">
-                  <Image
-                    src={project.image || '/images/common/img_user.png'}
-                    alt={title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-gray-950/75 via-gray-950/20 to-transparent" />
-
-                  {/* Project Title */}
-                  <motion.div
-                    className="absolute right-5 bottom-5 left-5 sm:right-8 sm:bottom-8 sm:left-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
+                <header className="grid min-w-0 gap-5 px-5 pt-16 pb-2 sm:px-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:items-center md:gap-8">
+                  <div className="relative h-44 overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 md:aspect-[3/2] md:h-auto">
+                    <Image
+                      src={project.image || '/images/common/img_user.png'}
+                      alt={title}
+                      fill
+                      sizes="(max-width: 768px) 90vw, 420px"
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    {project.category && (
+                      <span className="mb-3 inline-block max-w-full rounded-lg bg-gray-100 px-3 py-1 text-xs font-semibold tracking-wide [overflow-wrap:anywhere] break-keep text-gray-600">
+                        {project.category}
+                      </span>
+                    )}
                     <h1
                       id="modal-title"
-                      className="mb-3 max-w-4xl text-3xl leading-tight font-semibold text-white sm:text-4xl"
+                      className="max-w-4xl text-2xl leading-snug font-semibold [overflow-wrap:anywhere] break-keep text-gray-950 sm:text-3xl"
                     >
                       {title}
                     </h1>
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="rounded-xl bg-white/15 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-white/80 uppercase backdrop-blur">
-                        {project.category}
-                      </span>
-                    </div>
                     <p
                       id="modal-description"
-                      className="max-w-3xl text-base leading-relaxed text-white/85 sm:text-lg"
+                      className="mt-3 max-w-3xl text-base leading-relaxed [overflow-wrap:anywhere] break-keep text-gray-600"
                     >
                       {description}
                     </p>
-                  </motion.div>
-                </div>
+                  </div>
+                </header>
 
                 {/* Project Content */}
                 <div className="space-y-10 px-5 pt-6 pb-8 sm:px-8">
@@ -404,33 +401,37 @@ export default function ProjectDetailModal({
                   )}
 
                   {/* Project Links */}
-                  <motion.div
-                    className="flex flex-wrap gap-3 border-t border-gray-100 pt-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.3 }}
-                  >
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-h-11 items-center gap-2 rounded-2xl bg-gray-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800 focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:outline-none"
+                  {(githubUrl || liveUrl) && (
+                    <motion.div
+                      className="flex flex-wrap gap-3 border-t border-gray-100 pt-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.3 }}
                     >
-                      <FaGithub className="text-lg" />
-                      <span>{t('projects_modal.github')}</span>
-                    </a>
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-seagull-500 hover:bg-seagull-600 focus-visible:ring-seagull-200 inline-flex min-h-11 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:ring-2 focus-visible:outline-none"
-                      >
-                        <FaExternalLinkAlt className="text-lg" />
-                        <span>{t('projects_modal.live')}</span>
-                      </a>
-                    )}
-                  </motion.div>
+                      {githubUrl && (
+                        <a
+                          href={githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-11 items-center gap-2 rounded-2xl bg-gray-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800 focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:outline-none"
+                        >
+                          <FaGithub className="text-lg" />
+                          <span>{t('projects_modal.github')}</span>
+                        </a>
+                      )}
+                      {liveUrl && (
+                        <a
+                          href={liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-seagull-500 hover:bg-seagull-600 focus-visible:ring-seagull-200 inline-flex min-h-11 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                        >
+                          <FaExternalLinkAlt className="text-lg" />
+                          <span>{t('projects_modal.live')}</span>
+                        </a>
+                      )}
+                    </motion.div>
+                  )}
                 </div>
               </div>
             </motion.div>

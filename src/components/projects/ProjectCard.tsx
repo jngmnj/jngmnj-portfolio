@@ -19,6 +19,8 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
   const router = useRouter();
   const { i18n, t } = useTranslation('common');
+  const githubUrl = project.githubUrl?.trim();
+  const liveUrl = project.liveUrl?.trim();
   const title = getProjectTitle(project, i18n.language);
   const description = getProjectDescription(project, i18n.language);
   const imageSrc = project.image || '/images/common/img_user.png';
@@ -106,44 +108,48 @@ const ProjectCard = ({ project, openModal, href }: ProjectCardProps) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-auto flex justify-end pt-1">
-          <div className="flex items-center gap-1.5 rounded-2xl bg-gray-50 px-2 py-1">
-            {project.liveUrl && (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Link
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  aria-label={`${title} ${t('projects_modal.demo')}`}
-                  className="hover:text-seagull-600 focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-white focus-visible:ring-2 focus-visible:outline-none"
+        {(githubUrl || liveUrl) && (
+          <div className="mt-auto flex justify-end pt-1">
+            <div className="flex items-center gap-1.5 rounded-2xl bg-gray-50 px-2 py-1">
+              {liveUrl && (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <GoArrowUpRight className="text-base" />
-                </Link>
-              </motion.div>
-            )}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Link
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                aria-label={`${title} GitHub`}
-                className="focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-white hover:text-gray-900 focus-visible:ring-2 focus-visible:outline-none"
-              >
-                <FaGithub className="text-lg" />
-              </Link>
-            </motion.div>
+                  <Link
+                    href={liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`${title} ${t('projects_modal.demo')}`}
+                    className="hover:text-seagull-600 focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-white focus-visible:ring-2 focus-visible:outline-none"
+                  >
+                    <GoArrowUpRight className="text-base" />
+                  </Link>
+                </motion.div>
+              )}
+              {githubUrl && (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`${title} GitHub`}
+                    className="focus-visible:ring-seagull-200 inline-flex size-8 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-white hover:text-gray-900 focus-visible:ring-2 focus-visible:outline-none"
+                  >
+                    <FaGithub className="text-lg" />
+                  </Link>
+                </motion.div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </motion.div>
   );
