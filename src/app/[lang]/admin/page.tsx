@@ -45,6 +45,16 @@ export default async function AdminPage({
           </p>
         </Link>
 
+        <Link href={`${base}/careers`} className={cardClass}>
+          <div className="mb-4 flex items-center gap-3">
+            <GoPeople className="text-seagull-500 text-3xl" />
+            <h2 className="text-xl font-semibold">경력 관리</h2>
+          </div>
+          <p className="text-gray-600">
+            About 경력과 회사명, 직무, 재직 기간을 관리합니다.
+          </p>
+        </Link>
+
         <Link href={`${base}/offers`} className={cardClass}>
           <div className="mb-4 flex items-center gap-3">
             <GoNorthStar className="text-seagull-500 text-3xl" />

@@ -261,11 +261,7 @@
               "startDate": "2026.03",
               "endDate": "재직 중",
               "title": "Frontend Developer",
-              "list": [
-                "포도소프트웨어 · 대리",
-                "교육 서비스 프론트엔드 개발",
-                "반응형 UI · 공통 컴포넌트 · API 연동"
-              ]
+              "list": ["포도소프트웨어"]
             },
             {
               "startDate": "2023.01",
