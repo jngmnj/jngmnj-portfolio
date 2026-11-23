@@ -14,8 +14,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
-const queryClient = new QueryClient();
-
 interface ClientLayoutProps {
   children: ReactNode;
   lang: string;
@@ -27,6 +25,7 @@ export default function ClientLayout({
   lang,
   dictionary,
 }: ClientLayoutProps) {
+  const [queryClient] = useState(() => new QueryClient());
   const pathname = usePathname();
   const isAdmin = pathname.includes('/admin');
   const isHomePage = pathname === `/${lang}`;

@@ -5,15 +5,16 @@ type CheckboxProps = ComponentPropsWithoutRef<'input'>;
 
 const Checkbox: FC<CheckboxProps> = ({ children, className, ...rest }) => {
   return (
-    <label className="flex cursor-pointer items-center">
-      <input type="checkbox" {...rest} className="peer hidden" />
+    <label className="relative flex min-h-11 cursor-pointer items-center has-disabled:cursor-not-allowed">
+      <input type="checkbox" {...rest} className="peer sr-only" />
       <span
         className={cn(
-          'flex size-5 items-center justify-center rounded-sm border border-gray-400 peer-checked:border-transparent peer-checked:bg-seagull-500',
+          'peer-checked:bg-seagull-500 peer-focus-visible:outline-seagull-600 flex size-5 shrink-0 items-center justify-center rounded-sm border border-gray-400 peer-checked:border-transparent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-disabled:opacity-50',
           className
         )}
       >
         <svg
+          aria-hidden="true"
           className="size-5 text-white"
           fill="none"
           stroke="currentColor"
@@ -28,7 +29,9 @@ const Checkbox: FC<CheckboxProps> = ({ children, className, ...rest }) => {
           />
         </svg>
       </span>
-      <span className="ml-2 text-gray-700">{children}</span>
+      <span className="ml-2 min-w-0 text-gray-700 peer-disabled:opacity-50">
+        {children}
+      </span>
     </label>
   );
 };

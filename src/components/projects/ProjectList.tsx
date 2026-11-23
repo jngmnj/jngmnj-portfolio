@@ -1,134 +1,234 @@
 'use client';
 
-import { FirebaseProject } from '@/types';
-import { getProjectSort, ProjectSort, sortProjects } from '@/utils/projectSort';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import type { FirebaseProject } from '@/types';
+import { getProjectSort, sortProjects } from '@/utils/projectSort';
+import {
+  filterProjects,
+  getProjectFilterOptions,
+  readProjectFilters,
+  writeProjectUrl,
+  type ProjectQueryPatch,
+} from '@/utils/projectFilters';
 import { useLocale } from '@/utils/useLocale';
 import ProjectCard from './ProjectCard';
 import ProjectDetailModal from './ProjectDetailModal';
+import ProjectFilters from './ProjectFilters';
+import type { ProjectSearchResult } from '@/utils/projectSearch';
+import { projectSearchKey } from '@/utils/projectQuery';
 
-interface ProjectListProps {
-  initialProjects: FirebaseProject[];
-  initialProjectId: string | null;
+interface Props {
+  initialResult: ProjectSearchResult;
+  initialQuery: string;
 }
 
-const ProjectList = ({
-  initialProjects,
-  initialProjectId,
-}: ProjectListProps) => {
-  const [projects] = useState<FirebaseProject[]>(initialProjects);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] =
-    useState<FirebaseProject | null>(null);
-
+// Fixture stories exercise the same collection without depending on Firebase.
+export function ProjectCollection({
+  projects,
+  query,
+  locale,
+  onQueryChange,
+  result,
+  pending = false,
+  error = false,
+  retry,
+}: {
+  projects: FirebaseProject[];
+  query: string;
+  locale: string;
+  onQueryChange: (patch: ProjectQueryPatch, mode?: 'push' | 'replace') => void;
+  result?: ProjectSearchResult;
+  pending?: boolean;
+  error?: boolean;
+  retry?: () => void;
+}) {
   const { t } = useTranslation('common');
-  const lang = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const sort = getProjectSort(searchParams.get('sort'));
-
-  const sortedProjects = useMemo(
-    () => sortProjects(projects, sort, lang),
-    [lang, projects, sort]
+  const params = useMemo(() => new URLSearchParams(query), [query]);
+  const filters = useMemo(() => readProjectFilters(params), [params]);
+  const sort = getProjectSort(params.get('sort'));
+  const options = useMemo(
+    () => result?.options ?? getProjectFilterOptions(projects, locale),
+    [projects, locale, result]
   );
-
-  const updateUrl = (params: URLSearchParams) => {
-    const query = params.toString();
-    window.history.replaceState(
-      {},
-      '',
-      query ? `${pathname}?${query}` : pathname
-    );
-  };
-
-  const handleSortChange = (nextSort: ProjectSort) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (nextSort === 'latest') {
-      params.delete('sort');
-    } else {
-      params.set('sort', nextSort);
-    }
-
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, {
-      scroll: false,
-    });
-  };
-
-  const openModal = (id: string) => {
-    const project = projects.find((p) => p.id === id);
-    setSelectedProject(project || null);
-    setIsModalOpen(true);
-  };
-
-  useEffect(() => {
-    // initialProjectId가 있고 projects가 로드되면 모달 자동 열기
-    if (initialProjectId && projects.length > 0) {
-      // Synchronize modal state with the server-provided URL query.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      openModal(initialProjectId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialProjectId, projects]);
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-    // URL에서 query parameter 제거
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete('id');
-    updateUrl(params);
-  };
-
-  // Empty State
-  if (projects.length === 0) {
-    return (
-      <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-16 text-center">
-        <p className="text-base font-medium text-gray-600">
-          {t('projects.empty')}
-        </p>
-      </div>
-    );
-  }
+  const visibleProjects = useMemo(
+    () =>
+      result?.projects ??
+      sortProjects(filterProjects(projects, filters), sort, locale),
+    [projects, filters, sort, locale, result]
+  );
+  const total = result?.total ?? projects.length;
+  const selectedProject = result
+    ? result.selectedProject
+    : projects.find((project) => project.id === params.get('id'));
 
   return (
     <>
-      <div className="mb-6 flex justify-end">
-        <select
-          id="project-sort"
-          aria-label={t('projects.sort.label')}
-          value={sort}
-          onChange={(event) =>
-            handleSortChange(event.target.value as ProjectSort)
-          }
-          className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 min-w-32 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors focus:ring-2 focus:outline-none"
-        >
-          <option value="latest">{t('projects.sort.latest')}</option>
-          <option value="oldest">{t('projects.sort.oldest')}</option>
-          <option value="name">{t('projects.sort.name')}</option>
-        </select>
-      </div>
-
-      {/* Projects Grid */}
-      <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {sortedProjects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            openModal={openModal}
-          />
-        ))}
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <ProjectDetailModal project={selectedProject} closeModal={closeModal} />
+      {total > 0 && (
+        <ProjectFilters
+          filters={filters}
+          sort={sort}
+          {...options}
+          resultCount={visibleProjects.length}
+          totalCount={total}
+          onChange={onQueryChange}
+        />
+      )}
+      {pending && (
+        <p role="status" className="py-2 text-sm text-gray-600">
+          {t('projects.filters.loading')}
+        </p>
+      )}
+      {error ? (
+        <div role="alert" className="py-12 text-center">
+          <p>{t('projects.filters.error')}</p>
+          <button
+            type="button"
+            onClick={retry}
+            className="mt-3 min-h-11 rounded-xl border px-4"
+          >
+            {t('projects.filters.retry')}
+          </button>
+        </div>
+      ) : total === 0 ? (
+        <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-16 text-center">
+          <p className="font-medium text-gray-600">{t('projects.empty')}</p>
+        </div>
+      ) : visibleProjects.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-6 py-16 text-center">
+          <h2 className="text-lg font-semibold text-gray-900">
+            {t('projects.filters.noResults')}
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            {t('projects.filters.noResultsHint')}
+          </p>
+        </div>
+      ) : (
+        <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {visibleProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              openModal={(id) => onQueryChange({ id })}
+            />
+          ))}
+        </div>
+      )}
+      {selectedProject && (
+        <ProjectDetailModal
+          key={selectedProject.id}
+          project={selectedProject}
+          closeModal={() => onQueryChange({ id: null }, 'replace')}
+        />
       )}
     </>
   );
-};
+}
 
-export default ProjectList;
+function requestQuery(query: string, locale: string) {
+  const source = new URLSearchParams(query);
+  const target = new URLSearchParams();
+  for (const key of ['q', 'category', 'tech', 'sort']) {
+    source.getAll(key).forEach((value) => target.append(key, value));
+  }
+  target.set('lang', locale);
+  return target.toString();
+}
+
+export default function ProjectList({ initialResult, initialQuery }: Props) {
+  const { t } = useTranslation('common');
+  const params = useSearchParams();
+  const locale = useLocale();
+  const query = requestQuery(params.toString(), locale);
+  const [settledQuery, setSettledQuery] = useState(query);
+  useEffect(() => {
+    const timer = setTimeout(() => setSettledQuery(query), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+  const response = useQuery({
+    queryKey: projectSearchKey(settledQuery, initialResult),
+    queryFn: async ({ signal }): Promise<ProjectSearchResult> => {
+      const response = await fetch(`/api/projects/search?${settledQuery}`, {
+        signal,
+        cache: 'no-store',
+      });
+      if (!response.ok) throw new Error('Failed to search projects');
+      return response.json();
+    },
+    initialData:
+      settledQuery === requestQuery(initialQuery, locale)
+        ? initialResult
+        : undefined,
+    placeholderData: (previous) => previous,
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+  const result = response.data ?? initialResult;
+  const id = params.get('id');
+  const knownProject =
+    result.projects.find((project) => project.id === id) ??
+    (initialResult.selectedProject?.id === id
+      ? initialResult.selectedProject
+      : null);
+  const detail = useQuery({
+    queryKey: ['project-detail', id, initialResult],
+    enabled: Boolean(id) && !knownProject,
+    queryFn: async ({ signal }): Promise<FirebaseProject> => {
+      const response = await fetch(
+        `/api/projects/detail?id=${encodeURIComponent(id!)}`,
+        { signal, cache: 'no-store' }
+      );
+      if (!response.ok) throw new Error('Failed to fetch project');
+      return response.json();
+    },
+    staleTime: 60_000,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+  const selectedProject = id ? (knownProject ?? detail.data ?? null) : null;
+  return (
+    <>
+      {id && !selectedProject && (
+        <div className="mb-4 flex items-center gap-3 rounded-xl bg-gray-50 p-4">
+          <p role={detail.isError ? 'alert' : 'status'}>
+            {t(
+              detail.isError
+                ? 'projects.filters.detailError'
+                : 'projects.filters.detailLoading'
+            )}
+          </p>
+          {detail.isError && (
+            <button
+              className="min-h-11 cursor-pointer rounded-xl px-3"
+              onClick={() => void detail.refetch()}
+            >
+              {t('projects.filters.retry')}
+            </button>
+          )}
+          <button
+            className="min-h-11 cursor-pointer rounded-xl px-3"
+            onClick={() => writeProjectUrl({ id: null }, 'replace')}
+          >
+            {t('projects_modal.close')}
+          </button>
+        </div>
+      )}
+      <ProjectCollection
+        projects={[]}
+        result={{
+          ...result,
+          selectedProject,
+        }}
+        pending={query !== settledQuery || response.isFetching}
+        error={response.isError}
+        retry={() => void response.refetch()}
+        query={params.toString()}
+        locale={locale}
+        onQueryChange={writeProjectUrl}
+      />
+    </>
+  );
+}
