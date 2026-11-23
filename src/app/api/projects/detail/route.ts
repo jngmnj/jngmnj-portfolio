@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const snapshot = await getDoc(doc(db, 'projects', id));
-    if (!snapshot.exists()) {
+    if (!snapshot.exists() || snapshot.data().isPublic === false) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
     return NextResponse.json(

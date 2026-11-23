@@ -36,7 +36,7 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/projects');
+      const response = await fetch('/api/admin/projects', { cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
         setProjects(data);
@@ -219,6 +219,11 @@ export default function ProjectList({ onEdit }: ProjectListProps) {
               <span className="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium [overflow-wrap:anywhere] break-keep text-gray-600">
                 {project.category}
               </span>
+              {project.isPublic === false && (
+                <span className="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600">
+                  비공개
+                </span>
+              )}
             </div>
             <p className="mt-1 line-clamp-2 text-sm leading-6 [overflow-wrap:anywhere] break-keep text-gray-600">
               {project.description}

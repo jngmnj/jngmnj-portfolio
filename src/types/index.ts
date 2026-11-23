@@ -55,6 +55,8 @@ export type SerializedTimestamp = {
 
 export type FirebaseProject = {
   id?: string;
+  /** Missing values on legacy documents default to public. */
+  isPublic?: boolean;
   title: string;
   titleEn?: string;
   description: string;

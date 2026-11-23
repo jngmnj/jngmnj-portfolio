@@ -22,15 +22,15 @@ export async function getProjectOgData(
     endpoint.searchParams.set('key', apiKey);
 
     const response = await fetch(endpoint, {
-      next: { revalidate: 3600 },
+      cache: 'no-store',
     });
     if (!response.ok) return null;
 
     const document = (await response.json()) as {
-      fields?: Record<string, { stringValue?: string }>;
+      fields?: Record<string, { stringValue?: string; booleanValue?: boolean }>;
     };
     const fields = document.fields;
-    if (!fields) return null;
+    if (!fields || fields.isPublic?.booleanValue === false) return null;
 
     const useEnglish = lang === 'en';
     const title =

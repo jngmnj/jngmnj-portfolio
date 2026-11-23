@@ -19,5 +19,6 @@ export async function projectExists(id: string): Promise<boolean> {
   });
   if (response.status === 404) return false;
   if (!response.ok) throw new Error('Failed to fetch project');
-  return true;
+  const document = await response.json();
+  return document.fields?.isPublic?.booleanValue !== false;
 }
