@@ -364,6 +364,8 @@
     "empty": "No projects have been registered yet.",
     "details": "View details",
     "filters": {
+      "detailLoading": "Loading project details…",
+      "detailError": "Could not load project details.",
       "loading": "Loading projects…",
       "error": "Could not load projects.",
       "retry": "Try again",

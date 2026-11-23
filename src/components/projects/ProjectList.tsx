@@ -75,11 +75,12 @@ export function ProjectCollection({
           onChange={onQueryChange}
         />
       )}
-      {pending ? (
-        <p role="status" className="py-12 text-center text-gray-600">
+      {pending && (
+        <p role="status" className="py-2 text-sm text-gray-600">
           {t('projects.filters.loading')}
         </p>
-      ) : error ? (
+      )}
+      {error ? (
         <div role="alert" className="py-12 text-center">
           <p>{t('projects.filters.error')}</p>
           <button
@@ -128,7 +129,7 @@ export function ProjectCollection({
 function requestQuery(query: string, locale: string) {
   const source = new URLSearchParams(query);
   const target = new URLSearchParams();
-  for (const key of ['q', 'category', 'tech', 'sort', 'id']) {
+  for (const key of ['q', 'category', 'tech', 'sort']) {
     source.getAll(key).forEach((value) => target.append(key, value));
   }
   target.set('lang', locale);
@@ -136,6 +137,7 @@ function requestQuery(query: string, locale: string) {
 }
 
 export default function ProjectList({ initialResult, initialQuery }: Props) {
+  const { t } = useTranslation('common');
   const params = useSearchParams();
   const locale = useLocale();
   const query = requestQuery(params.toString(), locale);
@@ -164,22 +166,68 @@ export default function ProjectList({ initialResult, initialQuery }: Props) {
     retry: false,
   });
   const result = response.data ?? initialResult;
+  const id = params.get('id');
+  const knownProject =
+    result.projects.find((project) => project.id === id) ??
+    (initialResult.selectedProject?.id === id
+      ? initialResult.selectedProject
+      : null);
+  const detail = useQuery({
+    queryKey: ['project-detail', id],
+    enabled: Boolean(id) && !knownProject,
+    queryFn: async ({ signal }): Promise<FirebaseProject> => {
+      const response = await fetch(
+        `/api/projects/detail?id=${encodeURIComponent(id!)}`,
+        { signal, cache: 'no-store' }
+      );
+      if (!response.ok) throw new Error('Failed to fetch project');
+      return response.json();
+    },
+    staleTime: 60_000,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+  const selectedProject = id ? (knownProject ?? detail.data ?? null) : null;
   return (
-    <ProjectCollection
-      projects={[]}
-      result={{
-        ...result,
-        selectedProject:
-          params.get('id') === result.selectedProject?.id
-            ? result.selectedProject
-            : null,
-      }}
-      pending={query !== settledQuery || response.isFetching}
-      error={response.isError}
-      retry={() => void response.refetch()}
-      query={params.toString()}
-      locale={locale}
-      onQueryChange={writeProjectUrl}
-    />
+    <>
+      {id && !selectedProject && (
+        <div className="mb-4 flex items-center gap-3 rounded-xl bg-gray-50 p-4">
+          <p role={detail.isError ? 'alert' : 'status'}>
+            {t(
+              detail.isError
+                ? 'projects.filters.detailError'
+                : 'projects.filters.detailLoading'
+            )}
+          </p>
+          {detail.isError && (
+            <button
+              className="min-h-11 cursor-pointer rounded-xl px-3"
+              onClick={() => void detail.refetch()}
+            >
+              {t('projects.filters.retry')}
+            </button>
+          )}
+          <button
+            className="min-h-11 cursor-pointer rounded-xl px-3"
+            onClick={() => writeProjectUrl({ id: null }, 'replace')}
+          >
+            {t('projects_modal.close')}
+          </button>
+        </div>
+      )}
+      <ProjectCollection
+        projects={[]}
+        result={{
+          ...result,
+          selectedProject,
+        }}
+        pending={query !== settledQuery || response.isFetching}
+        error={response.isError}
+        retry={() => void response.refetch()}
+        query={params.toString()}
+        locale={locale}
+        onQueryChange={writeProjectUrl}
+      />
+    </>
   );
 }
