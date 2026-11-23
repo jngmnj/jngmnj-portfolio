@@ -17,6 +17,14 @@ export default defineConfig({
   test: {
     projects: [
       {
+        resolve: { alias: { '@': path.join(dirname, 'src') } },
+        test: {
+          name: 'unit',
+          environment: 'node',
+          include: ['src/**/*.test.ts'],
+        },
+      },
+      {
         extends: true,
         optimizeDeps: { include: ['tailwindcss/defaultTheme'] },
         plugins: [

@@ -18,7 +18,7 @@ import {
   useModalClose,
   useModalFocus,
   useScrollLock,
-} from '../../utils/hooks';
+} from '../../utils/modalHooks';
 import ImageViewerModal from './ImageViewerModal';
 import ProjectContributions from './ProjectContributions';
 import ProjectImageSlider from './ProjectImageSlider';

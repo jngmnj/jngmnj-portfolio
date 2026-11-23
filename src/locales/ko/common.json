@@ -358,6 +358,22 @@
     "subtitle": "프로젝트들과 개발과정을 소개합니다.",
     "empty": "아직 등록된 프로젝트가 없습니다.",
     "details": "자세히 보기",
+    "filters": {
+      "loading": "프로젝트를 불러오고 있습니다.",
+      "error": "프로젝트를 불러오지 못했습니다.",
+      "retry": "다시 시도",
+      "label": "프로젝트 검색 및 필터",
+      "search": "프로젝트 검색",
+      "searchPlaceholder": "프로젝트명, 설명 또는 기술 검색",
+      "category": "카테고리",
+      "allCategories": "전체 카테고리",
+      "technologies": "기술 스택 (여러 개 선택 가능)",
+      "results": "전체 {{total}}개 중 {{count}}개 프로젝트",
+      "reset": "초기화",
+      "toggle": "검색·필터",
+      "noResults": "조건에 맞는 프로젝트가 없습니다",
+      "noResultsHint": "다른 검색어나 필터를 선택하거나 조건을 초기화해보세요."
+    },
     "sort": {
       "label": "정렬",
       "latest": "최신순",

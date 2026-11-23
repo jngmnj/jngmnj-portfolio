@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { useModalClose, useScrollLock } from '@/utils/hooks';
+import { useModalClose, useScrollLock } from '@/utils/modalHooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
