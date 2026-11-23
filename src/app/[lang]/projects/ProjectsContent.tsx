@@ -1,13 +1,23 @@
 import ProjectList from '@/components/projects/ProjectList';
 import getProjects from '../../lib/getProjects';
+import { searchProjects } from '@/utils/projectSearch';
 
-interface Props {
-  projectId: string | null;
-}
-
-export default async function ProjectsContent({ projectId }: Props) {
+export default async function ProjectsContent({
+  query,
+  locale,
+}: {
+  query: string;
+  locale: string;
+}) {
   const projects = await getProjects();
   return (
-    <ProjectList initialProjects={projects} initialProjectId={projectId} />
+    <ProjectList
+      initialResult={searchProjects(
+        projects,
+        new URLSearchParams(query),
+        locale
+      )}
+      initialQuery={query}
+    />
   );
 }

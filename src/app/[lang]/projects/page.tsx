@@ -10,7 +10,13 @@ import ProjectsContent from './ProjectsContent';
 
 type ProjectsPageProps = {
   params?: Promise<{ lang: string }>;
-  searchParams: Promise<{ id?: string }>;
+  searchParams: Promise<{
+    id?: string;
+    q?: string;
+    category?: string;
+    tech?: string | string[];
+    sort?: string;
+  }>;
 };
 
 export async function generateMetadata({
@@ -44,7 +50,13 @@ export default async function ProjectsPage({
   const lang = resolvedParams?.lang ?? DEFAULT_LOCALE;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
-  const { id } = await searchParams;
+  const resolvedSearch = await searchParams;
+  const { id } = resolvedSearch;
+  const query = new URLSearchParams();
+  Object.entries(resolvedSearch).forEach(([key, value]) => {
+    if (Array.isArray(value)) value.forEach((item) => query.append(key, item));
+    else if (value !== undefined) query.set(key, value);
+  });
   if (id && !(await projectExists(id))) notFound();
 
   return (
@@ -55,7 +67,7 @@ export default async function ProjectsPage({
       </div>
 
       <Suspense fallback={<ProjectsSkeleton />}>
-        <ProjectsContent projectId={id ?? null} />
+        <ProjectsContent query={query.toString()} locale={lang} />
       </Suspense>
     </div>
   );
