@@ -74,3 +74,6 @@ ui-debug.log
 
 # Codex local-only state
 .codex/local/
+
+*storybook.log
+storybook-static
