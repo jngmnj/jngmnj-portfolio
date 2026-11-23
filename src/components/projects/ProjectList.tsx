@@ -18,6 +18,7 @@ import ProjectCard from './ProjectCard';
 import ProjectDetailModal from './ProjectDetailModal';
 import ProjectFilters from './ProjectFilters';
 import type { ProjectSearchResult } from '@/utils/projectSearch';
+import { projectSearchKey } from '@/utils/projectQuery';
 
 interface Props {
   initialResult: ProjectSearchResult;
@@ -147,7 +148,7 @@ export default function ProjectList({ initialResult, initialQuery }: Props) {
     return () => clearTimeout(timer);
   }, [query]);
   const response = useQuery({
-    queryKey: ['project-search', settledQuery],
+    queryKey: projectSearchKey(settledQuery, initialResult),
     queryFn: async ({ signal }): Promise<ProjectSearchResult> => {
       const response = await fetch(`/api/projects/search?${settledQuery}`, {
         signal,
@@ -173,7 +174,7 @@ export default function ProjectList({ initialResult, initialQuery }: Props) {
       ? initialResult.selectedProject
       : null);
   const detail = useQuery({
-    queryKey: ['project-detail', id],
+    queryKey: ['project-detail', id, initialResult],
     enabled: Boolean(id) && !knownProject,
     queryFn: async ({ signal }): Promise<FirebaseProject> => {
       const response = await fetch(

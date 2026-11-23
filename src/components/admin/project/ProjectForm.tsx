@@ -29,6 +29,7 @@ export default function ProjectForm({
 
   const methods = useForm({
     defaultValues: {
+      isPublic: editingProject?.isPublic !== false,
       title: editingProject?.title || '',
       titleEn: editingProject?.titleEn || '',
       description: editingProject?.description || '',
@@ -69,6 +70,7 @@ export default function ProjectForm({
 
     try {
       const formDataToSend = new FormData();
+      formDataToSend.append('isPublic', String(data.isPublic !== false));
       formDataToSend.append('title', data.title || '');
       formDataToSend.append('titleEn', data.titleEn || '');
       formDataToSend.append('description', data.description || '');
@@ -138,6 +140,14 @@ export default function ProjectForm({
             description="프로젝트 목록과 카드에 먼저 노출되는 핵심 정보를 입력합니다."
           >
             <ProjectFormBasicInfo />
+            <label className="mt-5 flex min-h-11 cursor-pointer items-center gap-3 rounded-xl bg-gray-50 px-4 py-3 text-sm font-medium text-gray-800">
+              <input
+                type="checkbox"
+                {...methods.register('isPublic')}
+                className="size-4 cursor-pointer accent-seagull-500"
+              />
+              프로젝트 공개
+            </label>
           </ProjectFormSection>
 
           <ProjectFormSection

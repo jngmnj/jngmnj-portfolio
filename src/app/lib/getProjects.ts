@@ -9,6 +9,7 @@ export default async function getProjects(): Promise<FirebaseProject[]> {
     return {
       id: doc.id,
       ...data,
+      isPublic: data.isPublic !== false,
       // Timestamp를 일반 객체로 변환 (서버 -> 클라이언트 전달을 위해)
       createdAt:
         data.createdAt instanceof Timestamp
@@ -27,5 +28,5 @@ export default async function getProjects(): Promise<FirebaseProject[]> {
     } as FirebaseProject;
   });
 
-  return projects;
+  return projects.filter((project) => project.isPublic);
 }

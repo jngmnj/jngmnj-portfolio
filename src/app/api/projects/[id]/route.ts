@@ -19,6 +19,10 @@ export async function PUT(
   try {
     const { id } = await params;
     const formData = await request.formData();
+    const visibility = formData.get('isPublic');
+    if (visibility !== null && visibility !== 'true' && visibility !== 'false') {
+      return NextResponse.json({ error: 'Invalid isPublic' }, { status: 400 });
+    }
 
     const title = formData.get('title') as string;
     const titleEn = formData.get('titleEn') as string;
@@ -45,6 +49,7 @@ export async function PUT(
     const updatedAtTimestamp = Timestamp.now();
 
     const projectUpdate = {
+      ...(visibility !== null ? { isPublic: visibility === 'true' } : {}),
       title,
       titleEn: titleEn || '',
       description,

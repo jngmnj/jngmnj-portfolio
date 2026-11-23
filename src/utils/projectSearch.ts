@@ -11,6 +11,7 @@ export function searchProjects(
   params: URLSearchParams,
   locale: string
 ) {
+  projects = projects.filter((project) => project.isPublic !== false);
   return {
     projects: sortProjects(
       filterProjects(projects, readProjectFilters(params)),

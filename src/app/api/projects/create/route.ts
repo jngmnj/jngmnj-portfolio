@@ -15,6 +15,10 @@ function parseJsonField<T>(value: string, fallback: T, fieldName: string): T {
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
+    const visibility = formData.get('isPublic');
+    if (visibility !== null && visibility !== 'true' && visibility !== 'false') {
+      return NextResponse.json({ error: 'Invalid isPublic' }, { status: 400 });
+    }
 
     const title = formData.get('title') as string;
     const titleEn = formData.get('titleEn') as string;
@@ -41,6 +45,7 @@ export async function POST(request: NextRequest) {
     const createdAtTimestamp = Timestamp.now();
 
     const projectRequest = {
+      isPublic: visibility !== 'false',
       title,
       titleEn: titleEn || '',
       description,
