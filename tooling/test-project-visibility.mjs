@@ -48,7 +48,7 @@ try {
   assert.ok(['localhost', '127.0.0.1'].includes(new URL(base).hostname));
   let fixture = {
     ...projects[0], id: 'visibility-test', isPublic: false,
-    githubUrl: 'https://github.com/example/visibility-test',
+    githubUrl: '',
     liveUrl: 'https://example.com',
   };
   const saved = [];
@@ -61,6 +61,7 @@ try {
     const form = await new Response(req.postDataBuffer(), {
       headers: { 'content-type': req.headers()['content-type'] },
     }).formData();
+    assert.equal(form.get('githubUrl'), '');
     fixture = { ...fixture, isPublic: form.get('isPublic') === 'true' };
     saved.push(fixture.isPublic);
     await route.fulfill({ json: { id: fixture.id } });
