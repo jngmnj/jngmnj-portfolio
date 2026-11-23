@@ -14,13 +14,11 @@ export default function ProjectFormUrls() {
       <div>
         <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-800">
           <span>GitHub URL</span>
-          <span className="text-xs font-medium text-red-600">필수</span>
+          <span className="text-xs font-medium text-gray-400">선택</span>
         </label>
         <Input
           type="url"
-          {...register('githubUrl', {
-            required: 'GitHub URL을 입력해주세요.',
-          })}
+          {...register('githubUrl')}
           placeholder="https://github.com/..."
           className="focus:border-seagull-500 focus:ring-seagull-100 min-h-11 focus:ring-2 focus:outline-none"
           aria-invalid={Boolean(errors.githubUrl)}
