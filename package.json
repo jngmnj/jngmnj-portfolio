@@ -10,7 +10,8 @@
     "export": "next export",
     "migrate:projects": "node -r dotenv/config scripts/migrateProjects.mjs",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test-storybook": "vitest run --project=storybook"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
